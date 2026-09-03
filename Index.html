@@ -228,6 +228,9 @@
         <span id="peerCount" class="bg-white/10 border border-white/10 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1" title="Connected Peers">
           👤 <span id="countNum">1</span>
         </span>
+        <button id="quitBtn" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1 ml-1" title="Leave Room">
+          🚪 <span class="hidden sm:inline">Quit</span>
+        </button>
       </div>
     </header>
 
@@ -380,6 +383,7 @@
       roomDisp: document.getElementById('roomDisplay'),
       roomBadge: document.getElementById('roomTypeBadge'),
       inviteBtn: document.getElementById('inviteBtn'),
+      quitBtn: document.getElementById('quitBtn'),
       count: document.getElementById('countNum'),
       toast: document.getElementById('toast'),
       toastMsg: document.getElementById('toastMsg'),
@@ -746,6 +750,51 @@
           }
           document.body.removeChild(ta);
       }
+    });
+
+    UI.quitBtn.addEventListener('click', () => {
+      // 1. Close all connections and destroy peer
+      if (peer) {
+        Object.values(connections).forEach(conn => conn.close());
+        peer.destroy();
+        peer = null;
+      }
+      
+      // 2. Reset State
+      connections = {};
+      isHost = false;
+      targetHostId = '';
+      
+      // 3. Reset UI
+      UI.chat.innerHTML = ''; // Clear chat history
+      UI.login.classList.remove('opacity-0', 'pointer-events-none');
+      UI.status.textContent = '';
+      UI.count.textContent = '1';
+      
+      // 4. Reset Environment to default
+      env.setTheme('');
+      
+      // 5. Clean URL if we joined via link, so we don't auto-rejoin or stay locked
+      if(isJoinViaLink) {
+        isJoinViaLink = false;
+        roomType = 'public';
+        roomSecretKey = '';
+        roomInstanceId = '';
+        
+        // Restore standard room input UI
+        UI.roomInCont.innerHTML = `
+          <label class="block text-xs font-semibold text-slate-400 uppercase mb-1 ml-1">Room Name</label>
+          <input type="text" id="roomInput" value="Global" placeholder="e.g. Global" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" maxlength="20">
+        `;
+        // Re-bind the dynamically recreated element
+        UI.roomIn = document.getElementById('roomInput');
+        
+        UI.typeSelector.classList.remove('hidden');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      
+      updateUICards();
+      showToast("Left the room", "info");
     });
 
     UI.form.addEventListener('submit', e => {
