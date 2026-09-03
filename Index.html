@@ -2,1032 +2,772 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>💬 Let's Chat Together</title>
-
-  <!-- PeerJS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>💬 Lumina Chat | Decentralized</title>
+  
+  <!-- Tailwind CSS & PeerJS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.1/dist/peerjs.min.js"></script>
 
   <style>
-    /* ============================================
-       ROOT VARIABLES & RESET
-    ============================================ */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
     body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      background: #0b0e1a;
-      /* Aurora background */
-      background-image: radial-gradient(ellipse at 10% 20%, #1a2a6c 0%, transparent 50%),
-                        radial-gradient(ellipse at 90% 80%, #b21f1f 0%, transparent 50%),
-                        radial-gradient(ellipse at 50% 50%, #1a2332 0%, #0b0e1a 100%);
-      background-blend-mode: normal, normal, normal;
+      font-family: 'Inter', sans-serif;
+      color: #f8fafc;
+      overflow: hidden;
+      background-color: #0b0e1a;
+      transition: background-color 3s ease;
     }
 
-    /* ============================================
-       CHAT APP CONTAINER
-    ============================================ */
-    .chat-app {
-      width: 100%;
-      max-width: 500px;
-      height: 750px;
-      background: rgba(18, 26, 40, 0.65);
+    /* Environment Layers */
+    #env-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-gradient-sphere {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      transition: all 4s ease-in-out;
+      opacity: 0.6;
+    }
+
+    /* Weather Elements */
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+      animation: twinkle linear infinite;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+    
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      filter: blur(40px);
+      animation: float linear infinite;
+      transition: opacity 2s ease;
+    }
+
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 100px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3));
+      animation: fall linear infinite;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(0.8); opacity: 0.2; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+    @keyframes float {
+      from { transform: translateX(-10vw); }
+      to { transform: translateX(110vw); }
+    }
+    @keyframes fall {
+      from { transform: translateY(-100px); }
+      to { transform: translateY(110vh); }
+    }
+
+    /* UI Glassmorphism */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-radius: 48px;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      transition: height 0.3s ease;
-    }
-
-    /* ============================================
-       LOGIN OVERLAY (ULTIMATE)
-    ============================================ */
-    .login-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(8, 12, 25, 0.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 30px;
-      border-radius: 48px;
-      z-index: 20;
-      transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.6s;
-      gap: 12px;
-    }
-    .login-overlay.hidden {
-      opacity: 0;
-      transform: scale(0.96);
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .login-overlay .logo {
-      font-size: 54px;
-      margin-bottom: 6px;
-      filter: drop-shadow(0 8px 24px rgba(59, 130, 246, 0.3));
-    }
-    .login-overlay h2 {
-      color: #ffffff;
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #f0f4ff, #94a3b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .login-overlay .sub {
-      color: #94a3b8;
-      font-size: 14px;
-      margin-top: -4px;
-      margin-bottom: 12px;
-      font-weight: 400;
-      letter-spacing: 0.2px;
-    }
-
-    .login-overlay label {
-      color: #c8d2e6;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      width: 100%;
-      max-width: 300px;
-      margin-top: 4px;
-    }
-    .login-overlay input {
-      width: 100%;
-      max-width: 300px;
-      padding: 14px 20px;
-      border-radius: 40px;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.04);
-      color: #f1f5f9;
-      font-size: 16px;
-      text-align: center;
-      outline: none;
-      transition: 0.3s;
-      font-weight: 500;
-    }
-    .login-overlay input:focus {
-      border-color: #3b82f6;
-      background: rgba(59, 130, 246, 0.08);
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    }
-    .login-overlay input::placeholder {
-      color: #475569;
-      font-weight: 400;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transition: border-color 1s ease, background 1s ease;
     }
 
-    .login-overlay .primary-btn {
-      width: 100%;
-      max-width: 300px;
-      padding: 16px;
-      border-radius: 40px;
-      border: none;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.35);
-      transition: all 0.25s;
-      margin-top: 4px;
-      letter-spacing: 0.3px;
+    .message-bubble {
+      animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .login-overlay .primary-btn:hover {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 12px 40px rgba(59, 130, 246, 0.5);
-    }
-    .login-overlay .primary-btn:active {
-      transform: scale(0.97);
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Advanced Toggle */
-    .advanced-toggle {
-      color: #64748b;
-      font-size: 13px;
-      cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 40px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.04);
-      transition: 0.2s;
-      margin-top: 4px;
-      user-select: none;
+    /* Room Type Cards */
+    .room-type-card {
+      transition: all 0.2s ease;
     }
-    .advanced-toggle:hover {
-      background: rgba(255,255,255,0.06);
-      color: #94a3b8;
+    .room-type-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
     }
-    .manual-connect-area {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s;
-      opacity: 0;
-      width: 100%;
-      max-width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .manual-connect-area.open {
-      max-height: 120px;
-      opacity: 1;
-    }
-    .manual-connect-row {
-      display: flex;
-      gap: 8px;
-      width: 100%;
-    }
-    .manual-connect-row input {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: 40px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
-      color: #e2e8f0;
-      font-size: 13px;
-      outline: none;
-      text-align: left;
-    }
-    .manual-connect-row input:focus {
-      border-color: #3b82f6;
-    }
-    .manual-connect-row button {
-      padding: 10px 18px;
-      border-radius: 40px;
-      border: none;
-      background: #334155;
-      color: #e2e8f0;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
-    .manual-connect-row button:hover {
-      background: #475569;
+    .room-type-card.active {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.5);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
     }
 
-    .status-text {
-      color: #fbbf24;
-      font-size: 13px;
-      text-align: center;
-      max-width: 300px;
-      min-height: 22px;
-      transition: 0.2s;
-    }
-    .status-text.error { color: #f87171; }
-    .status-text.success { color: #4ade80; }
-    .status-text.info { color: #60a5fa; }
-
-    /* ============================================
-       HEADER
-    ============================================ */
-    .chat-header {
-      padding: 18px 22px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.15);
-    }
-    .chat-header .left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      min-width: 0;
-    }
-    .chat-header .left h1 {
-      color: #f1f5f9;
-      font-size: 18px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .chat-header .left h1 .live-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: pulse-dot 1.8s infinite;
-      box-shadow: 0 0 12px #22c55e66;
-    }
-    @keyframes pulse-dot {
-      0% { opacity: 0.6; transform: scale(0.9); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0.6; transform: scale(0.9); }
-    }
-    .chat-header .left .room-name {
-      background: rgba(255,255,255,0.04);
-      padding: 2px 14px;
-      border-radius: 40px;
-      font-size: 12px;
-      font-weight: 500;
-      color: #94a3b8;
-      border: 1px solid rgba(255,255,255,0.03);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 120px;
-    }
-    .chat-header .right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .peer-id-copy {
-      background: rgba(255,255,255,0.04);
-      padding: 4px 12px 4px 14px;
-      border-radius: 40px;
-      color: #94a3b8;
-      font-size: 10px;
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.04);
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      max-width: 140px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .peer-id-copy:hover {
-      background: rgba(255,255,255,0.08);
-      color: #e2e8f0;
-      border-color: rgba(255,255,255,0.08);
-    }
-    .peer-id-copy .badge-icon {
-      font-size: 12px;
-    }
-    .status-badge {
-      color: #94a3b8;
-      font-size: 12px;
-      background: rgba(255,255,255,0.04);
-      padding: 4px 12px;
-      border-radius: 40px;
-      border: 1px solid rgba(255,255,255,0.04);
-      white-space: nowrap;
-      font-weight: 500;
-    }
-    .status-badge.online {
-      color: #4ade80;
-      border-color: #4ade8033;
-      background: #4ade8010;
-    }
-    .status-badge.host {
-      color: #fbbf24;
-      border-color: #fbbf2433;
-      background: #fbbf2410;
-    }
-
-    /* ============================================
-       MESSAGES CONTAINER
-    ============================================ */
-    .messages-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 18px 10px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      scroll-behavior: smooth;
-    }
-    .messages-container::-webkit-scrollbar { width: 4px; }
-    .messages-container::-webkit-scrollbar-track { background: transparent; }
-    .messages-container::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-
-    /* ============================================
-       MESSAGE BUBBLES (ULTIMATE)
-    ============================================ */
-    .message {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      max-width: 92%;
-      animation: slideUp 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    @keyframes slideUp {
-      0% { opacity: 0; transform: translateY(18px) scale(0.96); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .message.self {
-      align-self: flex-end;
-      flex-direction: row-reverse;
-    }
-
-    .message .avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      border: 2px solid rgba(255,255,255,0.06);
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      transition: transform 0.2s;
-    }
-    .message .avatar:hover {
-      transform: scale(1.05);
-    }
-
-    .message .bubble-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      max-width: 100%;
-    }
-
-    .message .bubble {
-      background: #1e293b;
-      padding: 10px 18px;
-      border-radius: 20px;
-      border-top-left-radius: 6px;
-      color: #f1f5f9;
-      font-size: 15px;
-      line-height: 1.6;
-      word-wrap: break-word;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.02);
-      transition: 0.1s;
-    }
-    .message.self .bubble {
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      border-top-left-radius: 20px;
-      border-top-right-radius: 6px;
-      color: white;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .message .meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: #64748b;
-      padding: 0 6px;
-      font-weight: 500;
-    }
-    .message.self .meta {
-      flex-direction: row-reverse;
-    }
-    .message .meta .name {
-      font-weight: 600;
-      color: #94a3b8;
-    }
-    .message.self .meta .name {
-      color: #93bbfc;
-    }
-    .message .meta .time {
-      opacity: 0.7;
-    }
-
-    /* System messages */
-    .system-message {
-      align-self: center;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 4px 20px;
-      border-radius: 40px;
-      color: #64748b;
-      font-size: 12px;
-      border: 1px solid rgba(255,255,255,0.02);
-      text-align: center;
-      max-width: 85%;
-      backdrop-filter: blur(4px);
-      font-weight: 500;
-      letter-spacing: 0.2px;
-    }
-
-    /* ============================================
-       INPUT AREA (ULTIMATE)
-    ============================================ */
-    .input-area {
-      padding: 14px 18px 20px 18px;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      display: flex;
-      gap: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      flex-shrink: 0;
-      backdrop-filter: blur(8px);
-    }
-    .input-area input {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 40px;
-      padding: 14px 22px;
-      color: #f1f5f9;
-      font-size: 15px;
-      outline: none;
-      transition: all 0.25s;
-      font-weight: 500;
-    }
-    .input-area input::placeholder {
-      color: #475569;
-      font-weight: 400;
-    }
-    .input-area input:focus {
-      border-color: #3b82f6;
-      background: rgba(59, 130, 246, 0.06);
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.06);
-    }
-    .input-area button {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      border: none;
-      border-radius: 40px;
-      padding: 0 28px;
-      color: white;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-      white-space: nowrap;
-      letter-spacing: 0.3px;
-    }
-    .input-area button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
-    }
-    .input-area button:active {
-      transform: scale(0.95);
-    }
-
-    /* ============================================
-       RESPONSIVE
-    ============================================ */
-    @media (max-width: 540px) {
-      body { padding: 12px; }
-      .chat-app {
-        height: 95vh;
-        border-radius: 28px;
-      }
-      .login-overlay { border-radius: 28px; padding: 30px 20px; }
-      .login-overlay .logo { font-size: 42px; }
-      .login-overlay h2 { font-size: 26px; }
-      .chat-header { padding: 14px 16px; flex-wrap: wrap; }
-      .chat-header .left h1 { font-size: 16px; }
-      .peer-id-copy { max-width: 100px; font-size: 9px; padding: 3px 8px; }
-      .status-badge { font-size: 10px; padding: 3px 8px; }
-      .message .bubble { font-size: 14px; padding: 8px 14px; }
-      .input-area { padding: 12px 14px 16px; gap: 8px; }
-      .input-area input { padding: 12px 16px; font-size: 14px; }
-      .input-area button { padding: 0 20px; font-size: 14px; }
-    }
-
-    @media (max-width: 400px) {
-      .chat-header .left .room-name { max-width: 60px; font-size: 10px; }
-      .peer-id-copy { max-width: 70px; }
-    }
-
-    /* ============================================
-       UTILITY
-    ============================================ */
-    .hidden { display: none !important; }
-    .text-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    /* Toast style copy feedback */
-    .toast-copy {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.9);
-      backdrop-filter: blur(12px);
-      padding: 10px 28px;
-      border-radius: 40px;
-      color: #e2e8f0;
-      font-size: 14px;
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-      z-index: 100;
-      opacity: 0;
-      transition: opacity 0.4s, transform 0.3s;
-      pointer-events: none;
-    }
-    .toast-copy.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(-10px);
-    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
   </style>
 </head>
-<body>
+<body class="h-screen w-screen flex items-center justify-center p-3 sm:p-4">
 
-<!-- Toast -->
-<div class="toast-copy" id="toastCopy">✅ Peer ID copied!</div>
+  <!-- Living Environment Layer -->
+  <div id="env-layer">
+    <div id="grad1" class="bg-gradient-sphere w-[60vw] h-[60vw] top-[-10%] left-[-10%] bg-blue-900"></div>
+    <div id="grad2" class="bg-gradient-sphere w-[50vw] h-[50vw] bottom-[-10%] right-[-10%] bg-purple-900"></div>
+    <div id="grad3" class="bg-gradient-sphere w-[40vw] h-[40vw] top-[40%] left-[30%] bg-indigo-900"></div>
+    <div id="starsLayer" class="absolute inset-0"></div>
+    <div id="cloudsLayer" class="absolute inset-0"></div>
+    <div id="rainLayer" class="absolute inset-0"></div>
+  </div>
 
-<div class="chat-app">
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 glass-panel px-6 py-3 rounded-full flex items-center gap-2 shadow-2xl">
+    <span id="toastIcon">ℹ️</span>
+    <span id="toastMsg" class="text-sm font-medium">Notification</span>
+  </div>
 
-  <!-- ===== LOGIN OVERLAY ===== -->
-  <div class="login-overlay" id="loginOverlay">
-    <div class="logo">💬</div>
-    <h2>Let's Chat Together</h2>
-    <p class="sub">Together · No limits · Encrypted</p>
+  <!-- Invalid Link Modal -->
+  <div id="invalidModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden flex items-center justify-center">
+    <div class="glass-panel p-6 rounded-2xl max-w-sm w-full text-center mx-4">
+      <div class="text-4xl mb-4">🕵️</div>
+      <h3 class="text-xl font-bold mb-2">Secret Room</h3>
+      <p class="text-slate-300 text-sm mb-6">This invitation is invalid or has expired.</p>
+      <button onclick="document.getElementById('invalidModal').classList.add('hidden')" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 rounded-xl transition-all">
+        Got it
+      </button>
+    </div>
+  </div>
 
-    <label for="usernameInput">👤 Nickname</label>
-    <input type="text" id="usernameInput" placeholder="e.g. Stella" maxlength="20" />
+  <!-- Chat Container -->
+  <div id="appContainer" class="glass-panel w-full max-w-3xl h-[95vh] sm:h-[85vh] max-h-[850px] rounded-3xl flex flex-col relative overflow-hidden transition-all duration-700 shadow-2xl shadow-black/50">
+    
+    <!-- Login Overlay -->
+    <div id="loginScreen" class="absolute inset-0 z-40 bg-slate-900/85 backdrop-blur-2xl flex flex-col items-center justify-center p-6 overflow-y-auto transition-opacity duration-700">
+      <div class="text-5xl mb-4 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">✨</div>
+      <h1 class="text-3xl font-bold mb-1 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Lumina Chat</h1>
+      <p class="text-slate-400 mb-6 text-xs font-medium tracking-widest uppercase">Decentralized Living Rooms</p>
+      
+      <div class="w-full max-w-md space-y-4 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase mb-1 ml-1">Nickname</label>
+          <input type="text" id="usernameInput" placeholder="e.g. Alex" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" maxlength="15">
+        </div>
+        <div id="roomInputContainer">
+          <label class="block text-xs font-semibold text-slate-400 uppercase mb-1 ml-1">Room Name</label>
+          <input type="text" id="roomInput" value="Global" placeholder="e.g. Global" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" maxlength="20">
+        </div>
+      </div>
 
-    <label for="roomInput">🏠 Room</label>
-    <input type="text" id="roomInput" placeholder="e.g. Hangout" value="Hangout" maxlength="30" />
+      <!-- Room Type Selector -->
+      <div id="roomTypeSelector" class="w-full max-w-md">
+        <label class="block text-xs font-semibold text-slate-400 uppercase mb-2 ml-1">Choose Room Type</label>
+        <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-3">
+          <div class="room-type-card active glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="public">
+            <span class="text-lg">🌍</span>
+            <span class="text-[10px] font-bold text-slate-200">Public</span>
+          </div>
+          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="secret">
+            <span class="text-lg">🕵️</span>
+            <span class="text-[10px] font-bold text-slate-200">Secret</span>
+          </div>
+          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="onetime">
+            <span class="text-lg">⚡</span>
+            <span class="text-[10px] font-bold text-slate-200">One-Time</span>
+          </div>
+          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="ghost">
+            <span class="text-lg">👻</span>
+            <span class="text-[10px] font-bold text-slate-200">Ghost</span>
+          </div>
+          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="vault">
+            <span class="text-lg">🔐</span>
+            <span class="text-[10px] font-bold text-slate-200">Vault</span>
+          </div>
+        </div>
+        <div id="dynamicOptions" class="h-8 flex items-center justify-center text-xs text-slate-400 mb-2">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
 
-    <button class="primary-btn" id="loginBtn">💬 Let's Chat</button>
-
-    <div class="advanced-toggle" id="advancedToggle">⚡ Advanced · Manual Connect</div>
-    <div class="manual-connect-area" id="manualArea">
-      <div class="manual-connect-row">
-        <input type="text" id="manualPeerInput" placeholder="Paste Peer ID here..." />
-        <button id="manualConnectBtn">Connect</button>
+      <div class="w-full max-w-md mt-2">
+        <button id="joinBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3.5 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm tracking-wide">
+          Enter Room
+        </button>
+        <p id="connectionStatus" class="mt-4 text-xs text-yellow-400 h-4 text-center font-medium"></p>
       </div>
     </div>
 
-    <div class="status-text" id="connectionStatus">⏳ Ready to chat...</div>
-  </div>
-
-  <!-- ===== HEADER ===== -->
-  <div class="chat-header">
-    <div class="left">
-      <h1>💬 <span class="live-dot"></span></h1>
-      <span class="room-name" id="roomDisplay">Room</span>
-    </div>
-    <div class="right">
-      <div class="peer-id-copy" id="peerIdDisplay" title="Click to copy ID">
-        <span class="badge-icon">🔑</span> <span id="peerIdText">ID</span>
+    <!-- Header -->
+    <header class="border-b border-white/5 p-4 flex justify-between items-center bg-black/20 backdrop-blur-md shrink-0 z-10">
+      <div class="flex items-center gap-3">
+        <div class="relative flex h-2.5 w-2.5 flex-shrink-0">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+        </div>
+        <h2 class="font-bold text-sm sm:text-base tracking-wide flex items-center gap-2 truncate">
+          <span id="roomDisplay" class="truncate max-w-[100px] sm:max-w-[200px]">Room</span>
+          <span id="roomTypeBadge" class="bg-white/10 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider text-slate-300 flex-shrink-0">🌍 PUBLIC</span>
+        </h2>
       </div>
-      <div class="status-badge" id="peerCountBadge">👤 0</div>
-    </div>
+      <div class="flex gap-2 items-center flex-shrink-0">
+        <button id="inviteBtn" class="bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1">
+          🔗 <span class="hidden sm:inline">Invite</span>
+        </button>
+        <span id="peerCount" class="bg-white/10 border border-white/10 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1" title="Connected Peers">
+          👤 <span id="countNum">1</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- Messages -->
+    <main id="chatWindow" class="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col scroll-smooth relative z-10">
+      <!-- Messages populate here -->
+    </main>
+
+    <!-- Input Area -->
+    <footer class="p-4 border-t border-white/5 bg-black/20 backdrop-blur-md shrink-0 z-10">
+      <form id="chatForm" class="flex gap-2 relative">
+        <input type="text" id="msgInput" placeholder="Type your message..." autocomplete="off" class="flex-1 bg-white/5 border border-white/10 rounded-full px-5 py-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all text-white placeholder-slate-400">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-full px-5 sm:px-6 py-3 font-semibold text-sm transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex-shrink-0">
+          Send
+        </button>
+      </form>
+    </footer>
   </div>
 
-  <!-- ===== MESSAGES ===== -->
-  <div class="messages-container" id="messagesContainer">
-    <!-- Messages injected here -->
-  </div>
-
-  <!-- ===== INPUT ===== -->
-  <div class="input-area">
-    <input type="text" id="messageInput" placeholder="Type a message..." />
-    <button id="sendBtn">Send</button>
-  </div>
-</div>
-
-<script>
-  (function() {
-    'use strict';
-
-    // ---- DOM refs ----
-    const loginOverlay = document.getElementById('loginOverlay');
-    const usernameInput = document.getElementById('usernameInput');
-    const roomInput = document.getElementById('roomInput');
-    const loginBtn = document.getElementById('loginBtn');
-    const messagesContainer = document.getElementById('messagesContainer');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const roomDisplay = document.getElementById('roomDisplay');
-    const peerCountBadge = document.getElementById('peerCountBadge');
-    const connectionStatus = document.getElementById('connectionStatus');
-    const peerIdDisplay = document.getElementById('peerIdDisplay');
-    const peerIdText = document.getElementById('peerIdText');
-    const manualPeerInput = document.getElementById('manualPeerInput');
-    const manualConnectBtn = document.getElementById('manualConnectBtn');
-    const advancedToggle = document.getElementById('advancedToggle');
-    const manualArea = document.getElementById('manualArea');
-    const toastCopy = document.getElementById('toastCopy');
-
-    // ---- State ----
-    let currentUser = '';
-    let currentRoom = '';
-    let isLoggedIn = false;
-    let peer = null;
-    let myPeerId = '';
-    let isHost = false;
-    const connections = {};
-    const renderedIds = new Set();
-
-    // ---- Helpers ----
-    function getTime() {
-      return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-    }
-
-    function getColor(name) {
-      let hash = 0;
-      for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      const hue = Math.abs(hash) % 360;
-      return `hsl(${hue}, 70%, 55%)`;
-    }
-
-    function getGradient(name) {
-      let hash = 0;
-      for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      const h1 = Math.abs(hash) % 360;
-      const h2 = (h1 + 40) % 360;
-      return `linear-gradient(135deg, hsl(${h1}, 75%, 55%), hsl(${h2}, 80%, 45%))`;
-    }
-
-    function scrollBottom() {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    function showToast(text) {
-      toastCopy.textContent = text;
-      toastCopy.classList.add('show');
-      clearTimeout(toastCopy._timer);
-      toastCopy._timer = setTimeout(() => toastCopy.classList.remove('show'), 2200);
-    }
-
-    // ---- Render functions ----
-    function renderSystemMessage(text) {
-      const div = document.createElement('div');
-      div.className = 'system-message';
-      div.textContent = text;
-      messagesContainer.appendChild(div);
-      scrollBottom();
-    }
-
-    function renderMessage(data, id) {
-      if (renderedIds.has(id)) return;
-      renderedIds.add(id);
-
-      const { username, text, time, isSelf, avatarColor } = data;
-      const div = document.createElement('div');
-      div.className = `message${isSelf ? ' self' : ''}`;
-
-      const avatar = document.createElement('div');
-      avatar.className = 'avatar';
-      avatar.textContent = username.charAt(0).toUpperCase();
-      avatar.style.background = avatarColor || getGradient(username);
-
-      const wrapper = document.createElement('div');
-      wrapper.className = 'bubble-wrapper';
-
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'name';
-      nameSpan.textContent = username;
-      const timeSpan = document.createElement('span');
-      timeSpan.className = 'time';
-      timeSpan.textContent = time || getTime();
-      meta.appendChild(nameSpan);
-      meta.appendChild(timeSpan);
-
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.textContent = text;
-
-      wrapper.appendChild(meta);
-      wrapper.appendChild(bubble);
-      div.appendChild(avatar);
-      div.appendChild(wrapper);
-      messagesContainer.appendChild(div);
-      scrollBottom();
-    }
-
-    function updatePeerCount() {
-      const count = Object.keys(connections).length;
-      peerCountBadge.textContent = `👤 ${count}`;
-      if (isHost) {
-        peerCountBadge.className = `status-badge host`;
-        peerCountBadge.textContent += ' 👑';
-      } else if (count > 0) {
-        peerCountBadge.className = `status-badge online`;
-      } else {
-        peerCountBadge.className = `status-badge`;
+  <script>
+    // --- Environment Engine ---
+    class LivingEnvironment {
+      constructor() {
+        this.layers = {
+          stars: document.getElementById('starsLayer'),
+          clouds: document.getElementById('cloudsLayer'),
+          rain: document.getElementById('rainLayer')
+        };
+        this.grads = [
+          document.getElementById('grad1'),
+          document.getElementById('grad2'),
+          document.getElementById('grad3')
+        ];
+        this.lastActiveTime = Date.now();
+        this.roomPhase = 0;
+        this.isRaining = false;
+        
+        this.initElements();
+        setInterval(() => this.tick(), 1000);
       }
-      return count;
-    }
 
-    function updateHostStatus() {
-      if (isHost) {
-        connectionStatus.textContent = '👑 You are the Host · Sharing room.';
-        connectionStatus.className = 'status-text success';
-      } else {
-        const count = Object.keys(connections).length;
-        if (count > 0) {
-          connectionStatus.textContent = `✅ Connected to ${count} peer${count > 1 ? 's' : ''}.`;
-          connectionStatus.className = 'status-text success';
+      initElements() {
+        // Build Stars
+        for(let i=0; i<40; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.width = Math.random() * 3 + 'px';
+          star.style.height = star.style.width;
+          star.style.left = Math.random() * 100 + 'vw';
+          star.style.top = Math.random() * 100 + 'vh';
+          star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+          star.style.animationDelay = Math.random() * 2 + 's';
+          this.layers.stars.appendChild(star);
+        }
+        
+        // Build Clouds
+        for(let i=0; i<4; i++) {
+          const cloud = document.createElement('div');
+          cloud.className = 'cloud';
+          cloud.style.width = (Math.random() * 200 + 150) + 'px';
+          cloud.style.height = (Math.random() * 60 + 40) + 'px';
+          cloud.style.top = Math.random() * 40 + 'vh';
+          cloud.style.animationDuration = (Math.random() * 40 + 40) + 's';
+          cloud.style.animationDelay = -(Math.random() * 40) + 's';
+          this.layers.clouds.appendChild(cloud);
+        }
+
+        // Build Rain
+        for(let i=0; i<60; i++) {
+          const drop = document.createElement('div');
+          drop.className = 'raindrop';
+          drop.style.left = Math.random() * 100 + 'vw';
+          drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+          drop.style.animationDelay = Math.random() * 2 + 's';
+          this.layers.rain.appendChild(drop);
+        }
+      }
+
+      setTheme(roomName) {
+        const name = roomName.toLowerCase();
+        // Dynamic Room Parsing
+        if (name.includes('night') || name.includes('chennai') || name.includes('dark') || name.includes('moon')) {
+          this.grads[0].style.backgroundColor = '#1e3a8a';
+          this.grads[1].style.backgroundColor = '#4c1d95';
+          this.grads[2].style.backgroundColor = '#0f172a';
+          Array.from(this.layers.stars.children).forEach(s => s.style.opacity = '1');
+          Array.from(this.layers.clouds.children).forEach(c => c.style.opacity = '1');
+        } else if (name.includes('sunset') || name.includes('evening') || name.includes('fire') || name.includes('dusk')) {
+          this.grads[0].style.backgroundColor = '#9a3412';
+          this.grads[1].style.backgroundColor = '#831843';
+          this.grads[2].style.backgroundColor = '#312e81';
+          Array.from(this.layers.stars.children).forEach(s => s.style.opacity = '0');
+          Array.from(this.layers.clouds.children).forEach(c => c.style.opacity = '1');
         } else {
-          connectionStatus.textContent = '⏳ Looking for peers...';
-          connectionStatus.className = 'status-text info';
+          // Default
+          this.grads[0].style.backgroundColor = '#0369a1';
+          this.grads[1].style.backgroundColor = '#1d4ed8';
+          this.grads[2].style.backgroundColor = '#0f172a';
+          Array.from(this.layers.stars.children).forEach(s => s.style.opacity = '0');
+          Array.from(this.layers.clouds.children).forEach(c => c.style.opacity = '0');
+        }
+        this.roomPhase = 0;
+        this.ping();
+      }
+
+      ping() {
+        this.lastActiveTime = Date.now();
+        if (this.isRaining) {
+          this.isRaining = false;
+          Array.from(this.layers.rain.children).forEach(r => r.style.opacity = '0');
+          document.getElementById('appContainer').style.borderColor = 'rgba(255, 255, 255, 0.08)';
+        }
+      }
+
+      tick() {
+        const inactiveSeconds = (Date.now() - this.lastActiveTime) / 1000;
+        // Apply rain after 15 seconds of silence
+        if (inactiveSeconds > 15 && !this.isRaining) {
+          this.isRaining = true;
+          Array.from(this.layers.rain.children).forEach(r => r.style.opacity = '0.6');
+          document.getElementById('appContainer').style.borderColor = 'rgba(148, 163, 184, 0.3)';
+        }
+        // Deepen background over time
+        if (inactiveSeconds > 30 && this.roomPhase === 0) {
+          this.roomPhase = 1;
+          document.body.style.backgroundColor = '#020617';
+          this.grads[0].style.transform = 'scale(1.2) translate(-5vw, 5vh)';
+        } else if (inactiveSeconds > 60 && this.roomPhase === 1) {
+          this.roomPhase = 2;
+          this.grads[1].style.transform = 'scale(1.5) translate(5vw, -5vh)';
         }
       }
     }
 
-    // ---- Broadcast ----
-    function broadcast(data, excludePeerId = null) {
-      const peers = Object.keys(connections);
-      if (peers.length === 0) return;
-      for (let pid of peers) {
-        if (pid === excludePeerId) continue;
-        try {
-          connections[pid].send(data);
-        } catch (e) { /* ignore */ }
+    const env = new LivingEnvironment();
+
+    // --- STREAMING_CHUNK:Defining Logic and Network Handlers... ---
+    const UI = {
+      login: document.getElementById('loginScreen'),
+      userIn: document.getElementById('usernameInput'),
+      roomIn: document.getElementById('roomInput'),
+      roomInCont: document.getElementById('roomInputContainer'),
+      typeSelector: document.getElementById('roomTypeSelector'),
+      dynOpts: document.getElementById('dynamicOptions'),
+      joinBtn: document.getElementById('joinBtn'),
+      status: document.getElementById('connectionStatus'),
+      chat: document.getElementById('chatWindow'),
+      form: document.getElementById('chatForm'),
+      msgIn: document.getElementById('msgInput'),
+      roomDisp: document.getElementById('roomDisplay'),
+      roomBadge: document.getElementById('roomTypeBadge'),
+      inviteBtn: document.getElementById('inviteBtn'),
+      count: document.getElementById('countNum'),
+      toast: document.getElementById('toast'),
+      toastMsg: document.getElementById('toastMsg'),
+      toastIcon: document.getElementById('toastIcon'),
+      cards: document.querySelectorAll('.room-type-card')
+    };
+
+    let peer = null;
+    let connections = {};
+    let isHost = false;
+    let myName = '';
+    let roomName = '';
+    let targetHostId = '';
+    
+    // Room Configuration States
+    let roomType = 'public';
+    let roomSecretKey = '';
+    let roomInstanceId = '';
+    let ghostDuration = 30;
+    let isJoinViaLink = false;
+
+    // Load saved preferences if available
+    try {
+        const savedName = localStorage.getItem('lumina_name');
+        if (savedName) UI.userIn.value = savedName;
+    } catch(e) {}
+
+    const peerConfig = {
+      debug: 1,
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' },
+          { urls: 'stun:global.stun.twilio.com:3478' }
+        ]
+      }
+    };
+
+    function parseURL() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('room')) {
+        UI.roomIn.value = decodeURIComponent(params.get('room'));
+        roomType = params.get('type') || 'public';
+        isJoinViaLink = true;
+
+        if (roomType === 'secret') {
+          roomSecretKey = params.get('key');
+          if (!roomSecretKey) {
+            document.getElementById('invalidModal').classList.remove('hidden');
+            roomType = 'public'; // Fallback so app still works
+            isJoinViaLink = false;
+          } else {
+            // Lock UI to secret room
+            UI.roomInCont.innerHTML = `<div class="bg-slate-800/80 border border-purple-500/50 rounded-xl px-4 py-3 text-purple-300 font-semibold flex items-center justify-center gap-2 shadow-inner"><span>🕵️</span> <span>Secret Room Invitation</span></div>`;
+            UI.typeSelector.classList.add('hidden');
+          }
+        }
+        if (roomType === 'onetime') roomInstanceId = params.get('inst');
+        if (roomType === 'ghost') ghostDuration = parseInt(params.get('timer')) || 30;
+
+        updateUICards();
       }
     }
 
-    // ---- Setup connection listeners ----
-    function setupConnectionListeners(conn, peerId) {
-      conn.on('data', (data) => {
-        const msg = { ...data, isSelf: false };
-        const id = `remote-${Date.now()}-${Math.random()}`;
-        renderMessage(msg, id);
-        if (isHost) {
-          broadcast(data, peerId);
+    function generateCryptographicKey() {
+      const array = new Uint8Array(16);
+      crypto.getRandomValues(array);
+      return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    function generateInstanceId() {
+      return Math.random().toString(36).substring(2, 12);
+    }
+
+    function updateUICards() {
+      UI.cards.forEach(c => {
+        if (c.dataset.type === roomType) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+
+      // Update Dynamic Help Text
+      if (roomType === 'public') UI.dynOpts.innerHTML = 'Anyone with the room name can join.';
+      if (roomType === 'secret') UI.dynOpts.innerHTML = 'Only people with your private invitation can enter.';
+      if (roomType === 'onetime') UI.dynOpts.innerHTML = 'Temporary room that ends when everyone leaves.';
+      if (roomType === 'vault') UI.dynOpts.innerHTML = 'Live peer chat with local-only history.';
+      if (roomType === 'ghost') {
+        UI.dynOpts.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span>Message lifetime:</span>
+            <select id="ghostTimerSelect" class="bg-slate-800/80 border border-slate-600 rounded px-2 py-1 text-white outline-none cursor-pointer">
+              <option value="10" ${ghostDuration===10?'selected':''}>10s</option>
+              <option value="30" ${ghostDuration===30?'selected':''}>30s</option>
+              <option value="60" ${ghostDuration===60?'selected':''}>1m</option>
+              <option value="300" ${ghostDuration===300?'selected':''}>5m</option>
+              <option value="600" ${ghostDuration===600?'selected':''}>10m</option>
+            </select>
+          </div>
+        `;
+        document.getElementById('ghostTimerSelect').addEventListener('change', (e) => {
+          ghostDuration = parseInt(e.target.value);
+        });
+      }
+    }
+
+    UI.cards.forEach(card => {
+      card.addEventListener('click', () => {
+        if(isJoinViaLink && roomType === 'secret') return; // Cannot switch away from required secret invite
+        roomType = card.dataset.type;
+        updateUICards();
+      });
+    });
+
+    function showToast(msg, type = 'info') {
+      UI.toastMsg.textContent = msg;
+      UI.toastIcon.textContent = type === 'error' ? '⚠️' : type === 'success' ? '✅' : 'ℹ️';
+      UI.toast.classList.remove('opacity-0', '-translate-y-4');
+      setTimeout(() => UI.toast.classList.add('opacity-0', '-translate-y-4'), 2500);
+    }
+
+    function updateBadge() {
+      let icon = '🌍'; let text = 'PUBLIC'; let bg = 'bg-blue-500/20 text-blue-300';
+      if (roomType === 'secret') { icon = '🕵️'; text = 'SECRET'; bg = 'bg-purple-500/20 text-purple-300 border-purple-500/30'; }
+      if (roomType === 'onetime') { icon = '⚡'; text = 'ONE-TIME'; bg = 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'; }
+      if (roomType === 'ghost') { icon = '👻'; text = 'GHOST'; bg = 'bg-slate-500/20 text-slate-300 border-slate-500/30'; }
+      if (roomType === 'vault') { icon = '🔐'; text = 'VAULT'; bg = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'; }
+      
+      UI.roomBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-white/10 ${bg}`;
+      UI.roomBadge.innerHTML = `${icon} <span class="hidden sm:inline">${text}</span>`;
+      
+      if(roomType === 'ghost') {
+        UI.roomBadge.innerHTML += ` <span class="opacity-75 lowercase ml-1">(${ghostDuration}s)</span>`;
+      }
+    }
+
+    // --- STREAMING_CHUNK:Message Rendering and WebRTC Connection... ---
+    function addMessage(user, text, system = false, isSelf = false, expiresAt = null) {
+      env.ping();
+      
+      const div = document.createElement('div');
+      if (system) {
+        div.className = 'text-center my-2 transition-all duration-500';
+        div.innerHTML = `<span class="bg-white/5 border border-white/10 text-slate-400 text-xs px-3 py-1 rounded-full shadow-inner">${text}</span>`;
+      } else {
+        const hash = user.charCodeAt(0) % 360;
+        const color = `hsl(${hash}, 70%, 65%)`;
+        div.className = `message-bubble flex flex-col max-w-[85%] ${isSelf ? 'self-end items-end' : 'self-start items-start'}`;
+        
+        let timerHTML = '';
+        if (roomType === 'ghost' && expiresAt) {
+          const rem = Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
+          timerHTML = `<span class="ghost-timer text-[9px] font-mono text-slate-500 ml-2" data-expires="${expiresAt}">${rem}s</span>`;
+        }
+
+        div.innerHTML = `
+          <div class="flex items-center mb-1 ml-1">
+            <span class="text-[10px] font-semibold tracking-wide drop-shadow-md" style="color: ${isSelf ? '#cbd5e1' : color}">${user}</span>
+            ${timerHTML}
+          </div>
+          <div class="px-4 py-2.5 text-sm leading-relaxed shadow-xl break-words w-full ${
+            isSelf ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl rounded-tr-sm shadow-blue-900/30' 
+                   : 'bg-slate-800/90 backdrop-blur-md text-slate-100 border border-white/10 rounded-2xl rounded-tl-sm shadow-black/20'
+          }">
+            ${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+          </div>
+        `;
+
+        if (roomType === 'ghost' && expiresAt) {
+          const timerEl = div.querySelector('.ghost-timer');
+          const interval = setInterval(() => {
+            const rem = Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
+            if (timerEl) timerEl.textContent = `${rem}s`;
+            if (rem <= 3 && timerEl) timerEl.classList.add('text-red-400', 'animate-pulse');
+            
+            if (rem <= 0) {
+              clearInterval(interval);
+              div.classList.add('opacity-0', 'scale-95');
+              setTimeout(() => div.remove(), 350);
+            }
+          }, 1000);
+        }
+      }
+      
+      UI.chat.appendChild(div);
+      UI.chat.scrollTop = UI.chat.scrollHeight;
+      return div;
+    }
+
+    function updateCount() {
+      const num = Object.keys(connections).length + 1;
+      UI.count.textContent = num;
+      if (roomType === 'onetime' && num === 1 && !isHost) {
+          // Additional handling for one-time rooms if necessary.
+      }
+    }
+
+    function broadcast(data) {
+      Object.values(connections).forEach(conn => {
+        if(conn.open) conn.send(data);
+      });
+    }
+
+    function setupConnection(conn) {
+      conn.on('data', data => {
+        if (data.type === 'msg') {
+          addMessage(data.user, data.text, false, false, data.expiresAt);
+          if (isHost) broadcast(data);
         }
       });
       conn.on('close', () => {
-        delete connections[peerId];
-        const count = updatePeerCount();
-        renderSystemMessage(`👋 A user left (${count} remaining)`);
-        updateHostStatus();
-      });
-      conn.on('error', () => {
-        delete connections[peerId];
-        updatePeerCount();
-        updateHostStatus();
-      });
-    }
-
-    // ---- Send local message ----
-    function sendMessage() {
-      const text = messageInput.value.trim();
-      if (!text || !isLoggedIn || !peer) {
-        if (!isLoggedIn) alert('Please join a room first.');
-        return;
-      }
-
-      const payload = {
-        username: currentUser,
-        text: text,
-        time: getTime(),
-        avatarColor: getGradient(currentUser),
-      };
-
-      const localId = `local-${Date.now()}-${Math.random()}`;
-      renderMessage({ ...payload, isSelf: true }, localId);
-      broadcast(payload);
-      messageInput.value = '';
-      messageInput.focus();
-    }
-
-    // ---- Manual Connect ----
-    function manualConnect() {
-      const targetId = manualPeerInput.value.trim();
-      if (!targetId) return alert('Please enter a Peer ID.');
-      if (targetId === myPeerId) return alert('That is your own ID.');
-      if (connections[targetId]) return alert('Already connected.');
-
-      const conn = peer.connect(targetId, { reliable: true });
-      conn.on('open', () => {
-        connections[targetId] = conn;
-        setupConnectionListeners(conn, targetId);
-        updatePeerCount();
-        renderSystemMessage(`🔗 Manually connected to peer.`);
-        manualPeerInput.value = '';
-        updateHostStatus();
-      });
-      conn.on('error', (err) => {
-        alert(`Failed to connect to ${targetId}. Check the ID.`);
-      });
-    }
-
-    // ---- Join Room ----
-    function joinRoom() {
-      const name = usernameInput.value.trim();
-      const room = roomInput.value.trim() || 'hangout';
-
-      if (!name) {
-        alert('Please enter a nickname.');
-        return;
-      }
-
-      if (window.location.protocol === 'file:') {
-        alert(
-          '⚠️ WebRTC requires a server.\n\n' +
-          'Please use VS Code "Live Server" (Right-click > Open with Live Server)\n' +
-          'or run: python3 -m http.server 8080'
-        );
-        return;
-      }
-
-      currentUser = name;
-      currentRoom = room;
-      isLoggedIn = true;
-
-      loginOverlay.classList.add('hidden');
-      roomDisplay.textContent = room;
-      messageInput.focus();
-      connectionStatus.textContent = '🔗 Connecting to network...';
-      connectionStatus.className = 'status-text info';
-
-      // Save prefs
-      try {
-        localStorage.setItem('p2pchat_username', name);
-        localStorage.setItem('p2pchat_room', room);
-      } catch(e) {}
-
-      const hostId = `host-${room}`;
-      const randomSuffix = Math.random().toString(36).substring(2, 8);
-      const peerId = `user-${room}-${randomSuffix}`;
-
-      peer = new Peer(peerId, {
-        debug: 0,
-        config: {
-          iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' },
-          ]
+        delete connections[conn.peer];
+        updateCount();
+        
+        if (roomType === 'onetime' && Object.keys(connections).length === 0 && isHost) {
+          addMessage('System', '⚡ This temporary room has ended.', true);
+        }
+        
+        if(!isHost && conn.peer === targetHostId) {
+          addMessage('System', 'Host disconnected. Migrating room...', true);
+          setTimeout(initPeer, 1000);
         }
       });
+    }
 
-      myPeerId = peerId;
-      peerIdText.textContent = myPeerId;
-      peerIdDisplay.title = 'Click to copy Peer ID';
+    function becomeHost() {
+      if (peer) peer.destroy();
+      isHost = true;
+      UI.status.textContent = "Establishing local host...";
+      
+      peer = new Peer(targetHostId, peerConfig);
+      
+      peer.on('open', () => {
+        UI.login.classList.add('opacity-0', 'pointer-events-none');
+        UI.roomDisp.textContent = roomName;
+        updateBadge();
+        env.setTheme(roomName); 
+        addMessage('System', `Created ${roomType} room "${roomName}".`, true);
+        updateCount();
+      });
 
-      peerIdDisplay.onclick = () => {
-        navigator.clipboard?.writeText(myPeerId).then(() => {
-          showToast('✅ Peer ID copied to clipboard!');
-        }).catch(() => {
-          // Fallback
+      peer.on('connection', conn => {
+        connections[conn.peer] = conn;
+        setupConnection(conn);
+        conn.on('open', () => {
+          updateCount();
+          showToast('Someone entered the room', 'success');
+        });
+      });
+
+      peer.on('error', err => {
+        if (err.type === 'unavailable-id') {
+          isHost = false;
+          initPeer(); // Conflict: someone else took host ID, fallback to client mode
+        } else {
+           UI.status.textContent = "Error: " + err.type;
+        }
+      });
+    }
+
+    function initPeer() {
+      UI.status.textContent = "Connecting to network...";
+      if (peer) peer.destroy();
+      
+      peer = new Peer(peerConfig);
+      peer.on('open', () => {
+        const conn = peer.connect(targetHostId, { reliable: true });
+        let hostFound = false;
+        
+        conn.on('open', () => {
+          hostFound = true;
+          isHost = false;
+          connections[targetHostId] = conn;
+          setupConnection(conn);
+          UI.login.classList.add('opacity-0', 'pointer-events-none');
+          UI.roomDisp.textContent = roomName;
+          updateBadge();
+          env.setTheme(roomName);
+          addMessage('System', `Entered ${roomType} room "${roomName}".`, true);
+          updateCount();
+        });
+
+        // 2.5 second timeout to claim host if original host isn't there
+        setTimeout(() => { 
+          if (!hostFound) becomeHost(); 
+        }, 2500);
+      });
+      
+      peer.on('error', (err) => {
+          if (err.type === 'peer-unavailable') {
+              // Direct auto-fallback if server definitively says peer is offline
+              becomeHost();
+          }
+      });
+    }
+
+    // --- STREAMING_CHUNK:Finalizing Interactions... ---
+    UI.joinBtn.addEventListener('click', () => {
+      myName = UI.userIn.value.trim();
+      roomName = isJoinViaLink && roomType === 'secret' ? 'Secret Room' : UI.roomIn.value.trim();
+      
+      if (!myName || (!roomName && roomType !== 'secret')) return showToast("Enter Name and Room", "error");
+      
+      localStorage.setItem('lumina_name', myName); // Save preference
+      
+      const safeRoom = (UI.roomIn.value.trim() || 'secret').toLowerCase().replace(/[^a-z0-9]/g, '');
+      
+      // Compute Unique Identifiers based on Room Type Rules
+      if (roomType === 'public') {
+        targetHostId = `ltch-${safeRoom}-host-v2`; 
+      } else if (roomType === 'secret') {
+        if (!isJoinViaLink) roomSecretKey = generateCryptographicKey();
+        targetHostId = `ltch-${safeRoom}-sec-${roomSecretKey}`;
+      } else if (roomType === 'onetime') {
+        if (!isJoinViaLink) roomInstanceId = generateInstanceId();
+        targetHostId = `ltch-${safeRoom}-one-${roomInstanceId}`;
+      } else if (roomType === 'ghost') {
+        targetHostId = `ltch-${safeRoom}-gst-${ghostDuration}`;
+      } else if (roomType === 'vault') {
+        targetHostId = `ltch-${safeRoom}-vlt`;
+      }
+      
+      initPeer();
+    });
+
+    UI.inviteBtn.addEventListener('click', () => {
+      const url = new URL(window.location.origin + window.location.pathname);
+      url.searchParams.set('room', encodeURIComponent(UI.roomIn.value.trim()));
+      url.searchParams.set('type', roomType);
+      
+      let msg = "Invitation copied!";
+      
+      if (roomType === 'secret') {
+        url.searchParams.set('key', roomSecretKey);
+        msg = "🕵️ Secret invitation copied!";
+      } else if (roomType === 'onetime') {
+        url.searchParams.set('inst', roomInstanceId);
+        msg = "⚡ Temporary invitation copied!";
+      } else if (roomType === 'ghost') {
+        url.searchParams.set('timer', ghostDuration);
+        msg = "👻 Ghost room invitation copied!";
+      } else if (roomType === 'vault') {
+        msg = "🔐 Vault invitation copied!";
+      }
+
+      // Robust clipboard copy (handles iframe restrictions)
+      const copyText = url.toString();
+      if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(copyText).then(() => showToast(msg, 'success')).catch(fallBackCopy);
+      } else {
+          fallBackCopy();
+      }
+
+      function fallBackCopy() {
           const ta = document.createElement('textarea');
-          ta.value = myPeerId;
+          ta.value = copyText;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
           document.body.appendChild(ta);
           ta.select();
-          document.execCommand('copy');
-          ta.remove();
-          showToast('✅ Peer ID copied!');
-        });
-      };
-
-      let hostTimer = null;
-
-      peer.on('open', () => {
-        connectionStatus.textContent = '✅ Signaling connected. Looking for host...';
-        connectionStatus.className = 'status-text info';
-
-        const conn = peer.connect(hostId, { reliable: true });
-        hostTimer = setTimeout(() => {
-          if (!connections[hostId]) {
-            isHost = true;
-            renderSystemMessage(`👑 You are the Host of "${room}"`);
-            connectionStatus.textContent = '👑 Hosting room. Share the link!';
-            connectionStatus.className = 'status-text success';
-            updatePeerCount();
-            updateHostStatus();
+          try {
+              document.execCommand('copy');
+              showToast(msg, 'success');
+          } catch (err) {
+              showToast("Failed to copy link", 'error');
           }
-        }, 3500);
-
-        conn.on('open', () => {
-          clearTimeout(hostTimer);
-          connections[hostId] = conn;
-          setupConnectionListeners(conn, hostId);
-          updatePeerCount();
-          renderSystemMessage(`✅ Connected to host. Welcome!`);
-          connectionStatus.textContent = `✅ Joined room.`;
-          connectionStatus.className = 'status-text success';
-          updateHostStatus();
-        });
-
-        conn.on('error', () => {
-          // timeout will handle host election
-        });
-      });
-
-      peer.on('connection', (conn) => {
-        connections[conn.peer] = conn;
-        setupConnectionListeners(conn, conn.peer);
-        updatePeerCount();
-        renderSystemMessage(`👤 A user joined (${Object.keys(connections).length} total)`);
-        updateHostStatus();
-        if (isHost) {
-          connectionStatus.textContent = `👑 Hosting ${Object.keys(connections).length} peers.`;
-        }
-      });
-
-      peer.on('error', (err) => {
-        if (err.type === 'unavailable-id') {
-          peer.destroy();
-          setTimeout(() => joinRoom(), 1000);
-          return;
-        }
-        connectionStatus.textContent = `❌ Error: ${err.message || err.type}`;
-        connectionStatus.className = 'status-text error';
-      });
-
-      peer.on('disconnected', () => {
-        connectionStatus.textContent = '⚠️ Disconnected. Reconnecting...';
-        connectionStatus.className = 'status-text error';
-        peer.reconnect();
-      });
-    }
-
-    // ---- Load prefs ----
-    function loadPrefs() {
-      try {
-        const n = localStorage.getItem('p2pchat_username');
-        const r = localStorage.getItem('p2pchat_room');
-        if (n) usernameInput.value = n;
-        if (r) roomInput.value = r;
-      } catch(e) {}
-    }
-
-    // ---- Event Listeners ----
-    loginBtn.addEventListener('click', joinRoom);
-    usernameInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
-    roomInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
-
-    sendBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
+          document.body.removeChild(ta);
       }
     });
 
-    manualConnectBtn.addEventListener('click', manualConnect);
-    manualPeerInput.addEventListener('keydown', e => { if (e.key === 'Enter') manualConnect(); });
+    UI.form.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = UI.msgIn.value.trim();
+      if (!text || !peer) return;
+      
+      let expiresAt = null;
+      if (roomType === 'ghost') expiresAt = Date.now() + (ghostDuration * 1000);
 
-    advancedToggle.addEventListener('click', () => {
-      manualArea.classList.toggle('open');
-      advancedToggle.textContent = manualArea.classList.contains('open') ? '⚡ Hide Manual Connect' : '⚡ Advanced · Manual Connect';
+      const payload = { type: 'msg', user: myName, text, expiresAt };
+      addMessage(myName, text, false, true, expiresAt);
+      
+      if (isHost) broadcast(payload);
+      else if (connections[targetHostId]) connections[targetHostId].send(payload);
+      
+      UI.msgIn.value = '';
     });
 
-    // ---- Init ----
-    loadPrefs();
-    console.log('💬 Let\'s Chat Together · Ultimate UI/UX loaded.');
-    console.log('💡 Serve over HTTP (Live Server) and share the link!');
-  })();
-</script>
+    // Initialize
+    parseURL();
+    updateUICards();
+  </script>
 </body>
 </html>
