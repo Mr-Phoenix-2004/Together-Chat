@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- App & Full Screen Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#030303">
+    
     <title>Lumina | Pure Connection</title>
     
     <!-- Premium SVG Favicon & iOS Native Home Screen Icon -->
@@ -18,7 +25,6 @@
         :root {
             --glass-bg: rgba(9, 9, 11, 0.45);
             --glass-border: rgba(255, 255, 255, 0.03);
-            --glass-highlight: rgba(255, 255, 255, 0.02);
             --neon-glow: rgba(16, 185, 129, 0.15);
         }
 
@@ -29,9 +35,12 @@
             overflow: hidden;
             transition: background-color 2s ease;
             perspective: 1200px;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
         }
 
-        /* AAA Cinematic Film Grain */
+        /* --- STREAMING_CHUNK: AAA Cinematic Film Grain --- */
         body::after {
             content: "";
             position: fixed; inset: 0; z-index: 9999;
@@ -41,6 +50,12 @@
             mix-blend-mode: overlay;
         }
 
+        input, textarea {
+            -webkit-user-select: auto;
+            user-select: auto;
+        }
+
+        /* --- STREAMING_CHUNK: Glass Panels & UI Physics --- */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(40px) saturate(180%);
@@ -75,7 +90,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        /* --- STREAMING_CHUNK:Premium Navigation Effects --- */
+        /* --- STREAMING_CHUNK: Premium Navigation Effects --- */
         .nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
         .nav-item::before {
             content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), transparent);
@@ -102,35 +117,26 @@
         .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
         .nav-icon { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        /* --- STREAMING_CHUNK:Cinematic View Transitions --- */
-        .view-enter {
-            animation: viewFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        /* --- STREAMING_CHUNK: Cinematic View Transitions --- */
+        .view-enter { animation: viewFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes viewFadeIn {
             0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(10px); }
             100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        .login-exit {
-            animation: loginFadeOut 1s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-            pointer-events: none;
-        }
+        .login-exit { animation: loginFadeOut 1s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; pointer-events: none; }
         @keyframes loginFadeOut {
             0% { opacity: 1; transform: scale(1); filter: blur(0); }
             100% { opacity: 0; transform: scale(1.1); filter: blur(20px); visibility: hidden; }
         }
 
-        .msg-materialize {
-            animation: materialize 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform-origin: bottom center;
-        }
+        .msg-materialize { animation: materialize 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform-origin: bottom center; }
         @keyframes materialize {
             0% { opacity: 0; transform: translateY(15px) scale(0.95); filter: blur(5px); }
             100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* --- STREAMING_CHUNK:Environment & Physics --- */
+        /* --- STREAMING_CHUNK: Environment & Canvas Physics --- */
         #env-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .cosmic-gradient {
             position: absolute; border-radius: 50%; filter: blur(160px); opacity: 0.15; 
@@ -153,20 +159,14 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
         /* Animated Text Gradient */
-        .text-gradient-flow {
-            background-size: 200% auto;
-            animation: flowGradient 6s linear infinite;
-        }
-        @keyframes flowGradient {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
+        .text-gradient-flow { background-size: 200% auto; animation: flowGradient 6s linear infinite; }
+        @keyframes flowGradient { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
         /* World Cards */
         .world-card { overflow: hidden; position: relative; }
@@ -182,6 +182,10 @@
         .radial-item { opacity: 0; transform: scale(0.5) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .radial-menu.active .radial-item { opacity: 1; transform: scale(1) translateY(0); }
         
+        /* Message Toolbar */
+        .msg-toolbar { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; transform: translateY(5px) scale(0.95); pointer-events: none; }
+        .message-container:hover .msg-toolbar, .msg-toolbar.force-active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
         /* Intro Sequence */
         #introScene {
             position: fixed; inset: 0; z-index: 9999;
@@ -205,7 +209,7 @@
 <body class="flex h-[100dvh] w-screen relative text-slate-100 overflow-hidden bg-[#030303] selection:bg-white/20 selection:text-white">
 
     <div id="introScene">
-        <div class="intro-eclipse h-[150px]"></div>
+        <div class="intro-eclipse"></div>
     </div>
 
     <div id="env-layer">
@@ -216,7 +220,7 @@
     
     <canvas id="bg-canvas"></canvas>
 
-    <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] border border-white/5 bg-black/30 backdrop-blur-3xl h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
+    <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] border border-white/5 bg-black/30 backdrop-blur-3xl h-[calc(100dvh-2rem)] md:h-[calc(100dvh-3rem)]">
         <div>
             <div class="p-8 flex items-center gap-4">
                 <div class="w-10 h-10 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center font-light text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] anim-float">
@@ -301,6 +305,12 @@
                         Identity
                     </button>
                 </div>
+
+                <!-- Dynamic Install App Button -->
+                <button id="installAppBtn" class="hidden mt-6 w-full max-w-md sm:w-auto px-10 py-3.5 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold text-sm shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:bg-emerald-500/20 hover:scale-105 transition-all duration-400 items-center justify-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Install as App
+                </button>
             </div>
         </div>
 
@@ -520,6 +530,15 @@
             <footer class="shrink-0 p-4 md:p-6 md:pb-8 w-full z-30 flex justify-center">
                 <form id="chatForm" class="flex items-center gap-2 w-full max-w-4xl relative glass-panel p-2 rounded-[2rem] bg-black/60 border border-white/10 shadow-2xl backdrop-blur-3xl">
                     
+                    <!-- Swipe Reply Context UI -->
+                    <div id="replyContextBox" class="absolute -top-20 left-4 right-14 bg-[#09090b]/95 backdrop-blur-3xl border border-white/10 rounded-[1.2rem] p-3 text-xs flex justify-between items-center shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+                        <div class="min-w-0 flex-1 border-l-2 border-emerald-500 pl-3">
+                            <span id="replyUser" class="text-emerald-400 font-bold text-[9px] uppercase tracking-widest block mb-0.5"></span>
+                            <span id="replyText" class="text-slate-300 truncate block font-medium"></span>
+                        </div>
+                        <button type="button" onclick="cancelReply()" class="w-7 h-7 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white shrink-0 ml-3 transition-colors border border-white/5">✕</button>
+                    </div>
+
                     <div class="relative shrink-0">
                         <button type="button" id="plusBtn" class="w-12 h-12 rounded-full glass-button flex items-center justify-center text-slate-400 hover:text-white transition-all z-20 relative bg-white/5 border-none">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -609,7 +628,7 @@
             radialMenu: $('radialMenu'), plusBtn: $('plusBtn'), toast: $('toast')
         };
 
-        // --- STREAMING_CHUNK:Liquid Constellation 2.0 Canvas ---
+        // --- STREAMING_CHUNK: Liquid Constellation 2.0 Canvas ---
         window.addEventListener('DOMContentLoaded', () => {
             const canvas = $('bg-canvas');
             if(!canvas) return;
@@ -622,7 +641,7 @@
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
                 particles = [];
-                const count = Math.min(window.innerWidth / 18, 70); // Sparse, elegant
+                const count = Math.min(window.innerWidth / 18, 70); 
                 for (let i = 0; i < count; i++) {
                     particles.push({
                         x: Math.random() * width, y: Math.random() * height,
@@ -704,7 +723,7 @@
             window.pingNetwork = function() { networkEnergy = Math.min(networkEnergy + 0.6, 1.2); }
         });
 
-        // --- STREAMING_CHUNK:UI Management & View Switching ---
+        // --- STREAMING_CHUNK: UI Management & View Switching ---
         function switchView(viewName) {
             ['homeView', 'worldsView', 'chatView', 'settingsView'].forEach(v => {
                 const el = $(v);
@@ -720,8 +739,8 @@
                 void target.offsetWidth; 
                 target.classList.add('view-enter');
             }
-            if (viewName === 'chat' && !peer) {
-                UI.login.classList.remove('login-exit'); 
+            if (viewName === 'chat' && !peer && roomType !== 'public') {
+                UI.login.classList.remove('login-exit', 'hidden'); 
             }
 
             // Sync Premium Navigation Tabs Active State
@@ -795,11 +814,32 @@
 
         function selectWorld(type) {
             roomType = type;
-            $('loginModeDesc').textContent = `Topology: ${type.toUpperCase()}`;
-            switchView('chat');
+            if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${type.toUpperCase()}`;
+            
+            if (type === 'public') {
+                switchView('chat');
+                // Frictionless Entry: Bypass setup overlay completely for Public Core
+                if (UI.login) UI.login.classList.add('hidden');
+                
+                roomName = 'Global';
+                if ($('roomInput')) $('roomInput').value = 'Global';
+                
+                syncProfileUI(myName, myGender, myAvatar);
+                targetHostId = `lumina-core-global-public-v5`;
+                
+                showToast("Initializing Public Core...", "info");
+                initPeer();
+            } else {
+                switchView('chat');
+                // Show connection setup screen for secure/specialized modes
+                if (UI.login) {
+                    UI.login.classList.remove('hidden', 'login-exit');
+                    if($('connectionStatus')) $('connectionStatus').textContent = "";
+                }
+            }
         }
 
-        // --- STREAMING_CHUNK:Interaction Elements ---
+        // --- STREAMING_CHUNK: Interaction Elements ---
         UI.plusBtn?.addEventListener('click', () => {
             const isHidden = UI.radialMenu.classList.contains('hidden');
             if (isHidden) {
@@ -852,8 +892,35 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Messaging Rendering ---
-        function addMessage(user, avatar, text, system = false, isSelf = false, id = null) {
+        // --- STREAMING_CHUNK: Messaging Rendering ---
+        let activeReply = null;
+
+        function stripHTML(html) {
+            let tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "Media/File";
+        }
+
+        window.triggerReply = function(user, text) {
+            activeReply = { user, text };
+            $('replyUser').textContent = `Replying to ${user}`;
+            $('replyText').textContent = text;
+            
+            const box = $('replyContextBox');
+            box.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            box.classList.add('opacity-100', 'translate-y-0');
+            
+            UI.msgIn.focus();
+        };
+
+        window.cancelReply = function() {
+            activeReply = null;
+            const box = $('replyContextBox');
+            box.classList.remove('opacity-100', 'translate-y-0');
+            box.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        };
+
+        function addMessage(user, avatar, text, system = false, isSelf = false, id = null, replyTo = null) {
             if(window.pingNetwork) window.pingNetwork();
             
             const div = document.createElement('div');
@@ -865,8 +932,24 @@
             } else {
                 div.className = `message-container flex flex-col max-w-[85%] msg-materialize relative group ${isSelf ? 'self-end items-end' : 'self-start items-start'}`;
                 
+                const rawText = stripHTML(text);
+                div.setAttribute('data-user', user);
+                div.setAttribute('data-text', rawText.replace(/"/g, '&quot;'));
+
+                let replyHTML = '';
+                if (replyTo) {
+                    replyHTML = `
+                        <div class="bg-black/20 border-l-2 border-emerald-500 rounded-r-xl p-2.5 mb-2 flex flex-col gap-0.5 relative overflow-hidden group/reply">
+                            <div class="absolute inset-0 bg-white/5 opacity-0 group-hover/reply:opacity-100 transition-opacity"></div>
+                            <span class="text-emerald-400 font-bold text-[9px] uppercase tracking-widest">${replyTo.user}</span>
+                            <span class="text-xs text-white/80 truncate font-medium relative z-10">${replyTo.text}</span>
+                        </div>
+                    `;
+                }
+                
                 div.innerHTML = `
                     <div class="msg-toolbar absolute ${isSelf ? '-top-10 right-0' : '-top-10 left-0'} hidden group-hover:flex items-center gap-1.5 bg-[#09090b]/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-[1rem] shadow-2xl z-20">
+                        <button onclick="triggerReply(this.closest('.message-container').dataset.user, this.closest('.message-container').dataset.text)" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300" title="Reply">↩️</button>
                         <button onclick="sendReaction('${div.id}', '❤️')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">❤️</button>
                         <button onclick="sendReaction('${div.id}', '😂')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">😂</button>
                         <button onclick="copyMessage('${div.id}')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300">📋</button>
@@ -880,6 +963,7 @@
                         isSelf ? 'bg-white text-black rounded-[1.5rem] rounded-tr-md font-medium' 
                                : 'bg-zinc-900/80 backdrop-blur-md text-slate-200 rounded-[1.5rem] rounded-tl-md border border-white/5'
                     }">
+                        ${replyHTML}
                         ${text}
                         <div class="reactions-bar absolute -bottom-3 ${isSelf ? 'right-3' : 'left-3'} flex gap-1 z-10"></div>
                     </div>
@@ -888,7 +972,6 @@
             
             UI.chat.appendChild(div);
             
-            // Setup ResizeObserver to guarantee bottom scroll for images/media
             const ro = new ResizeObserver(() => {
                 UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
             });
@@ -921,7 +1004,7 @@
             }
         }
 
-        // --- STREAMING_CHUNK:Media Payload Handling ---
+        // --- STREAMING_CHUNK: Media Payload Handling ---
         let mediaRecorder;
         let audioChunks = [];
         async function toggleVoice() {
@@ -942,10 +1025,10 @@
                         reader.onloadend = () => {
                             const audioHTML = `<audio controls src="${reader.result}" class="w-48 max-w-full mt-2 rounded-xl border border-white/10"></audio>`;
                             const msgId = `msg-${Date.now()}`;
-                            sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId });
-                            addMessage(myName, myAvatar, audioHTML, false, true, msgId);
+                            sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId, replyTo: activeReply });
+                            addMessage(myName, myAvatar, audioHTML, false, true, msgId, activeReply);
+                            cancelReply();
                         };
-                        // Crucial Privacy Fix: Stop the microphone stream tracks when done
                         stream.getTracks().forEach(track => track.stop());
                     };
                     mediaRecorder.start();
@@ -959,7 +1042,6 @@
         $('fileInput')?.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            // Strict WebRTC payload limit logic
             if (file.size > 1 * 1024 * 1024) return showToast("Payload too large (Max 1MB)", "error");
             
             const reader = new FileReader();
@@ -969,8 +1051,9 @@
                 const content = isImg ? `<img src="${reader.result}" class="max-w-[240px] rounded-xl shadow-lg mt-2 border border-white/10">` 
                                       : `<a href="${reader.result}" download="${file.name}" class="text-blue-400 hover:text-blue-300 underline font-medium bg-black/40 px-4 py-2.5 rounded-xl inline-block mt-1 transition-colors">📄 ${file.name}</a>`;
                 const msgId = `msg-${Date.now()}`;
-                sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: content, msgId });
-                addMessage(myName, myAvatar, content, false, true, msgId);
+                sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: content, msgId, replyTo: activeReply });
+                addMessage(myName, myAvatar, content, false, true, msgId, activeReply);
+                cancelReply();
                 UI.radialMenu.classList.remove('active');
             };
         });
@@ -983,7 +1066,7 @@
             typingTimeout = setTimeout(() => sendPayload({ type: 'typing', id: myPeerId, status: false }), 1500);
         });
 
-        // --- STREAMING_CHUNK:WebRTC Mesh Protocol ---
+        // --- STREAMING_CHUNK: WebRTC Mesh Protocol ---
         const peerConfig = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] } };
 
         function updateBadge() {
@@ -993,8 +1076,10 @@
             renderPresenceList();
         }
 
-        function broadcast(data) {
-            Object.values(connections).forEach(conn => { if(conn.open) conn.send(data); });
+        function broadcast(data, excludePeer = null) {
+            Object.values(connections).forEach(conn => { 
+                if(conn.open && conn.peer !== excludePeer) conn.send(data); 
+            });
         }
         function sendPayload(data) {
             if(isHost) broadcast(data);
@@ -1003,9 +1088,11 @@
 
         function handleData(data, conn) {
             if (data.type === 'presence') {
-                activeUsers.set(data.id, { name: data.name, avatar: data.avatar, isTyping: false });
-                updateBadge();
-                if(isHost) broadcast(data); 
+                if (data.id !== myPeerId) {
+                    activeUsers.set(data.id, { name: data.name, avatar: data.avatar, isTyping: false });
+                    updateBadge();
+                }
+                if(isHost) broadcast(data, conn.peer); 
             }
             if (data.type === 'typing') {
                 if(activeUsers.has(data.id)) activeUsers.get(data.id).isTyping = data.status;
@@ -1020,15 +1107,17 @@
                 }
                 
                 renderPresenceList();
-                if(isHost) broadcast(data);
+                if(isHost) broadcast(data, conn.peer);
             }
             if (data.type === 'msg') {
-                addMessage(data.user, data.avatar, data.text, false, false, data.msgId);
-                if (isHost) broadcast(data);
+                if (!$(data.msgId)) {
+                    addMessage(data.user, data.avatar, data.text, false, false, data.msgId, data.replyTo);
+                }
+                if (isHost) broadcast(data, conn.peer);
             }
             if (data.type === 'reaction') {
                 appendReaction(data.msgId, data.reaction);
-                if (isHost) broadcast(data);
+                if (isHost) broadcast(data, conn.peer);
             }
         }
 
@@ -1043,7 +1132,6 @@
                 
                 if(!isHost && conn.peer === targetHostId) {
                     addMessage('System', null, 'Host disconnected. Remapping mesh...', true);
-                    // Randomized exponential backoff to prevent race conditions during host migration
                     setTimeout(initPeer, 1000 + Math.random() * 2000);
                 }
             });
@@ -1102,13 +1190,12 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Final Bindings & Initialization ---
+        // --- STREAMING_CHUNK: Final Bindings & Initialization ---
         $('joinBtn')?.addEventListener('click', () => {
             myName = $('loginNameInput').value.trim() || myName || 'Guest';
             roomName = UI.roomIn.value.trim() || 'Global';
             syncProfileUI(myName, myGender, myAvatar);
             
-            // Fix: Added fallback to 'global' if regex strips all characters
             const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
             targetHostId = `lumina-core-${safeRoom}-${roomType}-v5`;
             
@@ -1134,7 +1221,9 @@
             `;
             if($('peerCount')) $('peerCount').textContent = '1';
             
-            $('loginScreen').classList.remove('hidden', 'login-exit');
+            if (roomType !== 'public') {
+                $('loginScreen').classList.remove('hidden', 'login-exit');
+            }
             if($('connectionStatus')) $('connectionStatus').textContent = "";
             
             switchView('worlds');
@@ -1176,10 +1265,11 @@
             if (!text || !peer) return;
             
             const msgId = `msg-${Date.now()}`;
-            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId };
+            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId, replyTo: activeReply };
             
-            addMessage(myName, myAvatar, payload.text, false, true, msgId);
+            addMessage(myName, myAvatar, payload.text, false, true, msgId, activeReply);
             sendPayload(payload);
+            cancelReply();
             
             UI.msgIn.value = '';
             const ind = $('typingIndicator');
@@ -1196,7 +1286,6 @@
             const msgEl = $(msgId);
             if (!msgEl) return;
             
-            // Extract the text content cleanly, avoiding media tags
             const contentDiv = msgEl.querySelector('.break-words');
             if (contentDiv) {
                 if (contentDiv.querySelector('img, audio, a')) {
@@ -1227,8 +1316,19 @@
                 if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${urlType.toUpperCase()}`;
                 if($('roomInput')) $('roomInput').value = urlRoom;
                 
-                switchView('chat');
-                setTimeout(() => showToast(`Invited to ${urlType.toUpperCase()} topology`, 'info'), 500);
+                if (urlType === 'public') {
+                    roomName = urlRoom;
+                    syncProfileUI(myName, myGender, myAvatar);
+                    const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
+                    targetHostId = `lumina-core-${safeRoom}-public-v5`;
+                    switchView('chat');
+                    if (UI.login) UI.login.classList.add('hidden');
+                    initPeer();
+                    setTimeout(() => showToast(`Auto-connecting to Public dimension`, 'info'), 500);
+                } else {
+                    switchView('chat');
+                    setTimeout(() => showToast(`Invited to ${urlType.toUpperCase()} topology`, 'info'), 500);
+                }
                 
                 window.history.replaceState({}, document.title, window.location.pathname);
                 return true;
@@ -1236,9 +1336,233 @@
             return false;
         }
 
+        // Boot
         if (!parseURL()) {
             switchView('home');
         }
+
+        // --- STREAMING_CHUNK: PWA Install Engine (App Standalone Mode) ---
+        const setupPWA = () => {
+            // 1. Inject Dynamic Web App Manifest
+            const manifest = {
+                "name": "Lumina Chat",
+                "short_name": "Lumina",
+                "start_url": window.location.pathname,
+                "display": "standalone", // Forces native app full-screen mode
+                "background_color": "#030303",
+                "theme_color": "#030303",
+                "icons": [{
+                    "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml"
+                }]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
+            document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
+            
+            // 2. Inject In-Memory Service Worker (Required for PWA Installability)
+            const swCode = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response('Offline'))));`;
+            const swBlob = new Blob([swCode], {type: 'text/javascript'});
+            if ('serviceWorker' in navigator) navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
+        };
+        setupPWA();
+
+        let deferredPrompt;
+        const installBtn = $('installAppBtn');
+        const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+        
+        // Comprehensive check for Standalone Mode across all modern browsers and devices
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in window.navigator && window.navigator.standalone);
+
+        // Force button visibility if NOT already installed/running in full-screen
+        if (!isStandalone && installBtn) {
+            installBtn.classList.remove('hidden');
+            installBtn.classList.add('flex');
+        }
+
+        // Catch Android/Chrome native install prompt quietly
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        installBtn?.addEventListener('click', async () => {
+            // 1. Force Native Fullscreen instantly for the App Experience
+            try {
+                if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+                    await document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen && !document.webkitFullscreenElement) {
+                    await document.documentElement.webkitRequestFullscreen(); // Safari Fallback
+                }
+            } catch (err) {
+                console.log("Fullscreen request failed:", err);
+            }
+
+            // 2. Attempt native installation (if browser allows it for single-file PWAs)
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.classList.remove('flex');
+                    installBtn.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            } else {
+                // Universal fallback toast when browser blocks native prompt
+                const installInstructions = isIOS 
+                    ? "Fullscreen Active! To save permanently: Tap 'Share' ➔ 'Add to Home Screen'" 
+                    : "Fullscreen Active! To save permanently: Use browser menu (⋮) ➔ 'Install App' or 'Add to Home Screen'";
+                showToast(installInstructions, "info");
+            }
+        });
+
+        // --- STREAMING_CHUNK: Advanced Touch Physics (Swipe, Double Tap, Hold) ---
+        let touchStartX = 0, touchStartY = 0;
+        let dragEl = null;
+        let dragIsSelf = false;
+        
+        let lastTapTime = 0;
+        let lastTapEl = null;
+        let longPressTimer = null;
+        let isSwiping = false;
+
+        const handleDragStart = (e) => {
+            const bubble = e.target.closest('.break-words');
+            if(!bubble || bubble.closest('.text-center')) return; 
+            
+            touchStartX = e.touches ? e.touches[0].clientX : e.clientX;
+            touchStartY = e.touches ? e.touches[0].clientY : e.clientY;
+            dragEl = bubble;
+            dragIsSelf = bubble.closest('.self-end') !== null;
+            bubble.style.transition = 'none';
+            isSwiping = false;
+
+            const container = bubble.closest('.message-container');
+            longPressTimer = setTimeout(() => {
+                if (!isSwiping && dragEl) {
+                    if (navigator.vibrate) navigator.vibrate([30, 50, 30]); 
+                    
+                    const toolbar = container.querySelector('.msg-toolbar');
+                    if (toolbar) {
+                        toolbar.classList.remove('hidden');
+                        toolbar.classList.add('flex', 'force-active');
+                        setTimeout(() => {
+                            toolbar.style.opacity = '1';
+                            toolbar.style.transform = 'translateY(0) scale(1)';
+                            toolbar.style.pointerEvents = 'auto';
+                        }, 10);
+                    }
+                }
+            }, 400); 
+        };
+
+        const handleDragMove = (e) => {
+            if(!dragEl) return;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const dX = clientX - touchStartX;
+            const dY = clientY - touchStartY;
+            
+            if (Math.abs(dX) > 10 || Math.abs(dY) > 10) {
+                isSwiping = true;
+                clearTimeout(longPressTimer); 
+            }
+            
+            if(Math.abs(dY) > Math.abs(dX) && Math.abs(dY) > 10) { 
+                dragEl.style.transform = ''; 
+                dragEl = null; 
+                return; 
+            }
+            
+            let moveX = dragIsSelf ? Math.min(0, Math.max(-60, dX)) : Math.max(0, Math.min(60, dX));
+            dragEl.style.transform = `translateX(${moveX}px)`;
+        };
+
+        const handleDragEnd = (e) => {
+            clearTimeout(longPressTimer); 
+
+            if(!dragEl) return;
+            
+            const container = dragEl.closest('.message-container');
+            if (!container) return;
+
+            let userStr = container.dataset.user;
+            let textStr = container.dataset.text;
+            
+            if (!userStr) {
+                const userEl = container.querySelector('.text-slate-400, .text-slate-500');
+                userStr = userEl ? userEl.textContent.trim() : 'Entity';
+                const textEl = container.querySelector('.break-words');
+                textStr = textEl ? Array.from(textEl.childNodes).filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() : 'Media';
+            }
+
+            const currentTime = Date.now();
+            const tapDelay = currentTime - lastTapTime;
+            
+            if (!isSwiping && tapDelay < 300 && lastTapEl === dragEl) {
+                if (window.triggerReply) {
+                    window.triggerReply(userStr, textStr);
+                    if(navigator.vibrate) navigator.vibrate(50); 
+                }
+                lastTapTime = 0; 
+            } else {
+                lastTapTime = currentTime;
+                lastTapEl = dragEl;
+            }
+
+            const style = dragEl.style.transform;
+            const match = style ? style.match(/translateX\(([-.0-9]+)px\)/) : null;
+            
+            if(match && Math.abs(parseFloat(match[1])) > 40) {
+                if (window.triggerReply) {
+                    window.triggerReply(userStr, textStr);
+                    if(navigator.vibrate) navigator.vibrate(50);
+                }
+            }
+            
+            dragEl.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            dragEl.style.transform = 'translateX(0)';
+            
+            setTimeout(() => { if(dragEl) dragEl.style.transition = ''; dragEl = null; }, 300);
+        };
+
+        document.addEventListener('touchstart', (e) => {
+            if (!e.target.closest('.msg-toolbar') && !e.target.closest('.break-words')) {
+                document.querySelectorAll('.msg-toolbar.force-active').forEach(tb => {
+                    tb.style.opacity = '0';
+                    tb.style.transform = 'translateY(5px) scale(0.95)';
+                    tb.style.pointerEvents = 'none';
+                    setTimeout(() => {
+                        tb.classList.remove('force-active', 'flex');
+                        tb.classList.add('hidden');
+                        tb.style.opacity = '';
+                        tb.style.transform = '';
+                        tb.style.pointerEvents = '';
+                    }, 300);
+                });
+            }
+        }, {passive: true});
+
+        UI.chat?.addEventListener('dblclick', (e) => {
+            const bubble = e.target.closest('.break-words');
+            if(bubble && !bubble.closest('.text-center')) {
+                const container = bubble.closest('.message-container');
+                if(!container) return;
+                let userStr = container.dataset.user;
+                let textStr = container.dataset.text;
+                if (!userStr) {
+                    const userEl = container.querySelector('.text-slate-400, .text-slate-500');
+                    userStr = userEl ? userEl.textContent.trim() : 'Entity';
+                    const textEl = container.querySelector('.break-words');
+                    textStr = textEl ? Array.from(textEl.childNodes).filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() : 'Media';
+                }
+                if (window.triggerReply) window.triggerReply(userStr, textStr);
+            }
+        });
+
+        UI.chat?.addEventListener('touchstart', handleDragStart, {passive: true});
+        UI.chat?.addEventListener('touchmove', handleDragMove, {passive: true});
+        UI.chat?.addEventListener('touchend', handleDragEnd);
 
         window.addEventListener('load', () => {
             const intro = $('introScene');
