@@ -1,822 +1,1254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>💬 Lumina Chat | Decentralized</title>
-  
-  <!-- Tailwind CSS & PeerJS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.1/dist/peerjs.min.js"></script>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Lumina | Pure Connection</title>
     
-    body {
-      font-family: 'Inter', sans-serif;
-      color: #f8fafc;
-      overflow: hidden;
-      background-color: #0b0e1a;
-      transition: background-color 3s ease;
-    }
-
-    /* Environment Layers */
-    #env-layer {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .bg-gradient-sphere {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      transition: all 4s ease-in-out;
-      opacity: 0.6;
-    }
-
-    /* Weather Elements */
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-      animation: twinkle linear infinite;
-      opacity: 0;
-      transition: opacity 2s ease;
-    }
+    <!-- Premium SVG Favicon & iOS Native Home Screen Icon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23030303'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>">
     
-    .cloud {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-      filter: blur(40px);
-      animation: float linear infinite;
-      transition: opacity 2s ease;
-    }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.1/dist/peerjs.min.js"></script>
 
-    .raindrop {
-      position: absolute;
-      width: 2px;
-      height: 100px;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3));
-      animation: fall linear infinite;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --glass-bg: rgba(9, 9, 11, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.03);
+            --glass-highlight: rgba(255, 255, 255, 0.02);
+            --neon-glow: rgba(16, 185, 129, 0.15);
+        }
 
-    @keyframes twinkle {
-      0%, 100% { transform: scale(0.8); opacity: 0.2; }
-      50% { transform: scale(1.2); opacity: 1; }
-    }
-    @keyframes float {
-      from { transform: translateX(-10vw); }
-      to { transform: translateX(110vw); }
-    }
-    @keyframes fall {
-      from { transform: translateY(-100px); }
-      to { transform: translateY(110vh); }
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030303;
+            color: #f8fafc;
+            overflow: hidden;
+            transition: background-color 2s ease;
+            perspective: 1200px;
+        }
 
-    /* UI Glassmorphism */
-    .glass-panel {
-      background: rgba(15, 23, 42, 0.5);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      transition: border-color 1s ease, background 1s ease;
-    }
+        /* AAA Cinematic Film Grain */
+        body::after {
+            content: "";
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+            opacity: 0.035;
+            mix-blend-mode: overlay;
+        }
 
-    .message-bubble {
-      animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
 
-    /* Room Type Cards */
-    .room-type-card {
-      transition: all 0.2s ease;
-    }
-    .room-type-card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-    .room-type-card.active {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: rgba(59, 130, 246, 0.5);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-    }
+        .glass-panel-3d {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s ease;
+            will-change: transform;
+            transform-style: preserve-3d;
+        }
+        .glass-panel-3d:hover {
+            transform: translateY(-4px) scale(1.01) rotateX(2deg);
+            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 40px rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.08);
+            z-index: 10;
+        }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-  </style>
+        .glass-button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        /* --- STREAMING_CHUNK:Premium Navigation Effects --- */
+        .nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
+        .nav-item::before {
+            content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), transparent);
+            opacity: 0; transition: opacity 0.4s ease; z-index: -1;
+        }
+        .nav-item::after {
+            content: ''; position: absolute; left: -1px; top: 25%; height: 50%; width: 3px;
+            background: #10b981; border-radius: 0 4px 4px 0; box-shadow: 0 0 12px #10b981;
+            transform: scaleY(0); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0;
+        }
+        .nav-item.active { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: #fff; }
+        .nav-item.active::before { opacity: 1; }
+        .nav-item.active::after { transform: scaleY(1); opacity: 1; }
+        .nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.7)); }
+
+        .mobile-nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: #64748b; }
+        .mobile-nav-item::after {
+            content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%) scale(0);
+            width: 24px; height: 3px; border-radius: 0 0 4px 4px; background: #10b981; box-shadow: 0 0 10px #10b981;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; opacity: 0;
+        }
+        .mobile-nav-item.active { color: #fff; }
+        .mobile-nav-item.active::after { transform: translateX(-50%) scale(1); opacity: 1; }
+        .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
+        .nav-icon { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        /* --- STREAMING_CHUNK:Cinematic View Transitions --- */
+        .view-enter {
+            animation: viewFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes viewFadeIn {
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        .login-exit {
+            animation: loginFadeOut 1s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+            pointer-events: none;
+        }
+        @keyframes loginFadeOut {
+            0% { opacity: 1; transform: scale(1); filter: blur(0); }
+            100% { opacity: 0; transform: scale(1.1); filter: blur(20px); visibility: hidden; }
+        }
+
+        .msg-materialize {
+            animation: materialize 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform-origin: bottom center;
+        }
+        @keyframes materialize {
+            0% { opacity: 0; transform: translateY(15px) scale(0.95); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* --- STREAMING_CHUNK:Environment & Physics --- */
+        #env-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .cosmic-gradient {
+            position: absolute; border-radius: 50%; filter: blur(160px); opacity: 0.15; 
+            transition: background-color 5s ease, transform 5s ease;
+            animation: slowOrbit 40s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            mix-blend-mode: screen;
+        }
+        @keyframes slowOrbit {
+            0% { transform: scale(1) translate(0, 0) rotate(0deg); }
+            100% { transform: scale(1.3) translate(8%, -5%) rotate(10deg); }
+        }
+
+        #bg-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; mix-blend-mode: screen; opacity: 0.8; }
+
+        .anim-breathe { animation: breathe 6s ease-in-out infinite; }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        
+        .anim-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        /* Animated Text Gradient */
+        .text-gradient-flow {
+            background-size: 200% auto;
+            animation: flowGradient 6s linear infinite;
+        }
+        @keyframes flowGradient {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        /* World Cards */
+        .world-card { overflow: hidden; position: relative; }
+        .world-overlay {
+            position: absolute; inset: 0; background: rgba(5, 5, 8, 0.9); backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; justify-content: center; padding: 1.5rem;
+            transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: inherit;
+        }
+        .world-card:hover .world-overlay { transform: translateY(0); }
+
+        /* Radial Menu */
+        .radial-item { opacity: 0; transform: scale(0.5) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .radial-menu.active .radial-item { opacity: 1; transform: scale(1) translateY(0); }
+        
+        /* Intro Sequence */
+        #introScene {
+            position: fixed; inset: 0; z-index: 9999;
+            background-color: #030303;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
+        }
+        .intro-hidden { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+        .intro-eclipse {
+            width: 150px; height: 150px; background: transparent; border-radius: 50%;
+            box-shadow: inset -10px -10px 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.2);
+            animation: eclipseReveal 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes eclipseReveal {
+            0% { transform: scale(0); opacity: 0; filter: blur(20px); }
+            50% { transform: scale(1); opacity: 1; filter: blur(0); }
+            100% { transform: scale(30); opacity: 0; filter: blur(10px); }
+        }
+    </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center p-3 sm:p-4">
+<body class="flex h-[100dvh] w-screen relative text-slate-100 overflow-hidden bg-[#030303] selection:bg-white/20 selection:text-white">
 
-  <!-- Living Environment Layer -->
-  <div id="env-layer">
-    <div id="grad1" class="bg-gradient-sphere w-[60vw] h-[60vw] top-[-10%] left-[-10%] bg-blue-900"></div>
-    <div id="grad2" class="bg-gradient-sphere w-[50vw] h-[50vw] bottom-[-10%] right-[-10%] bg-purple-900"></div>
-    <div id="grad3" class="bg-gradient-sphere w-[40vw] h-[40vw] top-[40%] left-[30%] bg-indigo-900"></div>
-    <div id="starsLayer" class="absolute inset-0"></div>
-    <div id="cloudsLayer" class="absolute inset-0"></div>
-    <div id="rainLayer" class="absolute inset-0"></div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 glass-panel px-6 py-3 rounded-full flex items-center gap-2 shadow-2xl">
-    <span id="toastIcon">ℹ️</span>
-    <span id="toastMsg" class="text-sm font-medium">Notification</span>
-  </div>
-
-  <!-- Invalid Link Modal -->
-  <div id="invalidModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden flex items-center justify-center">
-    <div class="glass-panel p-6 rounded-2xl max-w-sm w-full text-center mx-4">
-      <div class="text-4xl mb-4">🕵️</div>
-      <h3 class="text-xl font-bold mb-2">Secret Room</h3>
-      <p class="text-slate-300 text-sm mb-6">This invitation is invalid or has expired.</p>
-      <button onclick="document.getElementById('invalidModal').classList.add('hidden')" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 rounded-xl transition-all">
-        Got it
-      </button>
+    <div id="introScene">
+        <div class="intro-eclipse h-[150px]"></div>
     </div>
-  </div>
 
-  <!-- Chat Container -->
-  <div id="appContainer" class="glass-panel w-full max-w-3xl h-[95vh] sm:h-[85vh] max-h-[850px] rounded-3xl flex flex-col relative overflow-hidden transition-all duration-700 shadow-2xl shadow-black/50">
+    <div id="env-layer">
+        <div id="grad1" class="cosmic-gradient w-[80vw] h-[80vw] top-[-25%] left-[-15%] bg-blue-900/40"></div>
+        <div id="grad2" class="cosmic-gradient w-[70vw] h-[70vw] bottom-[-20%] right-[-10%] bg-indigo-900/30"></div>
+        <div id="grad3" class="cosmic-gradient w-[60vw] h-[60vw] top-[20%] left-[20%] bg-purple-900/20"></div>
+    </div>
     
-    <!-- Login Overlay -->
-    <div id="loginScreen" class="absolute inset-0 z-40 bg-slate-900/85 backdrop-blur-2xl flex flex-col items-center justify-center p-6 overflow-y-auto transition-opacity duration-700">
-      <div class="text-5xl mb-4 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">✨</div>
-      <h1 class="text-3xl font-bold mb-1 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Lumina Chat</h1>
-      <p class="text-slate-400 mb-6 text-xs font-medium tracking-widest uppercase">Decentralized Living Rooms</p>
-      
-      <div class="w-full max-w-md space-y-4 mb-4">
+    <canvas id="bg-canvas"></canvas>
+
+    <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] border border-white/5 bg-black/30 backdrop-blur-3xl h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase mb-1 ml-1">Nickname</label>
-          <input type="text" id="usernameInput" placeholder="e.g. Alex" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" maxlength="15">
-        </div>
-        <div id="roomInputContainer">
-          <label class="block text-xs font-semibold text-slate-400 uppercase mb-1 ml-1">Room Name</label>
-          <input type="text" id="roomInput" value="Global" placeholder="e.g. Global" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" maxlength="20">
-        </div>
-      </div>
+            <div class="p-8 flex items-center gap-4">
+                <div class="w-10 h-10 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center font-light text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] anim-float">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <div class="hidden md:block">
+                    <h1 class="font-medium tracking-tight text-lg text-white/90">Lumina</h1>
+                    <p class="text-[8px] text-slate-500 uppercase tracking-[0.3em] font-bold mt-0.5">Core Protocol</p>
+                </div>
+            </div>
 
-      <!-- Room Type Selector -->
-      <div id="roomTypeSelector" class="w-full max-w-md">
-        <label class="block text-xs font-semibold text-slate-400 uppercase mb-2 ml-1">Choose Room Type</label>
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-3">
-          <div class="room-type-card active glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="public">
-            <span class="text-lg">🌍</span>
-            <span class="text-[10px] font-bold text-slate-200">Public</span>
-          </div>
-          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="secret">
-            <span class="text-lg">🕵️</span>
-            <span class="text-[10px] font-bold text-slate-200">Secret</span>
-          </div>
-          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="onetime">
-            <span class="text-lg">⚡</span>
-            <span class="text-[10px] font-bold text-slate-200">One-Time</span>
-          </div>
-          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="ghost">
-            <span class="text-lg">👻</span>
-            <span class="text-[10px] font-bold text-slate-200">Ghost</span>
-          </div>
-          <div class="room-type-card glass-panel p-2 rounded-xl cursor-pointer flex flex-col items-center text-center gap-1" data-type="vault">
-            <span class="text-lg">🔐</span>
-            <span class="text-[10px] font-bold text-slate-200">Vault</span>
-          </div>
+            <nav class="mt-4 px-4 flex flex-col gap-2">
+                <button onclick="switchView('home')" data-target="home" class="nav-item active w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                    <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Home</span>
+                </button>
+                <button onclick="switchView('worlds')" data-target="worlds" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                    <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                    <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Worlds</span>
+                </button>
+                <button onclick="switchView('chat')" data-target="chat" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                    <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Uplink</span>
+                </button>
+                <button onclick="switchView('settings')" data-target="settings" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                    <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Identity</span>
+                </button>
+            </nav>
         </div>
-        <div id="dynamicOptions" class="h-8 flex items-center justify-center text-xs text-slate-400 mb-2">
-          <!-- Dynamically populated -->
+        
+        <div class="p-6 border-t border-white/5 bg-gradient-to-t from-black/80 to-transparent rounded-b-[2rem]">
+            <div class="flex items-center gap-4 group cursor-pointer">
+                <div class="relative">
+                    <div class="w-11 h-11 rounded-full bg-zinc-900 flex items-center justify-center text-xl border border-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:scale-110" id="sbAvatar">🐺</div>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black shadow-[0_0_15px_rgba(16,185,129,0.8)]"></div>
+                </div>
+                <div class="hidden md:block min-w-0 transition-transform duration-500 group-hover:translate-x-1">
+                    <p class="text-sm font-medium truncate text-slate-200" id="sbName">Guest</p>
+                    <p class="text-[9px] text-emerald-500/90 font-bold uppercase tracking-widest mt-0.5">Connected</p>
+                </div>
+            </div>
         </div>
-      </div>
+    </aside>
 
-      <div class="w-full max-w-md mt-2">
-        <button id="joinBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3.5 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm tracking-wide">
-          Enter Room
-        </button>
-        <p id="connectionStatus" class="mt-4 text-xs text-yellow-400 h-4 text-center font-medium"></p>
-      </div>
-    </div>
+    <main class="flex-1 relative flex flex-col h-full z-10 overflow-hidden pb-[76px] sm:pb-0">
+        
+        <div id="homeView" class="hidden flex-1 p-4 md:p-8 items-center justify-center relative view-enter w-full overflow-y-auto custom-scrollbar">
+            <div class="text-center z-10 w-full max-w-5xl mx-auto flex flex-col items-center my-auto">
+                
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto mb-8 pointer-events-none flex items-center justify-center">
+                    <div class="absolute inset-0 rounded-full border-[0.5px] border-white/10 border-dashed animate-[spin_60s_linear_infinite] opacity-50"></div>
+                    <div class="absolute inset-4 rounded-full border-[0.5px] border-white/5 border-t-white/30 animate-[spin_40s_linear_infinite_reverse]"></div>
+                    <div class="absolute inset-10 rounded-full border border-white/5 animate-[spin_50s_linear_infinite]"></div>
+                    <div class="absolute inset-20 rounded-full bg-gradient-to-tr from-indigo-500/5 to-purple-500/5 blur-xl"></div>
+                    
+                    <div class="w-24 h-24 bg-black/60 backdrop-blur-2xl rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)] anim-breathe">
+                        <div class="w-8 h-8 bg-white rounded-full shadow-[0_0_30px_#fff,0_0_60px_#fff] blur-[1px]"></div>
+                    </div>
+                </div>
+                
+                <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-[10px] font-bold uppercase tracking-[0.3em] mb-10 backdrop-blur-xl shadow-2xl transition-all hover:bg-white/10 hover:border-white/20 hover:scale-105 cursor-default">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)]"></span>
+                    </span>
+                    Protocol Active
+                </div>
 
-    <!-- Header -->
-    <header class="border-b border-white/5 p-4 flex justify-between items-center bg-black/20 backdrop-blur-md shrink-0 z-10">
-      <div class="flex items-center gap-3">
-        <div class="relative flex h-2.5 w-2.5 flex-shrink-0">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white drop-shadow-2xl mb-8 leading-[0.95]">
+                    Pure <br/>
+                    <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-300 to-slate-600 text-gradient-flow">Connection.</span>
+                </h1>
+                
+                <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto font-light mb-12 opacity-80">Lumina is a cryptographic, browser-based WebRTC mesh network. No servers. No middleman. Uncompromised peer-to-peer transmission.</p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4 w-full max-w-md">
+                    <button onclick="switchView('worlds')" class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-white text-black font-semibold text-sm shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:scale-105 transition-all duration-400 hover:shadow-[0_0_60px_rgba(255,255,255,0.25)] flex items-center justify-center gap-3">
+                        Initialize <span class="text-lg leading-none">→</span>
+                    </button>
+                    <button onclick="switchView('settings')" class="w-full sm:w-auto px-10 py-4 rounded-2xl glass-button text-white font-medium text-sm flex items-center justify-center gap-3">
+                        Identity
+                    </button>
+                </div>
+            </div>
         </div>
-        <h2 class="font-bold text-sm sm:text-base tracking-wide flex items-center gap-2 truncate">
-          <span id="roomDisplay" class="truncate max-w-[100px] sm:max-w-[200px]">Room</span>
-          <span id="roomTypeBadge" class="bg-white/10 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider text-slate-300 flex-shrink-0">🌍 PUBLIC</span>
-        </h2>
-      </div>
-      <div class="flex gap-2 items-center flex-shrink-0">
-        <button id="inviteBtn" class="bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1">
-          🔗 <span class="hidden sm:inline">Invite</span>
-        </button>
-        <span id="peerCount" class="bg-white/10 border border-white/10 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1" title="Connected Peers">
-          👤 <span id="countNum">1</span>
-        </span>
-        <button id="quitBtn" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1 ml-1" title="Leave Room">
-          🚪 <span class="hidden sm:inline">Quit</span>
-        </button>
-      </div>
-    </header>
 
-    <!-- Messages -->
-    <main id="chatWindow" class="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col scroll-smooth relative z-10">
-      <!-- Messages populate here -->
+        <div id="settingsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth relative z-10 view-enter">
+            <div class="max-w-2xl mx-auto pb-20 mt-6 lg:mt-12">
+                <div class="glass-panel glass-panel-3d p-8 sm:p-12 rounded-[2.5rem] border border-white/5 space-y-10 shadow-2xl relative overflow-hidden bg-black/40">
+                    
+                    <div class="absolute -top-32 -right-32 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="text-center relative z-10">
+                        <h2 class="text-2xl font-semibold text-white tracking-tight">Digital Identity</h2>
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-slate-500 mt-3 font-bold">Configure your mesh presence</p>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center gap-4 relative z-10">
+                        <div class="w-28 h-28 rounded-[2rem] bg-zinc-900 flex items-center justify-center border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] text-5xl transition-transform duration-500 hover:scale-110 hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.05)]" id="profAvatarDisplay">
+                            <span class="anim-float">🐺</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8 relative z-10">
+                        <div class="relative group">
+                            <label class="absolute -top-2.5 left-5 px-1 bg-[#09090b] text-[9px] font-bold text-slate-400 uppercase tracking-widest rounded transition-colors group-focus-within:text-white">Handle</label>
+                            <input type="text" id="profNameInput" class="w-full bg-black/40 border border-white/5 rounded-2xl px-6 py-4 text-white text-sm font-medium outline-none focus:border-white/20 focus:bg-white/5 transition-all shadow-inner" placeholder="Enter designation..." maxlength="15">
+                        </div>
+                        
+                        <div class="flex flex-col gap-4">
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-2">Classification</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="cursor-pointer group">
+                                    <input type="radio" name="profGender" value="male" class="peer hidden" checked>
+                                    <div class="bg-black/40 border border-white/5 rounded-xl py-3.5 text-center text-slate-400 text-xs font-semibold peer-checked:border-white/20 peer-checked:text-white peer-checked:bg-white/5 transition-all">Male</div>
+                                </label>
+                                <label class="cursor-pointer group">
+                                    <input type="radio" name="profGender" value="female" class="peer hidden">
+                                    <div class="bg-black/40 border border-white/5 rounded-xl py-3.5 text-center text-slate-400 text-xs font-semibold peer-checked:border-white/20 peer-checked:text-white peer-checked:bg-white/5 transition-all">Female</div>
+                                </label>
+                                <label class="cursor-pointer group">
+                                    <input type="radio" name="profGender" value="other" class="peer hidden">
+                                    <div class="bg-black/40 border border-white/5 rounded-xl py-3.5 text-center text-slate-400 text-xs font-semibold peer-checked:border-white/20 peer-checked:text-white peer-checked:bg-white/5 transition-all">Other</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-4">
+                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-2">Visual Representation</label>
+                            <div class="grid grid-cols-4 sm:grid-cols-8 gap-2 sm:gap-3">
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐺" class="peer hidden" checked><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐺</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🦊" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🦊</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🦁" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🦁</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐱" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐱</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐯" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐯</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐰" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐰</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐻" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐻</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🦄" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🦄</div></label>
+                            </div>
+                        </div>
+                        
+                        <button id="saveProfileBtn" class="w-full py-4 rounded-2xl bg-white text-black font-semibold transition-all hover:scale-[1.02] mt-6 text-sm flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                            Lock Identity
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="worldsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 relative z-10 view-enter">
+            <div class="max-w-5xl mx-auto mt-6 lg:mt-10">
+                <div class="mb-12 text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3">Architectures</h2>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">Select a dimension topology</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div onclick="selectWorld('public')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
+                        <div class="w-12 h-12 mb-5 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 anim-float">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-medium text-white mb-2">Public Core</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed font-light">Open dimension. Anyone with the room designation can discover and connect.</p>
+                        <div class="world-overlay bg-blue-900/95">
+                            <h4 class="font-semibold text-blue-200 mb-2 text-sm tracking-wide">Public Mode</h4>
+                            <p class="text-[11px] text-blue-100/70 leading-relaxed">Standard environment. Open routing for all connected peers.<br><br><span class="text-[9px] text-blue-300 uppercase tracking-widest font-bold">Ideal for: Social</span></p>
+                        </div>
+                    </div>
+                    
+                    <div onclick="selectWorld('secret')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
+                        <div class="w-12 h-12 mb-5 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 anim-float" style="animation-delay: 0.2s">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                        </div>
+                        <h3 class="text-xl font-medium text-white mb-2">Secret Sector</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed font-light">Cryptographic invite strictly required. Undiscoverable otherwise.</p>
+                        <div class="world-overlay bg-purple-900/95">
+                            <h4 class="font-semibold text-purple-200 mb-2 text-sm tracking-wide">Secret Mode</h4>
+                            <p class="text-[11px] text-purple-100/70 leading-relaxed">Generates a secure cryptographic key URL. Entry impossible without exact link.<br><br><span class="text-[9px] text-purple-300 uppercase tracking-widest font-bold">Ideal for: Privacy</span></p>
+                        </div>
+                    </div>
+
+                    <div onclick="selectWorld('onetime')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
+                        <div class="w-12 h-12 mb-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 anim-float" style="animation-delay: 0.4s">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                        <h3 class="text-xl font-medium text-white mb-2">Flash Instance</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed font-light">Volatile memory layer. Evaporates permanently when empty.</p>
+                        <div class="world-overlay bg-amber-900/95">
+                            <h4 class="font-semibold text-amber-200 mb-2 text-sm tracking-wide">Flash Mode</h4>
+                            <p class="text-[11px] text-amber-100/70 leading-relaxed">A temporary network layer. Once peers disconnect, the instance is destroyed forever.<br><br><span class="text-[9px] text-amber-300 uppercase tracking-widest font-bold">Ideal for: Burners</span></p>
+                        </div>
+                    </div>
+
+                    <div onclick="selectWorld('ghost')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
+                        <div class="w-12 h-12 mb-5 rounded-2xl bg-slate-500/10 border border-slate-500/20 flex items-center justify-center text-slate-300 anim-float" style="animation-delay: 0.6s">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </div>
+                        <h3 class="text-xl font-medium text-white mb-2">Ghost Protocol</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed font-light">Auto-decay enabled. All transmissions self-destruct after 30 seconds.</p>
+                        <div class="world-overlay bg-slate-800/95">
+                            <h4 class="font-semibold text-slate-200 mb-2 text-sm tracking-wide">Ghost Mode</h4>
+                            <p class="text-[11px] text-slate-300/70 leading-relaxed">Messages have a strict lifetime. They evaporate from all screens simultaneously.<br><br><span class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Ideal for: Sensitive Data</span></p>
+                        </div>
+                    </div>
+
+                    <div onclick="selectWorld('vault')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
+                        <div class="w-12 h-12 mb-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 anim-float" style="animation-delay: 0.8s">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <h3 class="text-xl font-medium text-white mb-2">Private Vault</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed font-light">Heavily stabilized peer-to-peer tunnel for persistent local archiving.</p>
+                        <div class="world-overlay bg-emerald-900/95">
+                            <h4 class="font-semibold text-emerald-200 mb-2 text-sm tracking-wide">Vault Mode</h4>
+                            <p class="text-[11px] text-emerald-100/70 leading-relaxed">Secured data tunnel designed for saving logs and maintaining connection stability.<br><br><span class="text-[9px] text-emerald-300 uppercase tracking-widest font-bold">Ideal for: Archiving</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="chatView" class="hidden flex-1 flex-col h-full relative z-10 view-enter">
+            
+            <div id="loginScreen" class="absolute inset-0 z-40 bg-black/70 backdrop-blur-3xl flex items-center justify-center p-4 transition-all duration-1000">
+                <div class="glass-panel-3d p-10 md:p-14 rounded-[3rem] w-full max-w-md shadow-2xl border border-white/10 relative overflow-hidden bg-black/60">
+                    <div class="absolute -top-40 -left-40 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="text-center mb-10 relative z-10">
+                        <div class="w-16 h-16 mx-auto border border-white/20 bg-white/5 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
+                            <span class="text-2xl anim-breathe">📡</span>
+                        </div>
+                        <h2 class="text-2xl font-semibold text-white tracking-tight">Establish Uplink</h2>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-3" id="loginModeDesc">Topology: PENDING</p>
+                    </div>
+
+                    <div class="space-y-6 mb-10 relative z-10">
+                        <div class="relative group">
+                            <label class="absolute -top-2 left-4 px-2 bg-[#0c0c0e] text-[9px] font-bold text-slate-500 uppercase tracking-wider rounded transition-colors group-focus-within:text-white">Handle</label>
+                            <input type="text" id="loginNameInput" class="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm outline-none focus:border-white/30 focus:bg-white/10 transition-all" placeholder="Enter designation..." maxlength="15">
+                        </div>
+                        
+                        <div class="relative group">
+                            <label class="absolute -top-2 left-4 px-2 bg-[#0c0c0e] text-[9px] font-bold text-slate-500 uppercase tracking-wider rounded transition-colors group-focus-within:text-white">Target Designation</label>
+                            <input type="text" id="roomInput" value="Global" class="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm outline-none focus:border-white/30 focus:bg-white/10 transition-all" maxlength="20">
+                        </div>
+                    </div>
+
+                    <button id="joinBtn" class="w-full py-4 rounded-2xl bg-white text-black font-semibold transition-all hover:scale-[1.02] text-sm relative z-10">
+                        Connect to Mesh
+                    </button>
+                    <p id="connectionStatus" class="mt-6 text-[10px] text-slate-400 h-4 text-center font-bold uppercase tracking-widest relative z-10"></p>
+                </div>
+            </div>
+
+            <!-- Active Chat Header -->
+            <header class="h-[72px] px-6 border-b border-white/5 flex items-center justify-between shrink-0 glass-panel z-20 relative bg-black/20 backdrop-blur-xl">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-[1rem] bg-white/5 border border-white/10 flex items-center justify-center text-lg shadow-[0_0_15px_rgba(255,255,255,0.05)] anim-float">🌍</div>
+                    <div>
+                        <h2 id="roomDisplay" class="font-medium text-sm tracking-wide text-white">Global</h2>
+                        <div class="flex items-center gap-2 text-[9px] uppercase tracking-widest font-bold mt-0.5">
+                            <span id="roomTypeBadge" class="text-slate-400">PUBLIC ARCHITECTURE</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3 relative">
+                    <button id="presenceBtn" class="glass-button px-4 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2 text-slate-300">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span id="peerCount">1</span>
+                    </button>
+                    <button id="inviteBtn" class="glass-button px-4 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2 text-slate-300">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        <span class="hidden sm:inline">Invite</span>
+                    </button>
+                    <button id="quitBtn" class="glass-button px-4 py-2.5 rounded-xl text-xs font-medium text-red-400/80 hover:text-red-400 border-red-500/20 hover:bg-red-500/10 hover:border-red-500/30 flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span class="hidden sm:inline">Disconnect</span>
+                    </button>
+
+                    <div id="presencePanel" class="hidden absolute top-16 right-0 w-80 glass-panel-3d rounded-[2rem] p-6 border border-white/10 z-50 flex-col gap-4 bg-[#09090b]/95 backdrop-blur-3xl shadow-2xl">
+                        <div class="text-[9px] uppercase tracking-[0.2em] text-slate-400 font-bold border-b border-white/5 pb-4 flex justify-between">
+                            <span>Connected Entities</span>
+                            <span class="text-emerald-500 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Live</span>
+                        </div>
+                        <div id="presenceList" class="flex flex-col gap-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Messages Area -->
+            <div id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 flex flex-col relative custom-scrollbar">
+                <div class="text-center my-8">
+                    <span class="bg-white/5 border border-white/10 text-slate-400 text-[9px] uppercase tracking-[0.2em] font-bold px-6 py-2.5 rounded-full backdrop-blur-md">End-to-End Mesh Established</span>
+                </div>
+            </div>
+
+            <!-- Seamless Input Pill -->
+            <footer class="shrink-0 p-4 md:p-6 md:pb-8 w-full z-30 flex justify-center">
+                <form id="chatForm" class="flex items-center gap-2 w-full max-w-4xl relative glass-panel p-2 rounded-[2rem] bg-black/60 border border-white/10 shadow-2xl backdrop-blur-3xl">
+                    
+                    <div class="relative shrink-0">
+                        <button type="button" id="plusBtn" class="w-12 h-12 rounded-full glass-button flex items-center justify-center text-slate-400 hover:text-white transition-all z-20 relative bg-white/5 border-none">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                        
+                        <div id="radialMenu" class="radial-menu hidden absolute bottom-16 left-0 flex-col gap-3 z-10">
+                            <button type="button" onclick="triggerFile()" class="radial-item w-12 h-12 rounded-full bg-zinc-800 text-white flex items-center justify-center shadow-lg hover:scale-110 border border-white/10" title="Send Media">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                            </button>
+                            <button type="button" onclick="toggleVoice()" id="voiceBtn" class="radial-item w-12 h-12 rounded-full bg-zinc-800 text-white flex items-center justify-center shadow-lg hover:scale-110 border border-white/10" style="transition-delay: 50ms;" title="Voice Note">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*, .pdf, .txt">
+
+                    <div class="relative flex-1 h-12">
+                        <input type="text" id="msgInput" placeholder="Transmit data..." autocomplete="off" class="w-full h-full bg-transparent border-none px-4 text-sm text-white placeholder-slate-500 focus:outline-none transition-all">
+                        
+                        <div id="typingIndicator" class="absolute right-4 top-1/2 -translate-y-1/2 hidden items-center gap-1.5 z-10">
+                            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
+                            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_150ms]"></span>
+                            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_300ms]"></span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-12 h-12 rounded-full bg-white flex items-center justify-center shrink-0 text-black hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-0.5 mt-0.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </form>
+            </footer>
+        </div>
+
+        <div id="toast" class="fixed bottom-[90px] sm:bottom-12 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) opacity-0 pointer-events-none transform translate-y-8 glass-panel px-6 py-3.5 rounded-full flex items-center gap-3 shadow-2xl border border-white/10 bg-black/90">
+            <span id="toastIcon" class="text-emerald-400">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </span>
+            <span id="toastMsg" class="text-xs font-semibold text-white tracking-wide">Notification</span>
+        </div>
+
     </main>
 
-    <!-- Input Area -->
-    <footer class="p-4 border-t border-white/5 bg-black/20 backdrop-blur-md shrink-0 z-10">
-      <form id="chatForm" class="flex gap-2 relative">
-        <input type="text" id="msgInput" placeholder="Type your message..." autocomplete="off" class="flex-1 bg-white/5 border border-white/10 rounded-full px-5 py-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white/10 transition-all text-white placeholder-slate-400">
-        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white rounded-full px-5 sm:px-6 py-3 font-semibold text-sm transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] flex-shrink-0">
-          Send
+    <!-- Mobile Navigation -->
+    <nav class="sm:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 flex justify-around p-2 z-50 bg-black/60 backdrop-blur-2xl">
+        <button onclick="switchView('home')" data-target="home" class="mobile-nav-item active flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="text-[9px] font-bold uppercase tracking-widest">Home</span>
         </button>
-      </form>
-    </footer>
-  </div>
+        <button onclick="switchView('worlds')" data-target="worlds" class="mobile-nav-item flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+            <span class="text-[9px] font-bold uppercase tracking-widest">Worlds</span>
+        </button>
+        <button onclick="switchView('chat')" data-target="chat" class="mobile-nav-item flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span class="text-[9px] font-bold uppercase tracking-widest">Chat</span>
+        </button>
+        <button onclick="switchView('settings')" data-target="settings" class="mobile-nav-item flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="text-[9px] font-bold uppercase tracking-widest">Identity</span>
+        </button>
+    </nav>
 
-  <script>
-    // --- Environment Engine ---
-    class LivingEnvironment {
-      constructor() {
-        this.layers = {
-          stars: document.getElementById('starsLayer'),
-          clouds: document.getElementById('cloudsLayer'),
-          rain: document.getElementById('rainLayer')
+    <script>
+        // DOM Helper
+        const $ = (id) => document.getElementById(id);
+        
+        let peer = null;
+        let connections = {};
+        let isHost = false;
+        let targetHostId = '';
+        
+        // Identity & State
+        let myName = 'Guest';
+        let myGender = 'male';
+        let myAvatar = '🐺';
+        let roomName = 'Global';
+        let roomType = 'public';
+        let ghostDuration = 30;
+        let myPeerId = '';
+        
+        const activeUsers = new Map();
+
+        const UI = {
+            login: $('loginScreen'), roomIn: $('roomInput'),
+            chat: $('chatWindow'), form: $('chatForm'), msgIn: $('msgInput'),
+            count: $('peerCount'), presenceBtn: $('presenceBtn'), presencePanel: $('presencePanel'),
+            radialMenu: $('radialMenu'), plusBtn: $('plusBtn'), toast: $('toast')
         };
-        this.grads = [
-          document.getElementById('grad1'),
-          document.getElementById('grad2'),
-          document.getElementById('grad3')
-        ];
-        this.lastActiveTime = Date.now();
-        this.roomPhase = 0;
-        this.isRaining = false;
-        
-        this.initElements();
-        setInterval(() => this.tick(), 1000);
-      }
 
-      initElements() {
-        // Build Stars
-        for(let i=0; i<40; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          star.style.width = Math.random() * 3 + 'px';
-          star.style.height = star.style.width;
-          star.style.left = Math.random() * 100 + 'vw';
-          star.style.top = Math.random() * 100 + 'vh';
-          star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-          star.style.animationDelay = Math.random() * 2 + 's';
-          this.layers.stars.appendChild(star);
-        }
-        
-        // Build Clouds
-        for(let i=0; i<4; i++) {
-          const cloud = document.createElement('div');
-          cloud.className = 'cloud';
-          cloud.style.width = (Math.random() * 200 + 150) + 'px';
-          cloud.style.height = (Math.random() * 60 + 40) + 'px';
-          cloud.style.top = Math.random() * 40 + 'vh';
-          cloud.style.animationDuration = (Math.random() * 40 + 40) + 's';
-          cloud.style.animationDelay = -(Math.random() * 40) + 's';
-          this.layers.clouds.appendChild(cloud);
-        }
+        // --- STREAMING_CHUNK:Liquid Constellation 2.0 Canvas ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const canvas = $('bg-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height, particles = [];
+            let networkEnergy = 0;
+            let mouseNode = { x: -1000, y: -1000, vx: 0, vy: 0 };
 
-        // Build Rain
-        for(let i=0; i<60; i++) {
-          const drop = document.createElement('div');
-          drop.className = 'raindrop';
-          drop.style.left = Math.random() * 100 + 'vw';
-          drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
-          drop.style.animationDelay = Math.random() * 2 + 's';
-          this.layers.rain.appendChild(drop);
-        }
-      }
-
-      setTheme(roomName) {
-        const name = roomName.toLowerCase();
-        // Dynamic Room Parsing
-        if (name.includes('night') || name.includes('chennai') || name.includes('dark') || name.includes('moon')) {
-          this.grads[0].style.backgroundColor = '#1e3a8a';
-          this.grads[1].style.backgroundColor = '#4c1d95';
-          this.grads[2].style.backgroundColor = '#0f172a';
-          Array.from(this.layers.stars.children).forEach(s => s.style.opacity = '1');
-          Array.from(this.layers.clouds.children).forEach(c => c.style.opacity = '1');
-        } else if (name.includes('sunset') || name.includes('evening') || name.includes('fire') || name.includes('dusk')) {
-          this.grads[0].style.backgroundColor = '#9a3412';
-          this.grads[1].style.backgroundColor = '#831843';
-          this.grads[2].style.backgroundColor = '#312e81';
-          Array.from(this.layers.stars.children).forEach(s => s.style.opacity = '0');
-          Array.from(this.layers.clouds.children).forEach(c => c.style.opacity = '1');
-        } else {
-          // Default
-          this.grads[0].style.backgroundColor = '#0369a1';
-          this.grads[1].style.backgroundColor = '#1d4ed8';
-          this.grads[2].style.backgroundColor = '#0f172a';
-          Array.from(this.layers.stars.children).forEach(s => s.style.opacity = '0');
-          Array.from(this.layers.clouds.children).forEach(c => c.style.opacity = '0');
-        }
-        this.roomPhase = 0;
-        this.ping();
-      }
-
-      ping() {
-        this.lastActiveTime = Date.now();
-        if (this.isRaining) {
-          this.isRaining = false;
-          Array.from(this.layers.rain.children).forEach(r => r.style.opacity = '0');
-          document.getElementById('appContainer').style.borderColor = 'rgba(255, 255, 255, 0.08)';
-        }
-      }
-
-      tick() {
-        const inactiveSeconds = (Date.now() - this.lastActiveTime) / 1000;
-        // Apply rain after 15 seconds of silence
-        if (inactiveSeconds > 15 && !this.isRaining) {
-          this.isRaining = true;
-          Array.from(this.layers.rain.children).forEach(r => r.style.opacity = '0.6');
-          document.getElementById('appContainer').style.borderColor = 'rgba(148, 163, 184, 0.3)';
-        }
-        // Deepen background over time
-        if (inactiveSeconds > 30 && this.roomPhase === 0) {
-          this.roomPhase = 1;
-          document.body.style.backgroundColor = '#020617';
-          this.grads[0].style.transform = 'scale(1.2) translate(-5vw, 5vh)';
-        } else if (inactiveSeconds > 60 && this.roomPhase === 1) {
-          this.roomPhase = 2;
-          this.grads[1].style.transform = 'scale(1.5) translate(5vw, -5vh)';
-        }
-      }
-    }
-
-    const env = new LivingEnvironment();
-
-    // --- STREAMING_CHUNK:Defining Logic and Network Handlers... ---
-    const UI = {
-      login: document.getElementById('loginScreen'),
-      userIn: document.getElementById('usernameInput'),
-      roomIn: document.getElementById('roomInput'),
-      roomInCont: document.getElementById('roomInputContainer'),
-      typeSelector: document.getElementById('roomTypeSelector'),
-      dynOpts: document.getElementById('dynamicOptions'),
-      joinBtn: document.getElementById('joinBtn'),
-      status: document.getElementById('connectionStatus'),
-      chat: document.getElementById('chatWindow'),
-      form: document.getElementById('chatForm'),
-      msgIn: document.getElementById('msgInput'),
-      roomDisp: document.getElementById('roomDisplay'),
-      roomBadge: document.getElementById('roomTypeBadge'),
-      inviteBtn: document.getElementById('inviteBtn'),
-      quitBtn: document.getElementById('quitBtn'),
-      count: document.getElementById('countNum'),
-      toast: document.getElementById('toast'),
-      toastMsg: document.getElementById('toastMsg'),
-      toastIcon: document.getElementById('toastIcon'),
-      cards: document.querySelectorAll('.room-type-card')
-    };
-
-    let peer = null;
-    let connections = {};
-    let isHost = false;
-    let myName = '';
-    let roomName = '';
-    let targetHostId = '';
-    
-    // Room Configuration States
-    let roomType = 'public';
-    let roomSecretKey = '';
-    let roomInstanceId = '';
-    let ghostDuration = 30;
-    let isJoinViaLink = false;
-
-    // Load saved preferences if available
-    try {
-        const savedName = localStorage.getItem('lumina_name');
-        if (savedName) UI.userIn.value = savedName;
-    } catch(e) {}
-
-    const peerConfig = {
-      debug: 1,
-      config: {
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          { urls: 'stun:stun1.l.google.com:19302' },
-          { urls: 'stun:global.stun.twilio.com:3478' }
-        ]
-      }
-    };
-
-    function parseURL() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('room')) {
-        UI.roomIn.value = decodeURIComponent(params.get('room'));
-        roomType = params.get('type') || 'public';
-        isJoinViaLink = true;
-
-        if (roomType === 'secret') {
-          roomSecretKey = params.get('key');
-          if (!roomSecretKey) {
-            document.getElementById('invalidModal').classList.remove('hidden');
-            roomType = 'public'; // Fallback so app still works
-            isJoinViaLink = false;
-          } else {
-            // Lock UI to secret room
-            UI.roomInCont.innerHTML = `<div class="bg-slate-800/80 border border-purple-500/50 rounded-xl px-4 py-3 text-purple-300 font-semibold flex items-center justify-center gap-2 shadow-inner"><span>🕵️</span> <span>Secret Room Invitation</span></div>`;
-            UI.typeSelector.classList.add('hidden');
-          }
-        }
-        if (roomType === 'onetime') roomInstanceId = params.get('inst');
-        if (roomType === 'ghost') ghostDuration = parseInt(params.get('timer')) || 30;
-
-        updateUICards();
-      }
-    }
-
-    function generateCryptographicKey() {
-      const array = new Uint8Array(16);
-      crypto.getRandomValues(array);
-      return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    function generateInstanceId() {
-      return Math.random().toString(36).substring(2, 12);
-    }
-
-    function updateUICards() {
-      UI.cards.forEach(c => {
-        if (c.dataset.type === roomType) c.classList.add('active');
-        else c.classList.remove('active');
-      });
-
-      // Update Dynamic Help Text
-      if (roomType === 'public') UI.dynOpts.innerHTML = 'Anyone with the room name can join.';
-      if (roomType === 'secret') UI.dynOpts.innerHTML = 'Only people with your private invitation can enter.';
-      if (roomType === 'onetime') UI.dynOpts.innerHTML = 'Temporary room that ends when everyone leaves.';
-      if (roomType === 'vault') UI.dynOpts.innerHTML = 'Live peer chat with local-only history.';
-      if (roomType === 'ghost') {
-        UI.dynOpts.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span>Message lifetime:</span>
-            <select id="ghostTimerSelect" class="bg-slate-800/80 border border-slate-600 rounded px-2 py-1 text-white outline-none cursor-pointer">
-              <option value="10" ${ghostDuration===10?'selected':''}>10s</option>
-              <option value="30" ${ghostDuration===30?'selected':''}>30s</option>
-              <option value="60" ${ghostDuration===60?'selected':''}>1m</option>
-              <option value="300" ${ghostDuration===300?'selected':''}>5m</option>
-              <option value="600" ${ghostDuration===600?'selected':''}>10m</option>
-            </select>
-          </div>
-        `;
-        document.getElementById('ghostTimerSelect').addEventListener('change', (e) => {
-          ghostDuration = parseInt(e.target.value);
-        });
-      }
-    }
-
-    UI.cards.forEach(card => {
-      card.addEventListener('click', () => {
-        if(isJoinViaLink && roomType === 'secret') return; // Cannot switch away from required secret invite
-        roomType = card.dataset.type;
-        updateUICards();
-      });
-    });
-
-    function showToast(msg, type = 'info') {
-      UI.toastMsg.textContent = msg;
-      UI.toastIcon.textContent = type === 'error' ? '⚠️' : type === 'success' ? '✅' : 'ℹ️';
-      UI.toast.classList.remove('opacity-0', '-translate-y-4');
-      setTimeout(() => UI.toast.classList.add('opacity-0', '-translate-y-4'), 2500);
-    }
-
-    function updateBadge() {
-      let icon = '🌍'; let text = 'PUBLIC'; let bg = 'bg-blue-500/20 text-blue-300';
-      if (roomType === 'secret') { icon = '🕵️'; text = 'SECRET'; bg = 'bg-purple-500/20 text-purple-300 border-purple-500/30'; }
-      if (roomType === 'onetime') { icon = '⚡'; text = 'ONE-TIME'; bg = 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'; }
-      if (roomType === 'ghost') { icon = '👻'; text = 'GHOST'; bg = 'bg-slate-500/20 text-slate-300 border-slate-500/30'; }
-      if (roomType === 'vault') { icon = '🔐'; text = 'VAULT'; bg = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'; }
-      
-      UI.roomBadge.className = `text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-white/10 ${bg}`;
-      UI.roomBadge.innerHTML = `${icon} <span class="hidden sm:inline">${text}</span>`;
-      
-      if(roomType === 'ghost') {
-        UI.roomBadge.innerHTML += ` <span class="opacity-75 lowercase ml-1">(${ghostDuration}s)</span>`;
-      }
-    }
-
-    // --- STREAMING_CHUNK:Message Rendering and WebRTC Connection... ---
-    function addMessage(user, text, system = false, isSelf = false, expiresAt = null) {
-      env.ping();
-      
-      const div = document.createElement('div');
-      if (system) {
-        div.className = 'text-center my-2 transition-all duration-500';
-        div.innerHTML = `<span class="bg-white/5 border border-white/10 text-slate-400 text-xs px-3 py-1 rounded-full shadow-inner">${text}</span>`;
-      } else {
-        const hash = user.charCodeAt(0) % 360;
-        const color = `hsl(${hash}, 70%, 65%)`;
-        div.className = `message-bubble flex flex-col max-w-[85%] ${isSelf ? 'self-end items-end' : 'self-start items-start'}`;
-        
-        let timerHTML = '';
-        if (roomType === 'ghost' && expiresAt) {
-          const rem = Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
-          timerHTML = `<span class="ghost-timer text-[9px] font-mono text-slate-500 ml-2" data-expires="${expiresAt}">${rem}s</span>`;
-        }
-
-        div.innerHTML = `
-          <div class="flex items-center mb-1 ml-1">
-            <span class="text-[10px] font-semibold tracking-wide drop-shadow-md" style="color: ${isSelf ? '#cbd5e1' : color}">${user}</span>
-            ${timerHTML}
-          </div>
-          <div class="px-4 py-2.5 text-sm leading-relaxed shadow-xl break-words w-full ${
-            isSelf ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl rounded-tr-sm shadow-blue-900/30' 
-                   : 'bg-slate-800/90 backdrop-blur-md text-slate-100 border border-white/10 rounded-2xl rounded-tl-sm shadow-black/20'
-          }">
-            ${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
-          </div>
-        `;
-
-        if (roomType === 'ghost' && expiresAt) {
-          const timerEl = div.querySelector('.ghost-timer');
-          const interval = setInterval(() => {
-            const rem = Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
-            if (timerEl) timerEl.textContent = `${rem}s`;
-            if (rem <= 3 && timerEl) timerEl.classList.add('text-red-400', 'animate-pulse');
-            
-            if (rem <= 0) {
-              clearInterval(interval);
-              div.classList.add('opacity-0', 'scale-95');
-              setTimeout(() => div.remove(), 350);
+            function initCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                particles = [];
+                const count = Math.min(window.innerWidth / 18, 70); // Sparse, elegant
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * width, y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1,
+                        radius: Math.random() * 1.5 + 0.3,
+                        baseAlpha: Math.random() * 0.3 + 0.1,
+                        pulse: Math.random() * Math.PI
+                    });
+                }
             }
-          }, 1000);
-        }
-      }
-      
-      UI.chat.appendChild(div);
-      UI.chat.scrollTop = UI.chat.scrollHeight;
-      return div;
-    }
+            
+            window.addEventListener('resize', initCanvas);
+            initCanvas();
 
-    function updateCount() {
-      const num = Object.keys(connections).length + 1;
-      UI.count.textContent = num;
-      if (roomType === 'onetime' && num === 1 && !isHost) {
-          // Additional handling for one-time rooms if necessary.
-      }
-    }
+            let mouse = { x: -1000, y: -1000 };
+            let lastMouse = { x: -1000, y: -1000 };
+            
+            document.addEventListener('mousemove', (e) => { 
+                lastMouse.x = mouse.x; lastMouse.y = mouse.y;
+                mouse.x += (e.clientX - mouse.x) * 0.15; 
+                mouse.y += (e.clientY - mouse.y) * 0.15; 
+                mouseNode.vx = mouse.x - lastMouse.x;
+                mouseNode.vy = mouse.y - lastMouse.y;
+            });
+            
+            function drawNetwork() {
+                ctx.clearRect(0, 0, width, height);
+                networkEnergy = Math.max(0, networkEnergy - 0.005); 
+                
+                const baseColor = `255, 255, 255`; 
 
-    function broadcast(data) {
-      Object.values(connections).forEach(conn => {
-        if(conn.open) conn.send(data);
-      });
-    }
+                particles.forEach((p, i) => {
+                    p.pulse += 0.02;
+                    p.x += p.vx * (1 + networkEnergy * 3);
+                    p.y += p.vy * (1 + networkEnergy * 3);
 
-    function setupConnection(conn) {
-      conn.on('data', data => {
-        if (data.type === 'msg') {
-          addMessage(data.user, data.text, false, false, data.expiresAt);
-          if (isHost) broadcast(data);
-        }
-      });
-      conn.on('close', () => {
-        delete connections[conn.peer];
-        updateCount();
-        
-        if (roomType === 'onetime' && Object.keys(connections).length === 0 && isHost) {
-          addMessage('System', '⚡ This temporary room has ended.', true);
-        }
-        
-        if(!isHost && conn.peer === targetHostId) {
-          addMessage('System', 'Host disconnected. Migrating room...', true);
-          setTimeout(initPeer, 1000);
-        }
-      });
-    }
+                    if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+                    if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
 
-    function becomeHost() {
-      if (peer) peer.destroy();
-      isHost = true;
-      UI.status.textContent = "Establishing local host...";
-      
-      peer = new Peer(targetHostId, peerConfig);
-      
-      peer.on('open', () => {
-        UI.login.classList.add('opacity-0', 'pointer-events-none');
-        UI.roomDisp.textContent = roomName;
-        updateBadge();
-        env.setTheme(roomName); 
-        addMessage('System', `Created ${roomType} room "${roomName}".`, true);
-        updateCount();
-      });
+                    const dx = p.x - mouse.x; const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 150) {
+                        p.x += dx * 0.003; p.y += dy * 0.003;
+                        p.x += mouseNode.vx * 0.01;
+                        p.y += mouseNode.vy * 0.01;
+                    }
 
-      peer.on('connection', conn => {
-        connections[conn.peer] = conn;
-        setupConnection(conn);
-        conn.on('open', () => {
-          updateCount();
-          showToast('Someone entered the room', 'success');
-        });
-      });
+                    ctx.beginPath();
+                    const currentAlpha = p.baseAlpha + Math.sin(p.pulse) * 0.2 + networkEnergy * 0.3;
+                    ctx.arc(p.x, p.y, p.radius * (1 + networkEnergy * 0.2), 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${baseColor}, ${currentAlpha * 0.5})`;
+                    ctx.fill();
 
-      peer.on('error', err => {
-        if (err.type === 'unavailable-id') {
-          isHost = false;
-          initPeer(); // Conflict: someone else took host ID, fallback to client mode
-        } else {
-           UI.status.textContent = "Error: " + err.type;
-        }
-      });
-    }
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const lDist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
+                        if (lDist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            const opacity = Math.pow((1 - lDist/120), 2) * (0.05 + networkEnergy * 0.15);
+                            
+                            const midX = (p.x + p2.x) / 2;
+                            const midY = (p.y + p2.y) / 2;
+                            const mouseDistToLine = Math.sqrt((midX - mouse.x)**2 + (midY - mouse.y)**2);
+                            const lineGlow = mouseDistToLine < 100 ? (1 - mouseDistToLine/100) * 0.2 : 0;
 
-    function initPeer() {
-      UI.status.textContent = "Connecting to network...";
-      if (peer) peer.destroy();
-      
-      peer = new Peer(peerConfig);
-      peer.on('open', () => {
-        const conn = peer.connect(targetHostId, { reliable: true });
-        let hostFound = false;
-        
-        conn.on('open', () => {
-          hostFound = true;
-          isHost = false;
-          connections[targetHostId] = conn;
-          setupConnection(conn);
-          UI.login.classList.add('opacity-0', 'pointer-events-none');
-          UI.roomDisp.textContent = roomName;
-          updateBadge();
-          env.setTheme(roomName);
-          addMessage('System', `Entered ${roomType} room "${roomName}".`, true);
-          updateCount();
+                            ctx.strokeStyle = `rgba(${baseColor}, ${opacity + lineGlow})`;
+                            ctx.lineWidth = 0.2 + networkEnergy * 0.3 + lineGlow;
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(drawNetwork);
+            }
+            drawNetwork();
+
+            window.pingNetwork = function() { networkEnergy = Math.min(networkEnergy + 0.6, 1.2); }
         });
 
-        // 2.5 second timeout to claim host if original host isn't there
-        setTimeout(() => { 
-          if (!hostFound) becomeHost(); 
-        }, 2500);
-      });
-      
-      peer.on('error', (err) => {
-          if (err.type === 'peer-unavailable') {
-              // Direct auto-fallback if server definitively says peer is offline
-              becomeHost();
-          }
-      });
-    }
+        // --- STREAMING_CHUNK:UI Management & View Switching ---
+        function switchView(viewName) {
+            ['homeView', 'worldsView', 'chatView', 'settingsView'].forEach(v => {
+                const el = $(v);
+                if(el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex', 'view-enter');
+                }
+            });
+            const target = $(viewName + 'View');
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('flex');
+                void target.offsetWidth; 
+                target.classList.add('view-enter');
+            }
+            if (viewName === 'chat' && !peer) {
+                UI.login.classList.remove('login-exit'); 
+            }
 
-    // --- STREAMING_CHUNK:Finalizing Interactions... ---
-    UI.joinBtn.addEventListener('click', () => {
-      myName = UI.userIn.value.trim();
-      roomName = isJoinViaLink && roomType === 'secret' ? 'Secret Room' : UI.roomIn.value.trim();
-      
-      if (!myName || (!roomName && roomType !== 'secret')) return showToast("Enter Name and Room", "error");
-      
-      localStorage.setItem('lumina_name', myName); // Save preference
-      
-      const safeRoom = (UI.roomIn.value.trim() || 'secret').toLowerCase().replace(/[^a-z0-9]/g, '');
-      
-      // Compute Unique Identifiers based on Room Type Rules
-      if (roomType === 'public') {
-        targetHostId = `ltch-${safeRoom}-host-v2`; 
-      } else if (roomType === 'secret') {
-        if (!isJoinViaLink) roomSecretKey = generateCryptographicKey();
-        targetHostId = `ltch-${safeRoom}-sec-${roomSecretKey}`;
-      } else if (roomType === 'onetime') {
-        if (!isJoinViaLink) roomInstanceId = generateInstanceId();
-        targetHostId = `ltch-${safeRoom}-one-${roomInstanceId}`;
-      } else if (roomType === 'ghost') {
-        targetHostId = `ltch-${safeRoom}-gst-${ghostDuration}`;
-      } else if (roomType === 'vault') {
-        targetHostId = `ltch-${safeRoom}-vlt`;
-      }
-      
-      initPeer();
-    });
+            // Sync Premium Navigation Tabs Active State
+            document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(btn => {
+                if (btn.getAttribute('data-target') === viewName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
 
-    UI.inviteBtn.addEventListener('click', () => {
-      const url = new URL(window.location.origin + window.location.pathname);
-      url.searchParams.set('room', encodeURIComponent(UI.roomIn.value.trim()));
-      url.searchParams.set('type', roomType);
-      
-      let msg = "Invitation copied!";
-      
-      if (roomType === 'secret') {
-        url.searchParams.set('key', roomSecretKey);
-        msg = "🕵️ Secret invitation copied!";
-      } else if (roomType === 'onetime') {
-        url.searchParams.set('inst', roomInstanceId);
-        msg = "⚡ Temporary invitation copied!";
-      } else if (roomType === 'ghost') {
-        url.searchParams.set('timer', ghostDuration);
-        msg = "👻 Ghost room invitation copied!";
-      } else if (roomType === 'vault') {
-        msg = "🔐 Vault invitation copied!";
-      }
+        function showToast(msg, type = 'info') {
+            $('toastMsg').textContent = msg;
+            
+            // Dynamic SVG Icon for Toasts
+            const iconSvg = type === 'error' 
+                ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+                : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+            
+            $('toastIcon').innerHTML = iconSvg;
+            
+            UI.toast.style.transform = 'translate(-50%, 0)';
+            UI.toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                UI.toast.style.transform = 'translate(-50%, 32px)';
+                UI.toast.style.opacity = '0';
+            }, 3000);
+        }
 
-      // Robust clipboard copy (handles iframe restrictions)
-      const copyText = url.toString();
-      if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(copyText).then(() => showToast(msg, 'success')).catch(fallBackCopy);
-      } else {
-          fallBackCopy();
-      }
+        function syncProfileUI(name, gender, avatar) {
+            if($('profNameInput')) $('profNameInput').value = name;
+            if($('loginNameInput')) $('loginNameInput').value = name;
+            
+            const checkRadios = (nameAttr, val) => {
+                const el = document.querySelector(`input[name="${nameAttr}"][value="${val}"]`);
+                if(el) el.checked = true;
+            };
+            checkRadios('profGender', gender);
+            checkRadios('profAvatar', avatar);
+            
+            if ($('profAvatarDisplay')) $('profAvatarDisplay').innerHTML = `<span class="anim-float">${avatar}</span>`;
+            if ($('sbAvatar')) $('sbAvatar').innerHTML = avatar;
+            if ($('sbName')) $('sbName').textContent = name || 'Guest';
+        }
 
-      function fallBackCopy() {
-          const ta = document.createElement('textarea');
-          ta.value = copyText;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          try {
-              document.execCommand('copy');
-              showToast(msg, 'success');
-          } catch (err) {
-              showToast("Failed to copy link", 'error');
-          }
-          document.body.removeChild(ta);
-      }
-    });
+        try {
+            if (localStorage.getItem('lumina_name')) myName = localStorage.getItem('lumina_name');
+            if (localStorage.getItem('lumina_gender')) myGender = localStorage.getItem('lumina_gender');
+            if (localStorage.getItem('lumina_avatar')) myAvatar = localStorage.getItem('lumina_avatar');
+            syncProfileUI(myName, myGender, myAvatar);
+        } catch(e) {}
 
-    UI.quitBtn.addEventListener('click', () => {
-      // 1. Close all connections and destroy peer
-      if (peer) {
-        Object.values(connections).forEach(conn => conn.close());
-        peer.destroy();
-        peer = null;
-      }
-      
-      // 2. Reset State
-      connections = {};
-      isHost = false;
-      targetHostId = '';
-      
-      // 3. Reset UI
-      UI.chat.innerHTML = ''; // Clear chat history
-      UI.login.classList.remove('opacity-0', 'pointer-events-none');
-      UI.status.textContent = '';
-      UI.count.textContent = '1';
-      
-      // 4. Reset Environment to default
-      env.setTheme('');
-      
-      // 5. Clean URL if we joined via link, so we don't auto-rejoin or stay locked
-      if(isJoinViaLink) {
-        isJoinViaLink = false;
-        roomType = 'public';
-        roomSecretKey = '';
-        roomInstanceId = '';
-        
-        // Restore standard room input UI
-        UI.roomInCont.innerHTML = `
-          <label class="block text-xs font-semibold text-slate-400 uppercase mb-1 ml-1">Room Name</label>
-          <input type="text" id="roomInput" value="Global" placeholder="e.g. Global" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" maxlength="20">
-        `;
-        // Re-bind the dynamically recreated element
-        UI.roomIn = document.getElementById('roomInput');
-        
-        UI.typeSelector.classList.remove('hidden');
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      
-      updateUICards();
-      showToast("Left the room", "info");
-    });
+        $('saveProfileBtn')?.addEventListener('click', () => {
+            myName = $('profNameInput').value.trim() || 'Guest';
+            myGender = document.querySelector('input[name="profGender"]:checked')?.value || 'male';
+            myAvatar = document.querySelector('input[name="profAvatar"]:checked')?.value || '🐺';
+            
+            try {
+                localStorage.setItem('lumina_name', myName);
+                localStorage.setItem('lumina_gender', myGender);
+                localStorage.setItem('lumina_avatar', myAvatar);
+            } catch(e) {}
+            
+            syncProfileUI(myName, myGender, myAvatar);
+            showToast("Identity Locked", "success");
+            
+            if (peer) broadcast({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+        });
 
-    UI.form.addEventListener('submit', e => {
-      e.preventDefault();
-      const text = UI.msgIn.value.trim();
-      if (!text || !peer) return;
-      
-      let expiresAt = null;
-      if (roomType === 'ghost') expiresAt = Date.now() + (ghostDuration * 1000);
+        function selectWorld(type) {
+            roomType = type;
+            $('loginModeDesc').textContent = `Topology: ${type.toUpperCase()}`;
+            switchView('chat');
+        }
 
-      const payload = { type: 'msg', user: myName, text, expiresAt };
-      addMessage(myName, text, false, true, expiresAt);
-      
-      if (isHost) broadcast(payload);
-      else if (connections[targetHostId]) connections[targetHostId].send(payload);
-      
-      UI.msgIn.value = '';
-    });
+        // --- STREAMING_CHUNK:Interaction Elements ---
+        UI.plusBtn?.addEventListener('click', () => {
+            const isHidden = UI.radialMenu.classList.contains('hidden');
+            if (isHidden) {
+                UI.radialMenu.classList.remove('hidden');
+                UI.radialMenu.classList.add('flex');
+                setTimeout(() => UI.radialMenu.classList.add('active'), 10);
+            } else {
+                UI.radialMenu.classList.remove('active');
+                setTimeout(() => { UI.radialMenu.classList.add('hidden'); UI.radialMenu.classList.remove('flex'); }, 400);
+            }
+        });
 
-    // Initialize
-    parseURL();
-    updateUICards();
-  </script>
+        UI.presenceBtn?.addEventListener('click', () => {
+            const panel = UI.presencePanel;
+            if(panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+                panel.style.animation = 'viewFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+                renderPresenceList();
+            } else {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+            }
+        });
+
+        function renderPresenceList() {
+            const list = $('presenceList');
+            if(!list) return;
+            list.innerHTML = `
+                <div class="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/5">
+                    <div class="w-10 h-10 rounded-[1rem] bg-white/5 flex items-center justify-center text-xl shadow-lg border border-white/10">${myAvatar}</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold truncate text-white">${myName} (You)</p>
+                        <p class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest mt-0.5">Online</p>
+                    </div>
+                </div>
+            `;
+            activeUsers.forEach((user, id) => {
+                list.innerHTML += `
+                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-transparent border border-transparent transition-colors hover:bg-white/5">
+                        <div class="w-10 h-10 rounded-[1rem] bg-black/40 flex items-center justify-center text-xl shadow-md border border-white/5">${user.avatar}</div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-semibold truncate text-slate-300">${user.name}</p>
+                            <p class="text-[9px] ${user.isTyping ? 'text-white animate-pulse' : 'text-slate-500'} font-bold uppercase tracking-widest mt-0.5">
+                                ${user.isTyping ? 'Transmitting...' : 'Online'}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- STREAMING_CHUNK:Messaging Rendering ---
+        function addMessage(user, avatar, text, system = false, isSelf = false, id = null) {
+            if(window.pingNetwork) window.pingNetwork();
+            
+            const div = document.createElement('div');
+            div.id = id || `msg-${Date.now()}`;
+            
+            if (system) {
+                div.className = 'text-center my-4 opacity-0 animate-[viewFadeIn_0.6s_forwards]';
+                div.innerHTML = `<span class="bg-white/5 border border-white/5 text-slate-400 text-[9px] uppercase tracking-[0.2em] font-bold px-5 py-2 rounded-full shadow-inner backdrop-blur-md">${text}</span>`;
+            } else {
+                div.className = `message-container flex flex-col max-w-[85%] msg-materialize relative group ${isSelf ? 'self-end items-end' : 'self-start items-start'}`;
+                
+                div.innerHTML = `
+                    <div class="msg-toolbar absolute ${isSelf ? '-top-10 right-0' : '-top-10 left-0'} hidden group-hover:flex items-center gap-1.5 bg-[#09090b]/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-[1rem] shadow-2xl z-20">
+                        <button onclick="sendReaction('${div.id}', '❤️')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">❤️</button>
+                        <button onclick="sendReaction('${div.id}', '😂')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">😂</button>
+                        <button onclick="copyMessage('${div.id}')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300">📋</button>
+                    </div>
+                    <div class="flex items-center mb-1.5 mx-2 gap-2">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
+                            ${!isSelf ? `<span class="bg-white/5 border border-white/5 rounded-md w-5 h-5 flex items-center justify-center text-xs shadow-sm">${avatar}</span>` : ''} ${user}
+                        </span>
+                    </div>
+                    <div class="px-5 py-4 text-sm leading-relaxed shadow-2xl break-words w-full relative ${
+                        isSelf ? 'bg-white text-black rounded-[1.5rem] rounded-tr-md font-medium' 
+                               : 'bg-zinc-900/80 backdrop-blur-md text-slate-200 rounded-[1.5rem] rounded-tl-md border border-white/5'
+                    }">
+                        ${text}
+                        <div class="reactions-bar absolute -bottom-3 ${isSelf ? 'right-3' : 'left-3'} flex gap-1 z-10"></div>
+                    </div>
+                `;
+            }
+            
+            UI.chat.appendChild(div);
+            
+            // Setup ResizeObserver to guarantee bottom scroll for images/media
+            const ro = new ResizeObserver(() => {
+                UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
+            });
+            ro.observe(div);
+            setTimeout(() => ro.disconnect(), 2000);
+
+            if (roomType === 'ghost' && !system) {
+                setTimeout(() => {
+                    const msgEl = $(div.id);
+                    if (msgEl) {
+                        msgEl.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                        msgEl.style.opacity = '0';
+                        msgEl.style.transform = 'scale(0.9) translateY(-10px)';
+                        msgEl.style.filter = 'blur(10px)';
+                        setTimeout(() => msgEl.remove(), 600);
+                    }
+                }, ghostDuration * 1000);
+            }
+        }
+
+        function appendReaction(msgId, reaction) {
+            const msgEl = $(msgId);
+            if (!msgEl) return;
+            const bar = msgEl.querySelector('.reactions-bar');
+            if (bar) {
+                const r = document.createElement('span');
+                r.className = 'bg-black border border-white/10 text-xs px-2.5 py-1 rounded-full shadow-lg animate-[viewFadeIn_0.3s_forwards]';
+                r.textContent = reaction;
+                bar.appendChild(r);
+            }
+        }
+
+        // --- STREAMING_CHUNK:Media Payload Handling ---
+        let mediaRecorder;
+        let audioChunks = [];
+        async function toggleVoice() {
+            const btn = $('voiceBtn');
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                btn.classList.remove('animate-pulse', 'border-red-500');
+            } else {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                        audioChunks = [];
+                        const reader = new FileReader();
+                        reader.readAsDataURL(blob);
+                        reader.onloadend = () => {
+                            const audioHTML = `<audio controls src="${reader.result}" class="w-48 max-w-full mt-2 rounded-xl border border-white/10"></audio>`;
+                            const msgId = `msg-${Date.now()}`;
+                            sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId });
+                            addMessage(myName, myAvatar, audioHTML, false, true, msgId);
+                        };
+                        // Crucial Privacy Fix: Stop the microphone stream tracks when done
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    mediaRecorder.start();
+                    btn.classList.add('animate-pulse', 'border-red-500');
+                    UI.radialMenu.classList.remove('active');
+                } catch(e) { showToast("Audio access denied", "error"); }
+            }
+        }
+
+        function triggerFile() { $('fileInput').click(); }
+        $('fileInput')?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            // Strict WebRTC payload limit logic
+            if (file.size > 1 * 1024 * 1024) return showToast("Payload too large (Max 1MB)", "error");
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                const isImg = file.type.startsWith('image/');
+                const content = isImg ? `<img src="${reader.result}" class="max-w-[240px] rounded-xl shadow-lg mt-2 border border-white/10">` 
+                                      : `<a href="${reader.result}" download="${file.name}" class="text-blue-400 hover:text-blue-300 underline font-medium bg-black/40 px-4 py-2.5 rounded-xl inline-block mt-1 transition-colors">📄 ${file.name}</a>`;
+                const msgId = `msg-${Date.now()}`;
+                sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: content, msgId });
+                addMessage(myName, myAvatar, content, false, true, msgId);
+                UI.radialMenu.classList.remove('active');
+            };
+        });
+
+        let typingTimeout;
+        UI.msgIn?.addEventListener('input', () => {
+            if(!peer) return;
+            sendPayload({ type: 'typing', id: myPeerId, status: true });
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => sendPayload({ type: 'typing', id: myPeerId, status: false }), 1500);
+        });
+
+        // --- STREAMING_CHUNK:WebRTC Mesh Protocol ---
+        const peerConfig = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] } };
+
+        function updateBadge() {
+            if($('roomDisplay')) $('roomDisplay').textContent = roomName;
+            if($('roomTypeBadge')) $('roomTypeBadge').textContent = `${roomType.toUpperCase()} ARCHITECTURE`;
+            if($('peerCount')) $('peerCount').textContent = Object.keys(connections).length + 1;
+            renderPresenceList();
+        }
+
+        function broadcast(data) {
+            Object.values(connections).forEach(conn => { if(conn.open) conn.send(data); });
+        }
+        function sendPayload(data) {
+            if(isHost) broadcast(data);
+            else if(connections[targetHostId] && connections[targetHostId].open) connections[targetHostId].send(data);
+        }
+
+        function handleData(data, conn) {
+            if (data.type === 'presence') {
+                activeUsers.set(data.id, { name: data.name, avatar: data.avatar, isTyping: false });
+                updateBadge();
+                if(isHost) broadcast(data); 
+            }
+            if (data.type === 'typing') {
+                if(activeUsers.has(data.id)) activeUsers.get(data.id).isTyping = data.status;
+                
+                let anyoneTyping = false;
+                activeUsers.forEach(u => { if(u.isTyping) anyoneTyping = true; });
+                
+                const ind = $('typingIndicator');
+                if(ind) {
+                    if(anyoneTyping) { ind.classList.remove('hidden'); ind.classList.add('flex'); }
+                    else { ind.classList.add('hidden'); ind.classList.remove('flex'); }
+                }
+                
+                renderPresenceList();
+                if(isHost) broadcast(data);
+            }
+            if (data.type === 'msg') {
+                addMessage(data.user, data.avatar, data.text, false, false, data.msgId);
+                if (isHost) broadcast(data);
+            }
+            if (data.type === 'reaction') {
+                appendReaction(data.msgId, data.reaction);
+                if (isHost) broadcast(data);
+            }
+        }
+
+        function setupConnection(conn) {
+            conn.on('data', data => handleData(data, conn));
+            conn.on('close', () => {
+                delete connections[conn.peer];
+                const u = activeUsers.get(conn.peer);
+                if(u) addMessage('System', null, `Entity ${u.name} dropped.`, true);
+                activeUsers.delete(conn.peer);
+                updateBadge();
+                
+                if(!isHost && conn.peer === targetHostId) {
+                    addMessage('System', null, 'Host disconnected. Remapping mesh...', true);
+                    // Randomized exponential backoff to prevent race conditions during host migration
+                    setTimeout(initPeer, 1000 + Math.random() * 2000);
+                }
+            });
+        }
+
+        function becomeHost() {
+            if (peer) peer.destroy();
+            isHost = true;
+            if($('connectionStatus')) $('connectionStatus').textContent = "Establishing Host Node...";
+            
+            peer = new Peer(targetHostId, peerConfig);
+            peer.on('open', (id) => {
+                myPeerId = id;
+                UI.login.classList.add('login-exit');
+                setTimeout(() => UI.login.classList.add('hidden'), 1000);
+                
+                updateBadge();
+                addMessage('System', null, `Initialized ${roomType.toUpperCase()} layer: ${roomName}`, true);
+            });
+            peer.on('connection', conn => {
+                connections[conn.peer] = conn;
+                setupConnection(conn);
+                conn.on('open', () => {
+                    updateBadge();
+                    showToast('Mesh connection detected', 'success');
+                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+                });
+            });
+        }
+
+        function initPeer() {
+            if($('connectionStatus')) $('connectionStatus').textContent = "Locating P2P Network...";
+            if (peer) peer.destroy();
+            
+            peer = new Peer(peerConfig);
+            peer.on('open', (id) => {
+                myPeerId = id;
+                const conn = peer.connect(targetHostId, { reliable: true });
+                let hostFound = false;
+                
+                conn.on('open', () => {
+                    hostFound = true;
+                    isHost = false;
+                    connections[targetHostId] = conn;
+                    setupConnection(conn);
+                    
+                    UI.login.classList.add('login-exit');
+                    setTimeout(() => UI.login.classList.add('hidden'), 1000);
+                    
+                    updateBadge();
+                    addMessage('System', null, `Connected to ${roomType.toUpperCase()} layer: ${roomName}`, true);
+                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+                });
+
+                setTimeout(() => { if (!hostFound) becomeHost(); }, 3000);
+            });
+        }
+
+        // --- STREAMING_CHUNK:Final Bindings & Initialization ---
+        $('joinBtn')?.addEventListener('click', () => {
+            myName = $('loginNameInput').value.trim() || myName || 'Guest';
+            roomName = UI.roomIn.value.trim() || 'Global';
+            syncProfileUI(myName, myGender, myAvatar);
+            
+            // Fix: Added fallback to 'global' if regex strips all characters
+            const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
+            targetHostId = `lumina-core-${safeRoom}-${roomType}-v5`;
+            
+            initPeer();
+        });
+
+        $('quitBtn')?.addEventListener('click', () => {
+            if (peer) {
+                Object.values(connections).forEach(conn => conn.close());
+                peer.destroy();
+                peer = null;
+            }
+            
+            connections = {};
+            isHost = false;
+            targetHostId = '';
+            activeUsers.clear();
+            
+            $('chatWindow').innerHTML = `
+                <div class="text-center my-8">
+                    <span class="bg-white/5 border border-white/10 text-slate-400 text-[9px] uppercase tracking-[0.2em] font-bold px-6 py-2.5 rounded-full backdrop-blur-md">End-to-End Mesh Established</span>
+                </div>
+            `;
+            if($('peerCount')) $('peerCount').textContent = '1';
+            
+            $('loginScreen').classList.remove('hidden', 'login-exit');
+            if($('connectionStatus')) $('connectionStatus').textContent = "";
+            
+            switchView('worlds');
+            showToast("Disconnected from mesh layer", "info");
+        });
+
+        $('inviteBtn')?.addEventListener('click', () => {
+            const url = new URL(window.location.origin + window.location.pathname);
+            url.searchParams.set('room', encodeURIComponent(roomName));
+            url.searchParams.set('type', roomType);
+            
+            const copyText = url.toString();
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(copyText).then(() => showToast("Cryptographic link copied", "success")).catch(fallBackCopy);
+            } else {
+                fallBackCopy();
+            }
+
+            function fallBackCopy() {
+                const ta = document.createElement('textarea');
+                ta.value = copyText;
+                ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    showToast("Cryptographic link copied", "success");
+                } catch (err) {
+                    showToast("Failed to copy link", "error");
+                }
+                document.body.removeChild(ta);
+            }
+        });
+
+        UI.form?.addEventListener('submit', e => {
+            e.preventDefault();
+            const text = UI.msgIn.value.trim();
+            if (!text || !peer) return;
+            
+            const msgId = `msg-${Date.now()}`;
+            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId };
+            
+            addMessage(myName, myAvatar, payload.text, false, true, msgId);
+            sendPayload(payload);
+            
+            UI.msgIn.value = '';
+            const ind = $('typingIndicator');
+            if(ind) { ind.classList.add('hidden'); ind.classList.remove('flex'); }
+            sendPayload({ type: 'typing', id: myPeerId, status: false });
+        });
+
+        window.sendReaction = function(msgId, reaction) {
+            appendReaction(msgId, reaction);
+            sendPayload({ type: 'reaction', msgId, reaction });
+        };
+
+        window.copyMessage = function(msgId) {
+            const msgEl = $(msgId);
+            if (!msgEl) return;
+            
+            // Extract the text content cleanly, avoiding media tags
+            const contentDiv = msgEl.querySelector('.break-words');
+            if (contentDiv) {
+                if (contentDiv.querySelector('img, audio, a')) {
+                    showToast("Cannot copy media files", "error");
+                    return;
+                }
+                
+                const text = Array.from(contentDiv.childNodes)
+                    .filter(node => node.nodeType === Node.TEXT_NODE)
+                    .map(node => node.textContent)
+                    .join('').trim();
+                    
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => showToast("Copied to clipboard", "success"))
+                        .catch(() => showToast("Failed to copy", "error"));
+                }
+            }
+        };
+
+        function parseURL() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('room') && params.has('type')) {
+                const urlRoom = params.get('room');
+                const urlType = params.get('type');
+                
+                roomType = urlType;
+                if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${urlType.toUpperCase()}`;
+                if($('roomInput')) $('roomInput').value = urlRoom;
+                
+                switchView('chat');
+                setTimeout(() => showToast(`Invited to ${urlType.toUpperCase()} topology`, 'info'), 500);
+                
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return true;
+            }
+            return false;
+        }
+
+        if (!parseURL()) {
+            switchView('home');
+        }
+
+        window.addEventListener('load', () => {
+            const intro = $('introScene');
+            if (intro) {
+                setTimeout(() => {
+                    intro.classList.add('intro-hidden');
+                    setTimeout(() => intro.remove(), 1000); 
+                }, 3000); 
+            }
+        });
+    </script>
 </body>
 </html>
