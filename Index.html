@@ -10,11 +10,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#030303">
     
-    <title>Lumina | Pure Connection</title>
+    <title>Lumina | Omni-Protocol</title>
     
-    <!-- Premium SVG Favicon & iOS Native Home Screen Icon -->
+    <!-- Premium SVG Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23030303'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.1/dist/peerjs.min.js"></script>
@@ -23,212 +22,244 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         :root {
-            --glass-bg: rgba(9, 9, 11, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.03);
-            --neon-glow: rgba(16, 185, 129, 0.15);
+            --glass-bg: rgba(10, 10, 12, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.04);
+            --wa-green: #25D366;
+            --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            --sc-yellow: #FFFC00;
         }
 
+        /* --- STREAMING_CHUNK: High-Performance Base --- */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #030303;
             color: #f8fafc;
             overflow: hidden;
-            transition: background-color 2s ease;
-            perspective: 1200px;
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
         }
+        input, textarea, [contenteditable] { -webkit-user-select: auto; user-select: auto; }
 
-        /* --- STREAMING_CHUNK: AAA Cinematic Film Grain --- */
-        body::after {
-            content: "";
-            position: fixed; inset: 0; z-index: 9999;
-            pointer-events: none;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
-            opacity: 0.035;
-            mix-blend-mode: overlay;
+        /* Stop text highlighting during rapid double taps in chat */
+        .break-words { -webkit-user-select: none; user-select: none; }
+
+        /* Lightweight ambient glow */
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 60%);
         }
 
-        input, textarea {
-            -webkit-user-select: auto;
-            user-select: auto;
-        }
-
-        /* --- STREAMING_CHUNK: Glass Panels & UI Physics --- */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
         }
 
         .glass-panel-3d {
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s ease;
-            will-change: transform;
-            transform-style: preserve-3d;
-        }
-        .glass-panel-3d:hover {
-            transform: translateY(-4px) scale(1.01) rotateX(2deg);
-            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 40px rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.08);
-            z-index: 10;
+            will-change: transform; transform-style: preserve-3d;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
         }
 
         .glass-button {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s, background 0.2s;
         }
-        
-        .glass-button:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-        }
+        .glass-button:active { transform: scale(0.95); }
 
-        /* --- STREAMING_CHUNK: Premium Navigation Effects --- */
+        .btn-ripple { position: relative; overflow: hidden; }
+        .ripple {
+            position: absolute; border-radius: 50%; transform: scale(0);
+            animation: rippleAnim 0.6s linear; background: rgba(255, 255, 255, 0.3); pointer-events: none;
+        }
+        @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+        /* --- STREAMING_CHUNK: Premium Navigation --- */
         .nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
         .nav-item::before {
-            content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.08), transparent);
+            content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
             opacity: 0; transition: opacity 0.4s ease; z-index: -1;
         }
         .nav-item::after {
-            content: ''; position: absolute; left: -1px; top: 25%; height: 50%; width: 3px;
-            background: #10b981; border-radius: 0 4px 4px 0; box-shadow: 0 0 12px #10b981;
-            transform: scaleY(0); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0;
+            content: ''; position: absolute; left: -1px; top: 20%; height: 60%; width: 3px;
+            background: #10b981; border-radius: 0 4px 4px 0; box-shadow: 0 0 15px #10b981;
+            transform: scaleY(0); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0;
         }
         .nav-item.active { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: #fff; }
         .nav-item.active::before { opacity: 1; }
         .nav-item.active::after { transform: scaleY(1); opacity: 1; }
-        .nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.7)); }
-
-        .mobile-nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: #64748b; }
-        .mobile-nav-item::after {
-            content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%) scale(0);
-            width: 24px; height: 3px; border-radius: 0 0 4px 4px; background: #10b981; box-shadow: 0 0 10px #10b981;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; opacity: 0;
-        }
-        .mobile-nav-item.active { color: #fff; }
-        .mobile-nav-item.active::after { transform: translateX(-50%) scale(1); opacity: 1; }
-        .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
-        .nav-icon { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-
-        /* --- STREAMING_CHUNK: Cinematic View Transitions --- */
-        .view-enter { animation: viewFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes viewFadeIn {
-            0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(10px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-
-        .login-exit { animation: loginFadeOut 1s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; pointer-events: none; }
-        @keyframes loginFadeOut {
-            0% { opacity: 1; transform: scale(1); filter: blur(0); }
-            100% { opacity: 0; transform: scale(1.1); filter: blur(20px); visibility: hidden; }
-        }
-
-        .msg-materialize { animation: materialize 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform-origin: bottom center; }
-        @keyframes materialize {
-            0% { opacity: 0; transform: translateY(15px) scale(0.95); filter: blur(5px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-
-        /* --- STREAMING_CHUNK: Environment & Canvas Physics --- */
-        #env-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-        .cosmic-gradient {
-            position: absolute; border-radius: 50%; filter: blur(160px); opacity: 0.15; 
-            transition: background-color 5s ease, transform 5s ease;
-            animation: slowOrbit 40s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform;
-            mix-blend-mode: screen;
-        }
-        @keyframes slowOrbit {
-            0% { transform: scale(1) translate(0, 0) rotate(0deg); }
-            100% { transform: scale(1.3) translate(8%, -5%) rotate(10deg); }
-        }
-
-        #bg-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; mix-blend-mode: screen; opacity: 0.8; }
-
-        .anim-breathe { animation: breathe 6s ease-in-out infinite; }
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        .nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.9)); }
         
+        .mobile-nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: #64748b; }
+        .mobile-nav-item.active { color: #fff; }
+        .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
+
+        /* --- STREAMING_CHUNK: Holographic Worlds Physics --- */
+        .worlds-grid { perspective: 1000px; }
+        .worlds-grid > div { opacity: 0; animation: cardFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: center bottom; }
+        .worlds-grid > div:nth-child(1) { animation-delay: 0.1s; }
+        .worlds-grid > div:nth-child(2) { animation-delay: 0.2s; }
+        .worlds-grid > div:nth-child(3) { animation-delay: 0.3s; }
+        .worlds-grid > div:nth-child(4) { animation-delay: 0.4s; }
+        .worlds-grid > div:nth-child(5) { animation-delay: 0.5s; }
+        
+        @keyframes cardFadeUp {
+            0% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(10deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+        }
+
+        .world-card { 
+            position: relative; overflow: hidden; background: rgba(10, 10, 14, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .world-card::before {
+            content: ""; position: absolute; inset: 0; z-index: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(var(--theme-rgb), 0.12), transparent 40%);
+            opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+        .world-card::after {
+            content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; padding: 1px;
+            background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(var(--theme-rgb), 0.8), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+        .world-card:hover::before, .world-card:hover::after { opacity: 1; }
+        
+        .card-content-default { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .card-content-hover { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; transform: translateY(20px); position: absolute; bottom: 0; left: 0; right: 0; pointer-events: none; }
+        
+        .world-card:hover .card-content-default { opacity: 0; transform: translateY(-20px); filter: blur(4px); pointer-events: none; }
+        .world-card:hover .card-content-hover { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+        /* --- STREAMING_CHUNK: Omni-Chat Integrations (IG, WA, Snap) --- */
+        .story-ring {
+            position: relative; border-radius: 50%; padding: 2px; background: var(--ig-gradient); z-index: 1;
+        }
+        .story-ring::before { content: ''; position: absolute; inset: 2px; border-radius: inherit; background: #000; z-index: -1; }
+
+        .msg-status { display: inline-flex; align-items: center; gap: 2px; margin-left: 6px; font-size: 11px; color: #64748b; }
+        .msg-status.read { color: #38bdf8; }
+        .tick-svg { width: 14px; height: 14px; stroke-width: 2.5; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        .big-heart {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            font-size: 4rem; opacity: 0; pointer-events: none; z-index: 50; filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+        }
+        .heart-pop { animation: heartPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes heartPop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -100%) scale(0); opacity: 0; } }
+
+        .snap-box {
+            background: rgba(255, 252, 0, 0.1); border: 1px solid rgba(255, 252, 0, 0.3); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer;
+            backdrop-filter: blur(10px); transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .snap-box:hover { background: rgba(255, 252, 0, 0.2); box-shadow: 0 0 20px rgba(255, 252, 0, 0.2); }
+        .snap-timer { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--sc-yellow); width: 100%; transform-origin: left; }
+        .snap-burning { animation: burnDown 5s linear forwards; }
+        @keyframes burnDown { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+        .snap-destroyed { animation: popVanish 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
+        @keyframes popVanish { 0% { transform: scale(1); filter: blur(0); opacity: 1; } 100% { transform: scale(0.5); filter: blur(10px); opacity: 0; } }
+
+        /* --- STREAMING_CHUNK: Animations & Canvas --- */
+        .msg-materialize { animation: slideIn 0.3s ease-out forwards; opacity: 0; transform-origin: bottom; }
+        @keyframes slideIn { 0% { opacity: 0; transform: translateY(10px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        .view-enter { animation: viewFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes viewFadeIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        
+        .anim-breathe { animation: breathe 4s ease-in-out infinite; }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .anim-float { animation: float 6s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-        /* Animated Text Gradient */
-        .text-gradient-flow { background-size: 200% auto; animation: flowGradient 6s linear infinite; }
-        @keyframes flowGradient { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        .text-gradient-flow { background-size: 200% auto; animation: flowGradient 5s linear infinite; background-clip: text; -webkit-background-clip: text; }
+        @keyframes flowGradient { 0% { background-position: 0% center; } 100% { background-position: -200% center; } }
 
-        /* Custom Scrollbar */
+        #bg-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.6; }
+        
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        /* World Cards */
-        .world-card { overflow: hidden; position: relative; }
-        .world-overlay {
-            position: absolute; inset: 0; background: rgba(5, 5, 8, 0.9); backdrop-filter: blur(12px);
-            display: flex; flex-direction: column; justify-content: center; padding: 1.5rem;
-            transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: inherit;
-        }
-        .world-card:hover .world-overlay { transform: translateY(0); }
-
-        /* Radial Menu */
-        .radial-item { opacity: 0; transform: scale(0.5) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .radial-menu.active .radial-item { opacity: 1; transform: scale(1) translateY(0); }
+        /* --- STREAMING_CHUNK: AAA Intro Animation --- */
+        #aaa-intro { transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; }
+        .intro-hide { opacity: 0; filter: blur(20px) brightness(1.5); pointer-events: none; }
         
-        /* Message Toolbar */
-        .msg-toolbar { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; transform: translateY(5px) scale(0.95); pointer-events: none; }
-        .message-container:hover .msg-toolbar, .msg-toolbar.force-active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-
-        /* Intro Sequence */
-        #introScene {
-            position: fixed; inset: 0; z-index: 9999;
-            background-color: #030303;
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
+        .intro-logo-svg {
+            stroke-dasharray: 200; stroke-dashoffset: 200;
+            animation: drawLogo 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
         }
-        .intro-hidden { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
-        .intro-eclipse {
-            width: 150px; height: 150px; background: transparent; border-radius: 50%;
-            box-shadow: inset -10px -10px 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.2);
-            animation: eclipseReveal 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        @keyframes drawLogo { to { stroke-dashoffset: 0; } }
+        
+        .intro-orb {
+            position: absolute; top: 50%; left: 50%; width: 0; height: 0; transform: translate(-50%, -50%); border-radius: 50%;
+            background: #fff; box-shadow: 0 0 20px #10b981, 0 0 60px #10b981;
+            animation: expandOrb 3s cubic-bezier(0.8, 0, 0.2, 1) forwards 0.5s;
         }
-        @keyframes eclipseReveal {
-            0% { transform: scale(0); opacity: 0; filter: blur(20px); }
-            50% { transform: scale(1); opacity: 1; filter: blur(0); }
-            100% { transform: scale(30); opacity: 0; filter: blur(10px); }
+        @keyframes expandOrb {
+            0% { width: 0; height: 0; opacity: 0; }
+            20% { width: 2px; height: 2px; opacity: 1; box-shadow: 0 0 20px #10b981, 0 0 40px #10b981; }
+            60% { width: 4px; height: 4px; opacity: 1; box-shadow: 0 0 40px #10b981, 0 0 80px #fff; }
+            85% { width: 150vw; height: 150vw; opacity: 1; }
+            100% { width: 150vw; height: 150vw; opacity: 0; }
         }
+        
+        .intro-text-mask { overflow: hidden; position: relative; }
+        .intro-text {
+            display: block; transform: translateY(100%); opacity: 0;
+            animation: revealText 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes revealText { to { transform: translateY(0); opacity: 1; } }
+        
+        .intro-line-h {
+            position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(16,185,129,0.2);
+            transform: scaleX(0); animation: lineScaleX 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+        }
+        @keyframes lineScaleX { to { transform: scaleX(1); } }
+        @keyframes loadingLine { to { transform: translateX(0); } }
     </style>
 </head>
-<body class="flex h-[100dvh] w-screen relative text-slate-100 overflow-hidden bg-[#030303] selection:bg-white/20 selection:text-white">
+<body class="flex h-[100dvh] w-screen relative text-slate-100 overflow-hidden bg-[#030303] selection:bg-emerald-500/30 selection:text-white">
 
-    <div id="introScene">
-        <div class="intro-eclipse"></div>
+    <!-- AAA Intro Sequence -->
+    <div id="aaa-intro" class="fixed inset-0 z-[999999] bg-[#030303] flex flex-col items-center justify-center overflow-hidden">
+        <div class="intro-line-h"></div>
+        <div class="relative flex flex-col items-center z-10">
+            <div class="relative w-24 h-24 flex items-center justify-center mb-6">
+                <svg class="intro-logo-svg absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+                    <rect x="25" y="25" width="50" height="50" fill="none" stroke="#10b981" stroke-width="1.5" transform="rotate(45 50 50)" />
+                    <rect x="35" y="35" width="30" height="30" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1" />
+                </svg>
+                <div class="intro-orb"></div>
+            </div>
+            <div class="intro-text-mask">
+                <h1 class="intro-text text-4xl md:text-5xl tracking-[0.4em] font-light text-white uppercase ml-[0.4em]" style="animation-delay: 1.2s;">Lumina</h1>
+            </div>
+            <div class="intro-text-mask mt-2">
+                <p class="intro-text text-[9px] tracking-[0.5em] text-emerald-500 font-bold uppercase ml-[0.5em]" style="animation-delay: 1.4s;">Omni Protocol</p>
+            </div>
+            <div class="absolute -bottom-16 w-32 h-[1px] bg-white/10 overflow-hidden">
+                <div class="h-full bg-emerald-500 w-full -translate-x-full animate-[loadingLine_1s_ease-in-out_1.8s_forwards]"></div>
+            </div>
+        </div>
     </div>
 
-    <div id="env-layer">
-        <div id="grad1" class="cosmic-gradient w-[80vw] h-[80vw] top-[-25%] left-[-15%] bg-blue-900/40"></div>
-        <div id="grad2" class="cosmic-gradient w-[70vw] h-[70vw] bottom-[-20%] right-[-10%] bg-indigo-900/30"></div>
-        <div id="grad3" class="cosmic-gradient w-[60vw] h-[60vw] top-[20%] left-[20%] bg-purple-900/20"></div>
-    </div>
-    
+    <!-- Ethereal Canvas -->
     <canvas id="bg-canvas"></canvas>
 
-    <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] border border-white/5 bg-black/30 backdrop-blur-3xl h-[calc(100dvh-2rem)] md:h-[calc(100dvh-3rem)]">
+    <!-- Sidebar Navigation -->
+    <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] h-[calc(100dvh-2rem)] md:h-[calc(100dvh-3rem)] border border-white/5 bg-black/30 backdrop-blur-3xl">
         <div>
             <div class="p-8 flex items-center gap-4">
-                <div class="w-10 h-10 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center font-light text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] anim-float">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <div class="w-10 h-10 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center font-light text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] anim-float group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-emerald-500/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <svg class="relative z-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
                 <div class="hidden md:block">
                     <h1 class="font-medium tracking-tight text-lg text-white/90">Lumina</h1>
-                    <p class="text-[8px] text-slate-500 uppercase tracking-[0.3em] font-bold mt-0.5">Core Protocol</p>
+                    <p class="text-[8px] text-emerald-500 uppercase tracking-[0.3em] font-bold mt-0.5">Core Protocol</p>
                 </div>
             </div>
 
@@ -252,15 +283,16 @@
             </nav>
         </div>
         
-        <div class="p-6 border-t border-white/5 bg-gradient-to-t from-black/80 to-transparent rounded-b-[2rem]">
-            <div class="flex items-center gap-4 group cursor-pointer">
+        <div class="p-6 border-t border-white/5 bg-gradient-to-t from-black/80 to-transparent rounded-b-[2rem] relative overflow-hidden group/profile cursor-pointer">
+            <div class="absolute inset-0 bg-white/5 opacity-0 group-hover/profile:opacity-100 transition-opacity duration-500"></div>
+            <div class="flex items-center gap-4 group relative z-10">
                 <div class="relative">
-                    <div class="w-11 h-11 rounded-full bg-zinc-900 flex items-center justify-center text-xl border border-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:scale-110" id="sbAvatar">🐺</div>
-                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black shadow-[0_0_15px_rgba(16,185,129,0.8)]"></div>
+                    <div class="w-11 h-11 rounded-full bg-zinc-900 flex items-center justify-center text-xl border border-white/10 shadow-[0_5px_15px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:scale-110 group-hover:border-emerald-500/50" id="sbAvatar">🐺</div>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black shadow-[0_0_15px_rgba(16,185,129,1)] animate-pulse"></div>
                 </div>
                 <div class="hidden md:block min-w-0 transition-transform duration-500 group-hover:translate-x-1">
                     <p class="text-sm font-medium truncate text-slate-200" id="sbName">Guest</p>
-                    <p class="text-[9px] text-emerald-500/90 font-bold uppercase tracking-widest mt-0.5">Connected</p>
+                    <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest mt-0.5 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">Connected</p>
                 </div>
             </div>
         </div>
@@ -268,108 +300,109 @@
 
     <main class="flex-1 relative flex flex-col h-full z-10 overflow-hidden pb-[76px] sm:pb-0">
         
+        <!-- HOME VIEW -->
         <div id="homeView" class="hidden flex-1 p-4 md:p-8 items-center justify-center relative view-enter w-full overflow-y-auto custom-scrollbar">
             <div class="text-center z-10 w-full max-w-5xl mx-auto flex flex-col items-center my-auto">
-                
-                <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto mb-8 pointer-events-none flex items-center justify-center">
-                    <div class="absolute inset-0 rounded-full border-[0.5px] border-white/10 border-dashed animate-[spin_60s_linear_infinite] opacity-50"></div>
-                    <div class="absolute inset-4 rounded-full border-[0.5px] border-white/5 border-t-white/30 animate-[spin_40s_linear_infinite_reverse]"></div>
-                    <div class="absolute inset-10 rounded-full border border-white/5 animate-[spin_50s_linear_infinite]"></div>
-                    <div class="absolute inset-20 rounded-full bg-gradient-to-tr from-indigo-500/5 to-purple-500/5 blur-xl"></div>
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto mb-10 pointer-events-none flex items-center justify-center glass-panel-3d tilt-element">
+                    <div class="absolute inset-0 rounded-full border-[1px] border-emerald-500/20 border-dashed animate-[spin_40s_linear_infinite] opacity-60"></div>
+                    <div class="absolute inset-4 rounded-full border-[1px] border-white/5 border-t-emerald-400/50 animate-[spin_20s_linear_infinite_reverse]"></div>
+                    <div class="absolute inset-10 rounded-full border border-white/10 shadow-[0_0_40px_rgba(16,185,129,0.1)] animate-[spin_50s_linear_infinite]"></div>
                     
-                    <div class="w-24 h-24 bg-black/60 backdrop-blur-2xl rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)] anim-breathe">
-                        <div class="w-8 h-8 bg-white rounded-full shadow-[0_0_30px_#fff,0_0_60px_#fff] blur-[1px]"></div>
+                    <div class="w-28 h-28 bg-black/60 backdrop-blur-3xl rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_60px_rgba(16,185,129,0.15)] anim-breathe">
+                        <div class="w-8 h-8 bg-emerald-400 rounded-full shadow-[0_0_30px_#10b981,0_0_60px_#10b981] blur-[2px] animate-pulse"></div>
                     </div>
                 </div>
                 
-                <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-[10px] font-bold uppercase tracking-[0.3em] mb-10 backdrop-blur-xl shadow-2xl transition-all hover:bg-white/10 hover:border-white/20 hover:scale-105 cursor-default">
-                    <span class="relative flex h-2 w-2">
+                <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-12 shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all hover:border-emerald-400/60 hover:scale-105">
+                    <span class="relative flex h-2.5 w-2.5">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)]"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,1)]"></span>
                     </span>
                     Protocol Active
                 </div>
 
-                <h1 class="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter text-white drop-shadow-2xl mb-8 leading-[0.95]">
+                <h1 class="text-6xl md:text-8xl lg:text-[10rem] font-light tracking-tighter text-white drop-shadow-2xl mb-8 leading-[0.9]">
                     Pure <br/>
-                    <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-300 to-slate-600 text-gradient-flow">Connection.</span>
+                    <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-white to-emerald-200 text-gradient-flow">Connection.</span>
                 </h1>
                 
-                <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto font-light mb-12 opacity-80">Lumina is a cryptographic, browser-based WebRTC mesh network. No servers. No middleman. Uncompromised peer-to-peer transmission.</p>
+                <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto font-light mb-12 opacity-80 mix-blend-screen">Lumina is a cryptographic, browser-based WebRTC mesh network. Integrated with read receipts, view-once snaps, and double-tap reactions.</p>
                 
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4 w-full max-w-md">
-                    <button onclick="switchView('worlds')" class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-white text-black font-semibold text-sm shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:scale-105 transition-all duration-400 hover:shadow-[0_0_60px_rgba(255,255,255,0.25)] flex items-center justify-center gap-3">
-                        Initialize <span class="text-lg leading-none">→</span>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4 w-full max-w-2xl">
+                    <button onclick="switchView('worlds')" class="btn-ripple w-full sm:w-auto px-12 py-5 rounded-2xl bg-white text-black font-semibold text-sm shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 transition-all duration-400 hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] flex items-center justify-center gap-3 group">
+                        <span class="relative z-10">Initialize Matrix</span>
+                        <span class="relative z-10 text-lg leading-none group-hover:translate-x-1 transition-transform">→</span>
                     </button>
-                    <button onclick="switchView('settings')" class="w-full sm:w-auto px-10 py-4 rounded-2xl glass-button text-white font-medium text-sm flex items-center justify-center gap-3">
-                        Identity
+                    <button onclick="switchView('settings')" class="btn-ripple w-full sm:w-auto px-12 py-5 rounded-2xl glass-button text-white font-medium text-sm flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                        <span class="relative z-10">Configure Identity</span>
                     </button>
                 </div>
 
                 <!-- Dynamic Install App Button -->
-                <button id="installAppBtn" class="hidden mt-6 w-full max-w-md sm:w-auto px-10 py-3.5 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold text-sm shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:bg-emerald-500/20 hover:scale-105 transition-all duration-400 items-center justify-center gap-2">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Install as App
+                <button id="installAppBtn" class="hidden mt-8 w-full max-w-md sm:w-auto px-8 py-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold text-xs uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:bg-emerald-500/20 hover:scale-105 transition-all duration-400 items-center justify-center gap-2 group">
+                    <svg class="group-hover:-translate-y-1 transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Install Lumina App
                 </button>
             </div>
         </div>
 
-        <div id="settingsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth relative z-10 view-enter">
+        <!-- SETTINGS VIEW -->
+        <div id="settingsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth relative z-10 view-enter custom-scrollbar">
             <div class="max-w-2xl mx-auto pb-20 mt-6 lg:mt-12">
-                <div class="glass-panel glass-panel-3d p-8 sm:p-12 rounded-[2.5rem] border border-white/5 space-y-10 shadow-2xl relative overflow-hidden bg-black/40">
-                    
-                    <div class="absolute -top-32 -right-32 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="glass-panel glass-panel-3d tilt-element p-8 sm:p-14 rounded-[3rem] border border-white/5 space-y-10 shadow-[0_40px_100px_-20px_rgba(0,0,0,1)] relative overflow-hidden bg-black/50">
+                    <div class="absolute -top-40 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div class="text-center relative z-10">
-                        <h2 class="text-2xl font-semibold text-white tracking-tight">Digital Identity</h2>
-                        <p class="text-[11px] uppercase tracking-[0.2em] text-slate-500 mt-3 font-bold">Configure your mesh presence</p>
+                        <h2 class="text-3xl font-semibold text-white tracking-tight">Digital Identity</h2>
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-emerald-500 mt-3 font-bold">Configure your mesh presence</p>
                     </div>
 
                     <div class="flex flex-col items-center justify-center gap-4 relative z-10">
-                        <div class="w-28 h-28 rounded-[2rem] bg-zinc-900 flex items-center justify-center border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] text-5xl transition-transform duration-500 hover:scale-110 hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.05)]" id="profAvatarDisplay">
-                            <span class="anim-float">🐺</span>
+                        <div class="w-32 h-32 rounded-[2.5rem] bg-zinc-900 flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] text-6xl transition-transform duration-500 hover:scale-110 hover:border-emerald-500/30" id="profAvatarDisplay">
+                            <span class="anim-float block drop-shadow-2xl">🐺</span>
                         </div>
                     </div>
 
                     <div class="space-y-8 relative z-10">
                         <div class="relative group">
-                            <label class="absolute -top-2.5 left-5 px-1 bg-[#09090b] text-[9px] font-bold text-slate-400 uppercase tracking-widest rounded transition-colors group-focus-within:text-white">Handle</label>
-                            <input type="text" id="profNameInput" class="w-full bg-black/40 border border-white/5 rounded-2xl px-6 py-4 text-white text-sm font-medium outline-none focus:border-white/20 focus:bg-white/5 transition-all shadow-inner" placeholder="Enter designation..." maxlength="15">
+                            <label class="absolute -top-2.5 left-5 px-2 bg-[#09090b] text-[10px] font-bold text-emerald-500 uppercase tracking-widest rounded transition-colors shadow-sm">Handle</label>
+                            <input type="text" id="profNameInput" class="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-5 text-white text-base font-medium outline-none focus:border-emerald-500/50 focus:bg-white/5 transition-all shadow-inner focus:shadow-[0_0_30px_rgba(16,185,129,0.15)]" placeholder="Enter designation..." maxlength="15">
                         </div>
                         
                         <div class="flex flex-col gap-4">
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-2">Classification</label>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Classification</label>
                             <div class="grid grid-cols-3 gap-3">
-                                <label class="cursor-pointer group">
+                                <label class="group relative block cursor-pointer">
                                     <input type="radio" name="profGender" value="male" class="peer hidden" checked>
-                                    <div class="bg-black/40 border border-white/5 rounded-xl py-3.5 text-center text-slate-400 text-xs font-semibold peer-checked:border-white/20 peer-checked:text-white peer-checked:bg-white/5 transition-all">Male</div>
+                                    <div class="bg-black/60 border border-white/10 rounded-xl py-4 text-center text-slate-400 text-xs font-semibold peer-checked:border-emerald-500/50 peer-checked:text-emerald-400 peer-checked:bg-emerald-500/10 transition-all shadow-inner hover:bg-white/5">Male</div>
                                 </label>
-                                <label class="cursor-pointer group">
+                                <label class="group relative block cursor-pointer">
                                     <input type="radio" name="profGender" value="female" class="peer hidden">
-                                    <div class="bg-black/40 border border-white/5 rounded-xl py-3.5 text-center text-slate-400 text-xs font-semibold peer-checked:border-white/20 peer-checked:text-white peer-checked:bg-white/5 transition-all">Female</div>
+                                    <div class="bg-black/60 border border-white/10 rounded-xl py-4 text-center text-slate-400 text-xs font-semibold peer-checked:border-emerald-500/50 peer-checked:text-emerald-400 peer-checked:bg-emerald-500/10 transition-all shadow-inner hover:bg-white/5">Female</div>
                                 </label>
-                                <label class="cursor-pointer group">
+                                <label class="group relative block cursor-pointer">
                                     <input type="radio" name="profGender" value="other" class="peer hidden">
-                                    <div class="bg-black/40 border border-white/5 rounded-xl py-3.5 text-center text-slate-400 text-xs font-semibold peer-checked:border-white/20 peer-checked:text-white peer-checked:bg-white/5 transition-all">Other</div>
+                                    <div class="bg-black/60 border border-white/10 rounded-xl py-4 text-center text-slate-400 text-xs font-semibold peer-checked:border-emerald-500/50 peer-checked:text-emerald-400 peer-checked:bg-emerald-500/10 transition-all shadow-inner hover:bg-white/5">Other</div>
                                 </label>
                             </div>
                         </div>
 
                         <div class="flex flex-col gap-4">
-                            <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-2">Visual Representation</label>
-                            <div class="grid grid-cols-4 sm:grid-cols-8 gap-2 sm:gap-3">
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐺" class="peer hidden" checked><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐺</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🦊" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🦊</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🦁" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🦁</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐱" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐱</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐯" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐯</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐰" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐰</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🐻" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🐻</div></label>
-                                <label class="cursor-pointer"><input type="radio" name="profAvatar" value="🦄" class="peer hidden"><div class="bg-black/40 border border-white/5 rounded-2xl py-3 text-2xl peer-checked:border-white/20 peer-checked:bg-white/5 transition-all flex justify-center hover:bg-white/5">🦄</div></label>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Visual Representation</label>
+                            <div class="grid grid-cols-4 sm:grid-cols-8 gap-3">
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐺" class="peer hidden" checked><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐺</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🦊" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦊</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🦁" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦁</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐱" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐱</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐯" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐯</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐰" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐰</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐻" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐻</div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🦄" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦄</div></label>
                             </div>
                         </div>
                         
-                        <button id="saveProfileBtn" class="w-full py-4 rounded-2xl bg-white text-black font-semibold transition-all hover:scale-[1.02] mt-6 text-sm flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                        <button id="saveProfileBtn" class="btn-ripple w-full py-5 rounded-2xl bg-white text-black font-bold transition-all hover:scale-[1.02] mt-8 text-sm flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                             Lock Identity
                         </button>
                     </div>
@@ -377,232 +410,231 @@
             </div>
         </div>
 
-        <div id="worldsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 relative z-10 view-enter">
-            <div class="max-w-5xl mx-auto mt-6 lg:mt-10">
-                <div class="mb-12 text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3">Architectures</h2>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">Select a dimension topology</p>
+        <!-- WORLDS VIEW -->
+        <div id="worldsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 relative z-10 view-enter custom-scrollbar">
+            <div class="max-w-6xl mx-auto mt-6 lg:mt-10 pb-20">
+                <div class="mb-14 text-center md:text-left">
+                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4 drop-shadow-lg">Architectures</h2>
+                    <p class="text-[11px] text-emerald-400 uppercase tracking-[0.2em] font-bold">Select a dimension topology</p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div onclick="selectWorld('public')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
-                        <div class="w-12 h-12 mb-5 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 anim-float">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 worlds-grid">
+                    
+                    <div onclick="selectWorld('public')" class="world-card glass-panel-3d tilt-element rounded-[2.5rem] cursor-pointer h-[320px] flex flex-col p-8 group shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_30px_60px_rgba(59,130,246,0.15)]" style="--theme-rgb: 59, 130, 246;">
+                        <div class="relative z-10 w-16 h-16 mb-6 rounded-[1.25rem] bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 anim-float shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:bg-blue-500/20">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                         </div>
-                        <h3 class="text-xl font-medium text-white mb-2">Public Core</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed font-light">Open dimension. Anyone with the room designation can discover and connect.</p>
-                        <div class="world-overlay bg-blue-900/95">
-                            <h4 class="font-semibold text-blue-200 mb-2 text-sm tracking-wide">Public Mode</h4>
-                            <p class="text-[11px] text-blue-100/70 leading-relaxed">Standard environment. Open routing for all connected peers.<br><br><span class="text-[9px] text-blue-300 uppercase tracking-widest font-bold">Ideal for: Social</span></p>
+                        <div class="relative z-10 flex-1 flex flex-col justify-end">
+                            <div class="card-content-default">
+                                <h3 class="text-3xl font-semibold text-white mb-3 tracking-tight">Public Core</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed font-light">Open dimension. Anyone with the room designation can discover and connect.</p>
+                            </div>
+                            <div class="card-content-hover">
+                                <h4 class="font-bold text-blue-300 mb-3 text-lg tracking-wide flex items-center gap-2">Public Mode <span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500 shadow-[0_0_10px_#3b82f6]"></span></span></h4>
+                                <p class="text-sm text-blue-100/80 leading-relaxed mb-5">Standard environment. Open routing for all connected peers.</p>
+                                <span class="inline-flex items-center justify-center px-4 py-2 bg-blue-500/20 border border-blue-400/30 rounded-full text-[10px] text-blue-300 uppercase tracking-widest font-bold">Ideal for: Social</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div onclick="selectWorld('secret')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
-                        <div class="w-12 h-12 mb-5 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 anim-float" style="animation-delay: 0.2s">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                    <div onclick="selectWorld('secret')" class="world-card glass-panel-3d tilt-element rounded-[2.5rem] cursor-pointer h-[320px] flex flex-col p-8 group shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_30px_60px_rgba(168,85,247,0.15)]" style="--theme-rgb: 168, 85, 247;">
+                        <div class="relative z-10 w-16 h-16 mb-6 rounded-[1.25rem] bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 anim-float shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:bg-purple-500/20" style="animation-delay: 0.2s">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
                         </div>
-                        <h3 class="text-xl font-medium text-white mb-2">Secret Sector</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed font-light">Cryptographic invite strictly required. Undiscoverable otherwise.</p>
-                        <div class="world-overlay bg-purple-900/95">
-                            <h4 class="font-semibold text-purple-200 mb-2 text-sm tracking-wide">Secret Mode</h4>
-                            <p class="text-[11px] text-purple-100/70 leading-relaxed">Generates a secure cryptographic key URL. Entry impossible without exact link.<br><br><span class="text-[9px] text-purple-300 uppercase tracking-widest font-bold">Ideal for: Privacy</span></p>
-                        </div>
-                    </div>
-
-                    <div onclick="selectWorld('onetime')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
-                        <div class="w-12 h-12 mb-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 anim-float" style="animation-delay: 0.4s">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                        </div>
-                        <h3 class="text-xl font-medium text-white mb-2">Flash Instance</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed font-light">Volatile memory layer. Evaporates permanently when empty.</p>
-                        <div class="world-overlay bg-amber-900/95">
-                            <h4 class="font-semibold text-amber-200 mb-2 text-sm tracking-wide">Flash Mode</h4>
-                            <p class="text-[11px] text-amber-100/70 leading-relaxed">A temporary network layer. Once peers disconnect, the instance is destroyed forever.<br><br><span class="text-[9px] text-amber-300 uppercase tracking-widest font-bold">Ideal for: Burners</span></p>
+                        <div class="relative z-10 flex-1 flex flex-col justify-end">
+                            <div class="card-content-default">
+                                <h3 class="text-3xl font-semibold text-white mb-3 tracking-tight">Secret Sector</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed font-light">Cryptographic invite strictly required. Undiscoverable otherwise.</p>
+                            </div>
+                            <div class="card-content-hover">
+                                <h4 class="font-bold text-purple-300 mb-3 text-lg tracking-wide flex items-center gap-2">Secret Mode <span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500 shadow-[0_0_10px_#a855f7]"></span></span></h4>
+                                <p class="text-sm text-purple-100/80 leading-relaxed mb-5">Generates a secure cryptographic key URL. Entry impossible without exact link.</p>
+                                <span class="inline-flex items-center justify-center px-4 py-2 bg-purple-500/20 border border-purple-400/30 rounded-full text-[10px] text-purple-300 uppercase tracking-widest font-bold">Ideal for: Privacy</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div onclick="selectWorld('ghost')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
-                        <div class="w-12 h-12 mb-5 rounded-2xl bg-slate-500/10 border border-slate-500/20 flex items-center justify-center text-slate-300 anim-float" style="animation-delay: 0.6s">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <div onclick="selectWorld('onetime')" class="world-card glass-panel-3d tilt-element rounded-[2.5rem] cursor-pointer h-[320px] flex flex-col p-8 group shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_30px_60px_rgba(245,158,11,0.15)]" style="--theme-rgb: 245, 158, 11;">
+                        <div class="relative z-10 w-16 h-16 mb-6 rounded-[1.25rem] bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 anim-float shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:bg-amber-500/20" style="animation-delay: 0.4s">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         </div>
-                        <h3 class="text-xl font-medium text-white mb-2">Ghost Protocol</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed font-light">Auto-decay enabled. All transmissions self-destruct after 30 seconds.</p>
-                        <div class="world-overlay bg-slate-800/95">
-                            <h4 class="font-semibold text-slate-200 mb-2 text-sm tracking-wide">Ghost Mode</h4>
-                            <p class="text-[11px] text-slate-300/70 leading-relaxed">Messages have a strict lifetime. They evaporate from all screens simultaneously.<br><br><span class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Ideal for: Sensitive Data</span></p>
+                        <div class="relative z-10 flex-1 flex flex-col justify-end">
+                            <div class="card-content-default">
+                                <h3 class="text-3xl font-semibold text-white mb-3 tracking-tight">Flash Instance</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed font-light">Volatile memory layer. Evaporates permanently when empty.</p>
+                            </div>
+                            <div class="card-content-hover">
+                                <h4 class="font-bold text-amber-300 mb-3 text-lg tracking-wide flex items-center gap-2">Flash Mode <span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500 shadow-[0_0_10px_#f59e0b]"></span></span></h4>
+                                <p class="text-sm text-amber-100/80 leading-relaxed mb-5">A temporary network layer. Once all peers disconnect, it is destroyed forever.</p>
+                                <span class="inline-flex items-center justify-center px-4 py-2 bg-amber-500/20 border border-amber-400/30 rounded-full text-[10px] text-amber-300 uppercase tracking-widest font-bold">Ideal for: Burners</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div onclick="selectWorld('vault')" class="world-card glass-panel-3d rounded-[2rem] cursor-pointer h-64 flex flex-col justify-start p-8 bg-zinc-900/50 border border-white/5 group">
-                        <div class="w-12 h-12 mb-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 anim-float" style="animation-delay: 0.8s">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <div onclick="selectWorld('ghost')" class="world-card glass-panel-3d tilt-element rounded-[2.5rem] cursor-pointer h-[320px] flex flex-col p-8 group shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_30px_60px_rgba(100,116,139,0.15)]" style="--theme-rgb: 100, 116, 139;">
+                        <div class="relative z-10 w-16 h-16 mb-6 rounded-[1.25rem] bg-slate-500/10 border border-slate-500/30 flex items-center justify-center text-slate-300 anim-float shadow-[0_0_20px_rgba(100,116,139,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:bg-slate-500/20" style="animation-delay: 0.6s">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                         </div>
-                        <h3 class="text-xl font-medium text-white mb-2">Private Vault</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed font-light">Heavily stabilized peer-to-peer tunnel for persistent local archiving.</p>
-                        <div class="world-overlay bg-emerald-900/95">
-                            <h4 class="font-semibold text-emerald-200 mb-2 text-sm tracking-wide">Vault Mode</h4>
-                            <p class="text-[11px] text-emerald-100/70 leading-relaxed">Secured data tunnel designed for saving logs and maintaining connection stability.<br><br><span class="text-[9px] text-emerald-300 uppercase tracking-widest font-bold">Ideal for: Archiving</span></p>
+                        <div class="relative z-10 flex-1 flex flex-col justify-end">
+                            <div class="card-content-default">
+                                <h3 class="text-3xl font-semibold text-white mb-3 tracking-tight">Ghost Protocol</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed font-light">Auto-decay enabled. All transmissions self-destruct after 30 seconds.</p>
+                            </div>
+                            <div class="card-content-hover">
+                                <h4 class="font-bold text-slate-200 mb-3 text-lg tracking-wide flex items-center gap-2">Ghost Mode <span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-slate-400 shadow-[0_0_10px_#94a3b8]"></span></span></h4>
+                                <p class="text-sm text-slate-300/80 leading-relaxed mb-5">Messages have a strict lifetime. They evaporate from all screens simultaneously.</p>
+                                <span class="inline-flex items-center justify-center px-4 py-2 bg-slate-500/30 border border-slate-400/40 rounded-full text-[10px] text-white uppercase tracking-widest font-bold">Ideal for: Sensitive</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div onclick="selectWorld('vault')" class="world-card glass-panel-3d tilt-element rounded-[2.5rem] cursor-pointer h-[320px] flex flex-col p-8 group shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_30px_60px_rgba(16,185,129,0.15)]" style="--theme-rgb: 16, 185, 129;">
+                        <div class="relative z-10 w-16 h-16 mb-6 rounded-[1.25rem] bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 anim-float shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:bg-emerald-500/20" style="animation-delay: 0.8s">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <div class="relative z-10 flex-1 flex flex-col justify-end">
+                            <div class="card-content-default">
+                                <h3 class="text-3xl font-semibold text-white mb-3 tracking-tight">Private Vault</h3>
+                                <p class="text-sm text-slate-400 leading-relaxed font-light">Heavily stabilized peer-to-peer tunnel for persistent local archiving.</p>
+                            </div>
+                            <div class="card-content-hover">
+                                <h4 class="font-bold text-emerald-300 mb-3 text-lg tracking-wide flex items-center gap-2">Vault Mode <span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_10px_#10b981]"></span></span></h4>
+                                <p class="text-sm text-emerald-100/80 leading-relaxed mb-5">Secured data tunnel designed for saving logs and maintaining connection stability.</p>
+                                <span class="inline-flex items-center justify-center px-4 py-2 bg-emerald-500/20 border border-emerald-400/30 rounded-full text-[10px] text-emerald-300 uppercase tracking-widest font-bold">Ideal for: Archiving</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="chatView" class="hidden flex-1 flex-col h-full relative z-10 view-enter">
+        <!-- CHAT VIEW -->
+        <div id="chatView" class="hidden flex-1 flex-col h-full relative z-10 view-enter w-full max-w-5xl mx-auto border-x border-white/5 bg-black/40 shadow-2xl">
             
-            <div id="loginScreen" class="absolute inset-0 z-40 bg-black/70 backdrop-blur-3xl flex items-center justify-center p-4 transition-all duration-1000">
-                <div class="glass-panel-3d p-10 md:p-14 rounded-[3rem] w-full max-w-md shadow-2xl border border-white/10 relative overflow-hidden bg-black/60">
-                    <div class="absolute -top-40 -left-40 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
-                    
-                    <div class="text-center mb-10 relative z-10">
-                        <div class="w-16 h-16 mx-auto border border-white/20 bg-white/5 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-                            <span class="text-2xl anim-breathe">📡</span>
-                        </div>
-                        <h2 class="text-2xl font-semibold text-white tracking-tight">Establish Uplink</h2>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-3" id="loginModeDesc">Topology: PENDING</p>
+            <div id="loginScreen" class="absolute inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500">
+                <div class="glass-panel glass-panel-3d tilt-element p-8 md:p-12 rounded-[2rem] w-full max-w-sm shadow-2xl relative border border-white/10 overflow-hidden">
+                    <div class="absolute -top-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="text-center mb-8 relative z-10">
+                        <div class="story-ring w-20 h-20 mx-auto flex items-center justify-center text-4xl mb-4 bg-zinc-900" id="loginAvatarPreview">🐺</div>
+                        <h2 class="text-2xl font-bold text-white">Lumina Omni</h2>
+                        <p class="text-[10px] text-emerald-500 font-bold uppercase tracking-widest mt-2" id="loginModeDesc">Topology: PENDING</p>
                     </div>
-
-                    <div class="space-y-6 mb-10 relative z-10">
-                        <div class="relative group">
-                            <label class="absolute -top-2 left-4 px-2 bg-[#0c0c0e] text-[9px] font-bold text-slate-500 uppercase tracking-wider rounded transition-colors group-focus-within:text-white">Handle</label>
-                            <input type="text" id="loginNameInput" class="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm outline-none focus:border-white/30 focus:bg-white/10 transition-all" placeholder="Enter designation..." maxlength="15">
-                        </div>
-                        
-                        <div class="relative group">
-                            <label class="absolute -top-2 left-4 px-2 bg-[#0c0c0e] text-[9px] font-bold text-slate-500 uppercase tracking-wider rounded transition-colors group-focus-within:text-white">Target Designation</label>
-                            <input type="text" id="roomInput" value="Global" class="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm outline-none focus:border-white/30 focus:bg-white/10 transition-all" maxlength="20">
-                        </div>
+                    <div class="space-y-4 mb-8 relative z-10">
+                        <input type="text" id="loginNameInput" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-emerald-500/50 transition-colors shadow-inner" placeholder="Your Name" maxlength="15">
+                        <input type="text" id="roomInput" value="Global" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-emerald-500/50 transition-colors shadow-inner" placeholder="Room ID" maxlength="20">
                     </div>
-
-                    <button id="joinBtn" class="w-full py-4 rounded-2xl bg-white text-black font-semibold transition-all hover:scale-[1.02] text-sm relative z-10">
-                        Connect to Mesh
+                    <button id="joinBtn" class="btn-ripple w-full py-3.5 rounded-xl bg-white text-black font-bold transition-transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)] relative z-10">
+                        Join Network
                     </button>
-                    <p id="connectionStatus" class="mt-6 text-[10px] text-slate-400 h-4 text-center font-bold uppercase tracking-widest relative z-10"></p>
+                    <p id="connectionStatus" class="mt-4 text-[10px] text-emerald-400 text-center font-bold uppercase tracking-widest h-4 relative z-10"></p>
                 </div>
             </div>
 
-            <!-- Active Chat Header -->
-            <header class="h-[72px] px-6 border-b border-white/5 flex items-center justify-between shrink-0 glass-panel z-20 relative bg-black/20 backdrop-blur-xl">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-[1rem] bg-white/5 border border-white/10 flex items-center justify-center text-lg shadow-[0_0_15px_rgba(255,255,255,0.05)] anim-float">🌍</div>
+            <!-- WhatsApp Style Header -->
+            <header class="h-[70px] px-4 md:px-6 border-b border-white/10 flex items-center justify-between shrink-0 glass-panel z-20 bg-black/60">
+                <div class="flex items-center gap-3 cursor-pointer group" id="presenceBtn">
+                    <div class="story-ring w-10 h-10 flex items-center justify-center bg-zinc-800 text-xl group-hover:scale-105 transition-transform">🌍</div>
                     <div>
-                        <h2 id="roomDisplay" class="font-medium text-sm tracking-wide text-white">Global</h2>
-                        <div class="flex items-center gap-2 text-[9px] uppercase tracking-widest font-bold mt-0.5">
-                            <span id="roomTypeBadge" class="text-slate-400">PUBLIC ARCHITECTURE</span>
+                        <h2 id="roomDisplay" class="font-bold text-base text-white leading-tight drop-shadow-md">Global</h2>
+                        <div class="text-[11px] text-emerald-400 font-medium mt-0.5 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_5px_#10b981]"></span>
+                            <span id="peerCount">1</span> <span class="uppercase tracking-widest text-[9px] font-bold">Online</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="flex items-center gap-3 relative">
-                    <button id="presenceBtn" class="glass-button px-4 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2 text-slate-300">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <span id="peerCount">1</span>
+                <div class="flex items-center gap-2 relative">
+                    <button id="inviteBtn" class="glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Invite Link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                     </button>
-                    <button id="inviteBtn" class="glass-button px-4 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2 text-slate-300">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                        <span class="hidden sm:inline">Invite</span>
+                    <button id="quitBtn" class="glass-button w-10 h-10 rounded-full flex items-center justify-center text-red-400 hover:bg-red-500/20 border-red-500/30" title="Leave">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </button>
-                    <button id="quitBtn" class="glass-button px-4 py-2.5 rounded-xl text-xs font-medium text-red-400/80 hover:text-red-400 border-red-500/20 hover:bg-red-500/10 hover:border-red-500/30 flex items-center gap-2">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                        <span class="hidden sm:inline">Disconnect</span>
-                    </button>
-
-                    <div id="presencePanel" class="hidden absolute top-16 right-0 w-80 glass-panel-3d rounded-[2rem] p-6 border border-white/10 z-50 flex-col gap-4 bg-[#09090b]/95 backdrop-blur-3xl shadow-2xl">
-                        <div class="text-[9px] uppercase tracking-[0.2em] text-slate-400 font-bold border-b border-white/5 pb-4 flex justify-between">
-                            <span>Connected Entities</span>
-                            <span class="text-emerald-500 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Live</span>
-                        </div>
-                        <div id="presenceList" class="flex flex-col gap-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
                 </div>
             </header>
 
-            <!-- Messages Area -->
-            <div id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 flex flex-col relative custom-scrollbar">
-                <div class="text-center my-8">
-                    <span class="bg-white/5 border border-white/10 text-slate-400 text-[9px] uppercase tracking-[0.2em] font-bold px-6 py-2.5 rounded-full backdrop-blur-md">End-to-End Mesh Established</span>
+            <!-- Instagram Style Presence Dropdown -->
+            <div id="presencePanel" class="hidden absolute top-[70px] left-0 w-full glass-panel border-b border-white/10 z-10 bg-black/95 p-4 shadow-xl origin-top transition-all duration-300 transform scale-y-0 opacity-0">
+                <div class="flex gap-4 overflow-x-auto custom-scrollbar pb-2 px-2" id="presenceList">
+                    <!-- Stories go here -->
                 </div>
             </div>
 
-            <!-- Seamless Input Pill -->
-            <footer class="shrink-0 p-4 md:p-6 md:pb-8 w-full z-30 flex justify-center">
-                <form id="chatForm" class="flex items-center gap-2 w-full max-w-4xl relative glass-panel p-2 rounded-[2rem] bg-black/60 border border-white/10 shadow-2xl backdrop-blur-3xl">
-                    
-                    <!-- Swipe Reply Context UI -->
-                    <div id="replyContextBox" class="absolute -top-20 left-4 right-14 bg-[#09090b]/95 backdrop-blur-3xl border border-white/10 rounded-[1.2rem] p-3 text-xs flex justify-between items-center shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
-                        <div class="min-w-0 flex-1 border-l-2 border-emerald-500 pl-3">
-                            <span id="replyUser" class="text-emerald-400 font-bold text-[9px] uppercase tracking-widest block mb-0.5"></span>
-                            <span id="replyText" class="text-slate-300 truncate block font-medium"></span>
-                        </div>
-                        <button type="button" onclick="cancelReply()" class="w-7 h-7 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white shrink-0 ml-3 transition-colors border border-white/5">✕</button>
-                    </div>
+            <!-- Messages Area -->
+            <div id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col relative custom-scrollbar bg-transparent">
+                <div class="text-center my-6">
+                    <span class="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/80 text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-md shadow-[0_0_15px_rgba(234,179,8,0.1)]">End-to-End Encrypted</span>
+                </div>
+            </div>
 
-                    <div class="relative shrink-0">
-                        <button type="button" id="plusBtn" class="w-12 h-12 rounded-full glass-button flex items-center justify-center text-slate-400 hover:text-white transition-all z-20 relative bg-white/5 border-none">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </button>
-                        
-                        <div id="radialMenu" class="radial-menu hidden absolute bottom-16 left-0 flex-col gap-3 z-10">
-                            <button type="button" onclick="triggerFile()" class="radial-item w-12 h-12 rounded-full bg-zinc-800 text-white flex items-center justify-center shadow-lg hover:scale-110 border border-white/10" title="Send Media">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                            </button>
-                            <button type="button" onclick="toggleVoice()" id="voiceBtn" class="radial-item w-12 h-12 rounded-full bg-zinc-800 text-white flex items-center justify-center shadow-lg hover:scale-110 border border-white/10" style="transition-delay: 50ms;" title="Voice Note">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                            </button>
-                        </div>
+            <!-- Advanced Input Area -->
+            <footer class="shrink-0 p-3 md:p-4 w-full z-30 bg-black/60 backdrop-blur-xl border-t border-white/5 pb-20 sm:pb-4">
+                
+                <!-- Reply Context -->
+                <div id="replyContextBox" class="hidden items-center justify-between bg-white/5 rounded-t-xl px-4 py-2 border-l-4 border-emerald-500 mb-2 max-w-3xl mx-auto w-full backdrop-blur-md">
+                    <div class="min-w-0 flex-1">
+                        <span id="replyUser" class="text-emerald-400 font-bold text-[11px] uppercase tracking-widest"></span>
+                        <span id="replyText" class="text-slate-300 text-xs truncate block mt-0.5"></span>
                     </div>
+                    <button type="button" onclick="cancelReply()" class="p-1 text-slate-400 hover:text-white">✕</button>
+                </div>
+
+                <form id="chatForm" class="flex items-end gap-2 w-full max-w-3xl mx-auto relative">
+                    <button type="button" onclick="triggerFile()" class="glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                    </button>
                     <input type="file" id="fileInput" class="hidden" accept="image/*, .pdf, .txt">
 
-                    <div class="relative flex-1 h-12">
-                        <input type="text" id="msgInput" placeholder="Transmit data..." autocomplete="off" class="w-full h-full bg-transparent border-none px-4 text-sm text-white placeholder-slate-500 focus:outline-none transition-all">
+                    <div class="flex-1 relative bg-white/10 rounded-2xl border border-white/10 flex items-center transition-all focus-within:border-white/30 focus-within:shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                        <input type="text" id="msgInput" placeholder="Message..." autocomplete="off" class="w-full bg-transparent border-none px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none pr-10">
                         
-                        <div id="typingIndicator" class="absolute right-4 top-1/2 -translate-y-1/2 hidden items-center gap-1.5 z-10">
-                            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
-                            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_150ms]"></span>
-                            <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-[bounce_1s_infinite_300ms]"></span>
+                        <div id="typingIndicator" class="absolute right-12 top-1/2 -translate-y-1/2 hidden items-center gap-1.5 z-10 bg-black/50 px-2 py-1 rounded-full">
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_150ms]"></span>
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_300ms]"></span>
                         </div>
+
+                        <!-- Snapchat Toggle -->
+                        <button type="button" id="snapToggleBtn" class="p-2 mr-1 text-slate-500 hover:text-yellow-400 transition-colors" title="Snap Mode (View Once)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </button>
                     </div>
                     
-                    <button type="submit" class="w-12 h-12 rounded-full bg-white flex items-center justify-center shrink-0 text-black hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-0.5 mt-0.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <button type="button" onclick="toggleVoice()" id="voiceBtn" class="glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                    </button>
+
+                    <button type="submit" id="sendBtn" class="hidden w-[42px] h-[42px] rounded-full shrink-0 items-center justify-center bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-0.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                     </button>
                 </form>
             </footer>
         </div>
 
-        <div id="toast" class="fixed bottom-[90px] sm:bottom-12 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) opacity-0 pointer-events-none transform translate-y-8 glass-panel px-6 py-3.5 rounded-full flex items-center gap-3 shadow-2xl border border-white/10 bg-black/90">
-            <span id="toastIcon" class="text-emerald-400">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </span>
-            <span id="toastMsg" class="text-xs font-semibold text-white tracking-wide">Notification</span>
+        <!-- Toast Notifications -->
+        <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[99999] transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 bg-black/95 px-5 py-2.5 rounded-full flex items-center gap-2 shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-white/20">
+            <span id="toastMsg" class="text-xs font-semibold text-white tracking-wide"></span>
         </div>
-
     </main>
 
     <!-- Mobile Navigation -->
     <nav class="sm:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 flex justify-around p-2 z-50 bg-black/60 backdrop-blur-2xl">
-        <button onclick="switchView('home')" data-target="home" class="mobile-nav-item active flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span class="text-[9px] font-bold uppercase tracking-widest">Home</span>
+        <button onclick="switchView('home')" data-target="home" class="mobile-nav-item active flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="text-[9px] font-bold uppercase tracking-widest hidden">Home</span>
         </button>
-        <button onclick="switchView('worlds')" data-target="worlds" class="mobile-nav-item flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-            <span class="text-[9px] font-bold uppercase tracking-widest">Worlds</span>
+        <button onclick="switchView('worlds')" data-target="worlds" class="mobile-nav-item flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
         </button>
-        <button onclick="switchView('chat')" data-target="chat" class="mobile-nav-item flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            <span class="text-[9px] font-bold uppercase tracking-widest">Chat</span>
+        <button onclick="switchView('chat')" data-target="chat" class="mobile-nav-item flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
         </button>
-        <button onclick="switchView('settings')" data-target="settings" class="mobile-nav-item flex flex-col items-center gap-1.5 p-2 transition-colors hover:text-white">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span class="text-[9px] font-bold uppercase tracking-widest">Identity</span>
+        <button onclick="switchView('settings')" data-target="settings" class="mobile-nav-item flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
+            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
     </nav>
 
     <script>
-        // DOM Helper
         const $ = (id) => document.getElementById(id);
         
         let peer = null;
@@ -610,7 +642,6 @@
         let isHost = false;
         let targetHostId = '';
         
-        // Identity & State
         let myName = 'Guest';
         let myGender = 'male';
         let myAvatar = '🐺';
@@ -619,173 +650,129 @@
         let ghostDuration = 30;
         let myPeerId = '';
         
+        let isSnapMode = false;
         const activeUsers = new Map();
-
+        
         const UI = {
-            login: $('loginScreen'), roomIn: $('roomInput'),
+            login: $('loginScreen'), roomIn: $('roomInput'), nameIn: $('loginNameInput'),
             chat: $('chatWindow'), form: $('chatForm'), msgIn: $('msgInput'),
-            count: $('peerCount'), presenceBtn: $('presenceBtn'), presencePanel: $('presencePanel'),
-            radialMenu: $('radialMenu'), plusBtn: $('plusBtn'), toast: $('toast')
+            count: $('peerCount'), presencePanel: $('presencePanel'),
+            sendBtn: $('sendBtn'), voiceBtn: $('voiceBtn'), snapBtn: $('snapToggleBtn'),
+            toast: $('toast')
         };
 
-        // --- STREAMING_CHUNK: Liquid Constellation 2.0 Canvas ---
+        // --- STREAMING_CHUNK: Optimized Ethereal Canvas ---
+        let networkEnergy = 0;
+        window.pingNetwork = function() { networkEnergy = Math.min(networkEnergy + 0.8, 2.0); };
+
         window.addEventListener('DOMContentLoaded', () => {
             const canvas = $('bg-canvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
             let width, height, particles = [];
-            let networkEnergy = 0;
-            let mouseNode = { x: -1000, y: -1000, vx: 0, vy: 0 };
 
             function initCanvas() {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
                 particles = [];
-                const count = Math.min(window.innerWidth / 18, 70); 
+                // Dynamic sizing for performance
+                const count = Math.min(window.innerWidth / 30, 40); 
                 for (let i = 0; i < count; i++) {
                     particles.push({
                         x: Math.random() * width, y: Math.random() * height,
-                        vx: (Math.random() - 0.5) * 0.1, vy: (Math.random() - 0.5) * 0.1,
-                        radius: Math.random() * 1.5 + 0.3,
-                        baseAlpha: Math.random() * 0.3 + 0.1,
-                        pulse: Math.random() * Math.PI
+                        vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+                        r: Math.random() * 2 + 1
                     });
                 }
             }
-            
             window.addEventListener('resize', initCanvas);
             initCanvas();
-
-            let mouse = { x: -1000, y: -1000 };
-            let lastMouse = { x: -1000, y: -1000 };
             
-            document.addEventListener('mousemove', (e) => { 
-                lastMouse.x = mouse.x; lastMouse.y = mouse.y;
-                mouse.x += (e.clientX - mouse.x) * 0.15; 
-                mouse.y += (e.clientY - mouse.y) * 0.15; 
-                mouseNode.vx = mouse.x - lastMouse.x;
-                mouseNode.vy = mouse.y - lastMouse.y;
-            });
-            
-            function drawNetwork() {
+            function draw() {
                 ctx.clearRect(0, 0, width, height);
-                networkEnergy = Math.max(0, networkEnergy - 0.005); 
+                networkEnergy = Math.max(0, networkEnergy - 0.01);
                 
-                const baseColor = `255, 255, 255`; 
+                ctx.fillStyle = `rgba(255, 255, 255, ${0.15 + (networkEnergy*0.2)})`;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 + (networkEnergy*0.1)})`;
+                ctx.lineWidth = 0.5 + (networkEnergy * 0.5);
 
-                particles.forEach((p, i) => {
-                    p.pulse += 0.02;
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
                     p.x += p.vx * (1 + networkEnergy * 3);
                     p.y += p.vy * (1 + networkEnergy * 3);
-
                     if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
                     if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
-
-                    const dx = p.x - mouse.x; const dy = p.y - mouse.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (dist < 150) {
-                        p.x += dx * 0.003; p.y += dy * 0.003;
-                        p.x += mouseNode.vx * 0.01;
-                        p.y += mouseNode.vy * 0.01;
-                    }
-
                     ctx.beginPath();
-                    const currentAlpha = p.baseAlpha + Math.sin(p.pulse) * 0.2 + networkEnergy * 0.3;
-                    ctx.arc(p.x, p.y, p.radius * (1 + networkEnergy * 0.2), 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${baseColor}, ${currentAlpha * 0.5})`;
+                    ctx.arc(p.x, p.y, p.r * (1 + networkEnergy), 0, Math.PI * 2);
                     ctx.fill();
 
+                    // Optimized squared distance calculation
                     for (let j = i + 1; j < particles.length; j++) {
                         const p2 = particles[j];
-                        const lDist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
-                        if (lDist < 120) {
+                        const distSq = (p.x - p2.x)**2 + (p.y - p2.y)**2;
+                        if (distSq < 10000) { 
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
                             ctx.lineTo(p2.x, p2.y);
-                            const opacity = Math.pow((1 - lDist/120), 2) * (0.05 + networkEnergy * 0.15);
-                            
-                            const midX = (p.x + p2.x) / 2;
-                            const midY = (p.y + p2.y) / 2;
-                            const mouseDistToLine = Math.sqrt((midX - mouse.x)**2 + (midY - mouse.y)**2);
-                            const lineGlow = mouseDistToLine < 100 ? (1 - mouseDistToLine/100) * 0.2 : 0;
-
-                            ctx.strokeStyle = `rgba(${baseColor}, ${opacity + lineGlow})`;
-                            ctx.lineWidth = 0.2 + networkEnergy * 0.3 + lineGlow;
                             ctx.stroke();
                         }
                     }
-                });
-                requestAnimationFrame(drawNetwork);
+                }
+                requestAnimationFrame(draw);
             }
-            drawNetwork();
-
-            window.pingNetwork = function() { networkEnergy = Math.min(networkEnergy + 0.6, 1.2); }
+            draw();
         });
 
-        // --- STREAMING_CHUNK: UI Management & View Switching ---
+        // 3D Tilt Effect Injection for Worlds Page
+        document.querySelectorAll('.tilt-element').forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                // Spotlighting coords
+                el.style.setProperty('--mouse-x', `${x}px`); el.style.setProperty('--mouse-y', `${y}px`);
+                
+                const centerX = rect.width / 2; const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5; const rotateY = ((x - centerX) / centerX) * 5;
+                el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            el.addEventListener('mouseleave', () => { el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; });
+        });
+
+        // Routing Engine
         function switchView(viewName) {
             ['homeView', 'worldsView', 'chatView', 'settingsView'].forEach(v => {
-                const el = $(v);
-                if(el) {
-                    el.classList.add('hidden');
-                    el.classList.remove('flex', 'view-enter');
-                }
+                const el = $(v); if(el) { el.classList.add('hidden'); el.classList.remove('flex', 'view-enter'); }
             });
             const target = $(viewName + 'View');
-            if (target) {
-                target.classList.remove('hidden');
-                target.classList.add('flex');
-                void target.offsetWidth; 
-                target.classList.add('view-enter');
-            }
-            if (viewName === 'chat' && !peer && roomType !== 'public') {
-                UI.login.classList.remove('login-exit', 'hidden'); 
-            }
+            if (target) { target.classList.remove('hidden'); target.classList.add('flex'); void target.offsetWidth; target.classList.add('view-enter'); }
+            
+            if (viewName === 'chat' && !peer && roomType !== 'public') { UI.login.classList.remove('login-exit', 'hidden'); }
 
-            // Sync Premium Navigation Tabs Active State
             document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(btn => {
-                if (btn.getAttribute('data-target') === viewName) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                if (btn.getAttribute('data-target') === viewName) btn.classList.add('active');
+                else btn.classList.remove('active');
             });
         }
 
-        function showToast(msg, type = 'info') {
+        // Global UI
+        function showToast(msg) {
             $('toastMsg').textContent = msg;
-            
-            // Dynamic SVG Icon for Toasts
-            const iconSvg = type === 'error' 
-                ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
-                : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
-            
-            $('toastIcon').innerHTML = iconSvg;
-            
-            UI.toast.style.transform = 'translate(-50%, 0)';
-            UI.toast.style.opacity = '1';
-            
-            setTimeout(() => {
-                UI.toast.style.transform = 'translate(-50%, 32px)';
-                UI.toast.style.opacity = '0';
-            }, 3000);
+            UI.toast.style.transform = 'translate(-50%, 0)'; UI.toast.style.opacity = '1';
+            setTimeout(() => { UI.toast.style.transform = 'translate(-50%, -16px)'; UI.toast.style.opacity = '0'; }, 3000);
         }
 
         function syncProfileUI(name, gender, avatar) {
             if($('profNameInput')) $('profNameInput').value = name;
-            if($('loginNameInput')) $('loginNameInput').value = name;
+            if(UI.nameIn) UI.nameIn.value = name;
             
-            const checkRadios = (nameAttr, val) => {
-                const el = document.querySelector(`input[name="${nameAttr}"][value="${val}"]`);
-                if(el) el.checked = true;
-            };
-            checkRadios('profGender', gender);
-            checkRadios('profAvatar', avatar);
+            const checkRadios = (nameAttr, val) => { const el = document.querySelector(`input[name="${nameAttr}"][value="${val}"]`); if(el) el.checked = true; };
+            checkRadios('profGender', gender); checkRadios('profAvatar', avatar);
             
-            if ($('profAvatarDisplay')) $('profAvatarDisplay').innerHTML = `<span class="anim-float">${avatar}</span>`;
+            if ($('profAvatarDisplay')) $('profAvatarDisplay').innerHTML = `<span class="anim-float block drop-shadow-2xl">${avatar}</span>`;
             if ($('sbAvatar')) $('sbAvatar').innerHTML = avatar;
             if ($('sbName')) $('sbName').textContent = name || 'Guest';
+            if ($('loginAvatarPreview')) $('loginAvatarPreview').textContent = avatar;
         }
 
         try {
@@ -799,263 +786,333 @@
             myName = $('profNameInput').value.trim() || 'Guest';
             myGender = document.querySelector('input[name="profGender"]:checked')?.value || 'male';
             myAvatar = document.querySelector('input[name="profAvatar"]:checked')?.value || '🐺';
-            
-            try {
-                localStorage.setItem('lumina_name', myName);
-                localStorage.setItem('lumina_gender', myGender);
-                localStorage.setItem('lumina_avatar', myAvatar);
-            } catch(e) {}
-            
-            syncProfileUI(myName, myGender, myAvatar);
-            showToast("Identity Locked", "success");
-            
+            try { localStorage.setItem('lumina_name', myName); localStorage.setItem('lumina_gender', myGender); localStorage.setItem('lumina_avatar', myAvatar); } catch(e) {}
+            syncProfileUI(myName, myGender, myAvatar); showToast("Identity Configuration Locked");
             if (peer) broadcast({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
         });
 
         function selectWorld(type) {
             roomType = type;
             if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${type.toUpperCase()}`;
-            
             if (type === 'public') {
-                switchView('chat');
-                // Frictionless Entry: Bypass setup overlay completely for Public Core
-                if (UI.login) UI.login.classList.add('hidden');
-                
-                roomName = 'Global';
-                if ($('roomInput')) $('roomInput').value = 'Global';
-                
+                switchView('chat'); if (UI.login) UI.login.classList.add('hidden');
+                roomName = 'Global'; if (UI.roomIn) UI.roomIn.value = 'Global';
                 syncProfileUI(myName, myGender, myAvatar);
-                targetHostId = `lumina-core-global-public-v5`;
-                
-                showToast("Initializing Public Core...", "info");
-                initPeer();
+                targetHostId = `omni-core-global-public-v6`;
+                showToast("Initializing Public Core..."); initPeer();
             } else {
                 switchView('chat');
-                // Show connection setup screen for secure/specialized modes
-                if (UI.login) {
-                    UI.login.classList.remove('hidden', 'login-exit');
-                    if($('connectionStatus')) $('connectionStatus').textContent = "";
-                }
+                if (UI.login) { UI.login.classList.remove('hidden', 'login-exit'); if($('connectionStatus')) $('connectionStatus').textContent = ""; }
             }
         }
 
-        // --- STREAMING_CHUNK: Interaction Elements ---
-        UI.plusBtn?.addEventListener('click', () => {
-            const isHidden = UI.radialMenu.classList.contains('hidden');
-            if (isHidden) {
-                UI.radialMenu.classList.remove('hidden');
-                UI.radialMenu.classList.add('flex');
-                setTimeout(() => UI.radialMenu.classList.add('active'), 10);
+        // Chat Inputs
+        UI.msgIn.addEventListener('input', () => {
+            if (UI.msgIn.value.trim().length > 0) {
+                UI.sendBtn.classList.remove('hidden'); UI.sendBtn.classList.add('flex'); UI.voiceBtn.classList.add('hidden');
             } else {
-                UI.radialMenu.classList.remove('active');
-                setTimeout(() => { UI.radialMenu.classList.add('hidden'); UI.radialMenu.classList.remove('flex'); }, 400);
+                UI.sendBtn.classList.add('hidden'); UI.sendBtn.classList.remove('flex'); UI.voiceBtn.classList.remove('hidden');
             }
         });
 
-        UI.presenceBtn?.addEventListener('click', () => {
-            const panel = UI.presencePanel;
-            if(panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-                panel.classList.add('flex');
-                panel.style.animation = 'viewFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-                renderPresenceList();
+        UI.snapBtn.addEventListener('click', () => {
+            isSnapMode = !isSnapMode;
+            if (isSnapMode) {
+                UI.snapBtn.classList.replace('text-slate-500', 'text-yellow-400');
+                UI.snapBtn.classList.add('drop-shadow-[0_0_8px_rgba(255,252,0,0.8)]'); showToast("Snap Mode: View Once Enabled");
             } else {
-                panel.classList.add('hidden');
-                panel.classList.remove('flex');
+                UI.snapBtn.classList.replace('text-yellow-400', 'text-slate-500');
+                UI.snapBtn.classList.remove('drop-shadow-[0_0_8px_rgba(255,252,0,0.8)]'); showToast("Snap Mode Disabled");
             }
+        });
+
+        // Instagram Presence
+        $('presenceBtn').addEventListener('click', () => {
+            const panel = UI.presencePanel;
+            if (panel.classList.contains('scale-y-0')) { panel.classList.remove('scale-y-0', 'opacity-0'); renderPresenceList(); } 
+            else { panel.classList.add('scale-y-0', 'opacity-0'); }
         });
 
         function renderPresenceList() {
-            const list = $('presenceList');
-            if(!list) return;
-            list.innerHTML = `
-                <div class="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/5">
-                    <div class="w-10 h-10 rounded-[1rem] bg-white/5 flex items-center justify-center text-xl shadow-lg border border-white/10">${myAvatar}</div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-semibold truncate text-white">${myName} (You)</p>
-                        <p class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest mt-0.5">Online</p>
-                    </div>
-                </div>
-            `;
-            activeUsers.forEach((user, id) => {
-                list.innerHTML += `
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-transparent border border-transparent transition-colors hover:bg-white/5">
-                        <div class="w-10 h-10 rounded-[1rem] bg-black/40 flex items-center justify-center text-xl shadow-md border border-white/5">${user.avatar}</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-semibold truncate text-slate-300">${user.name}</p>
-                            <p class="text-[9px] ${user.isTyping ? 'text-white animate-pulse' : 'text-slate-500'} font-bold uppercase tracking-widest mt-0.5">
-                                ${user.isTyping ? 'Transmitting...' : 'Online'}
-                            </p>
-                        </div>
-                    </div>
-                `;
+            const list = $('presenceList'); if(!list) return;
+            list.innerHTML = `<div class="flex flex-col items-center gap-1 min-w-[60px]"><div class="story-ring w-14 h-14 flex items-center justify-center bg-black text-2xl">${myAvatar}</div><span class="text-[10px] text-white font-medium truncate w-full text-center">You</span></div>`;
+            activeUsers.forEach((user) => {
+                list.innerHTML += `<div class="flex flex-col items-center gap-1 min-w-[60px]"><div class="story-ring w-14 h-14 flex items-center justify-center bg-black text-2xl">${user.avatar}</div><span class="text-[10px] text-slate-300 font-medium truncate w-full text-center">${user.name}</span></div>`;
             });
         }
 
-        // --- STREAMING_CHUNK: Messaging Rendering ---
+        // Messaging Logic
         let activeReply = null;
-
-        function stripHTML(html) {
-            let tmp = document.createElement("DIV");
-            tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText || "Media/File";
-        }
-
         window.triggerReply = function(user, text) {
             activeReply = { user, text };
             $('replyUser').textContent = `Replying to ${user}`;
-            $('replyText').textContent = text;
-            
-            const box = $('replyContextBox');
-            box.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-            box.classList.add('opacity-100', 'translate-y-0');
-            
-            UI.msgIn.focus();
+            $('replyText').textContent = text === '[View Once Media]' ? '📸 Snap' : text;
+            $('replyContextBox').classList.remove('hidden'); $('replyContextBox').classList.add('flex'); UI.msgIn.focus();
         };
 
         window.cancelReply = function() {
-            activeReply = null;
-            const box = $('replyContextBox');
-            box.classList.remove('opacity-100', 'translate-y-0');
-            box.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            activeReply = null; $('replyContextBox').classList.add('hidden'); $('replyContextBox').classList.remove('flex');
         };
 
-        function addMessage(user, avatar, text, system = false, isSelf = false, id = null, replyTo = null) {
-            if(window.pingNetwork) window.pingNetwork();
-            
-            const div = document.createElement('div');
-            div.id = id || `msg-${Date.now()}`;
-            
-            if (system) {
-                div.className = 'text-center my-4 opacity-0 animate-[viewFadeIn_0.6s_forwards]';
-                div.innerHTML = `<span class="bg-white/5 border border-white/5 text-slate-400 text-[9px] uppercase tracking-[0.2em] font-bold px-5 py-2 rounded-full shadow-inner backdrop-blur-md">${text}</span>`;
-            } else {
-                div.className = `message-container flex flex-col max-w-[85%] msg-materialize relative group ${isSelf ? 'self-end items-end' : 'self-start items-start'}`;
-                
-                const rawText = stripHTML(text);
-                div.setAttribute('data-user', user);
-                div.setAttribute('data-text', rawText.replace(/"/g, '&quot;'));
+        function getTickHTML(status) {
+            if (status === 'sent') return `<svg class="tick-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            if (status === 'delivered') return `<svg class="tick-svg" viewBox="0 0 24 24"><path d="M18 6L7 17l-5-5"></path><path d="M22 10l-5.5 5.5"></path></svg>`;
+            if (status === 'read') return `<svg class="tick-svg text-blue-400" viewBox="0 0 24 24"><path d="M18 6L7 17l-5-5"></path><path d="M22 10l-5.5 5.5"></path></svg>`;
+            return '';
+        }
 
+        function addMessage(user, avatar, payload, isSelf = false) {
+            if(window.pingNetwork) window.pingNetwork();
+            const msgId = payload.msgId; const div = document.createElement('div');
+            div.id = msgId; div.className = `message-container flex flex-col max-w-[85%] msg-materialize relative group ${isSelf ? 'self-end items-end' : 'self-start items-start'}`;
+            div.setAttribute('data-user', user);
+            const rawText = payload.isSnap ? '[View Once Media]' : (payload.text.replace(/<[^>]*>?/gm, '') || 'Media');
+            div.setAttribute('data-text', rawText);
+
+            const heartEl = `<div class="big-heart">❤️</div>`;
+            let contentHTML = '';
+            
+            if (payload.isSnap && !isSelf) {
+                contentHTML = `<div class="snap-box" onclick="viewSnap('${msgId}')"><div class="text-3xl mb-1">🎁</div><div class="text-[10px] uppercase font-bold tracking-widest text-yellow-400">Tap to View</div><div class="hidden snap-content mt-2">${payload.text}</div><div class="snap-timer hidden"></div></div>`;
+            } else if (payload.isSnap && isSelf) {
+                contentHTML = `<div class="opacity-70 italic text-sm"><span class="text-yellow-400 text-xs font-bold uppercase tracking-widest">📸 Snap Sent</span></div>`;
+            } else {
                 let replyHTML = '';
-                if (replyTo) {
-                    replyHTML = `
-                        <div class="bg-black/20 border-l-2 border-emerald-500 rounded-r-xl p-2.5 mb-2 flex flex-col gap-0.5 relative overflow-hidden group/reply">
-                            <div class="absolute inset-0 bg-white/5 opacity-0 group-hover/reply:opacity-100 transition-opacity"></div>
-                            <span class="text-emerald-400 font-bold text-[9px] uppercase tracking-widest">${replyTo.user}</span>
-                            <span class="text-xs text-white/80 truncate font-medium relative z-10">${replyTo.text}</span>
-                        </div>
-                    `;
+                if (payload.replyTo) {
+                    replyHTML = `<div class="bg-black/20 border-l-[3px] border-emerald-500 rounded p-2 mb-2 flex flex-col cursor-pointer hover:bg-black/30 transition-colors" onclick="triggerReply('${payload.replyTo.user}', '${payload.replyTo.text.replace(/'/g, "\\'")}')"><span class="text-emerald-400 font-bold text-[10px] uppercase tracking-widest">${payload.replyTo.user}</span><span class="text-xs text-white/80 truncate mt-0.5">${payload.replyTo.text}</span></div>`;
                 }
-                
-                div.innerHTML = `
-                    <div class="msg-toolbar absolute ${isSelf ? '-top-10 right-0' : '-top-10 left-0'} hidden group-hover:flex items-center gap-1.5 bg-[#09090b]/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-[1rem] shadow-2xl z-20">
-                        <button onclick="triggerReply(this.closest('.message-container').dataset.user, this.closest('.message-container').dataset.text)" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300" title="Reply">↩️</button>
-                        <button onclick="sendReaction('${div.id}', '❤️')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">❤️</button>
-                        <button onclick="sendReaction('${div.id}', '😂')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">😂</button>
-                        <button onclick="copyMessage('${div.id}')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300">📋</button>
-                    </div>
-                    <div class="flex items-center mb-1.5 mx-2 gap-2">
-                        <span class="text-[9px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
-                            ${!isSelf ? `<span class="bg-white/5 border border-white/5 rounded-md w-5 h-5 flex items-center justify-center text-xs shadow-sm">${avatar}</span>` : ''} ${user}
-                        </span>
-                    </div>
-                    <div class="px-5 py-4 text-sm leading-relaxed shadow-2xl break-words w-full relative ${
-                        isSelf ? 'bg-white text-black rounded-[1.5rem] rounded-tr-md font-medium' 
-                               : 'bg-zinc-900/80 backdrop-blur-md text-slate-200 rounded-[1.5rem] rounded-tl-md border border-white/5'
-                    }">
-                        ${replyHTML}
-                        ${text}
-                        <div class="reactions-bar absolute -bottom-3 ${isSelf ? 'right-3' : 'left-3'} flex gap-1 z-10"></div>
-                    </div>
-                `;
+                contentHTML = `${replyHTML}<div class="break-words">${payload.text}</div>`;
             }
+            
+            const statusHTML = isSelf ? `<div class="msg-status" id="status-${msgId}">${getTickHTML('sent')}</div>` : '';
+            const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            div.innerHTML = `
+                ${!isSelf ? `<div class="text-[10px] text-slate-400 mb-1 ml-2 font-bold uppercase tracking-widest flex items-center gap-1.5"><span class="bg-black/40 border border-white/10 rounded w-5 h-5 flex items-center justify-center text-[10px]">${avatar}</span> ${user}</div>` : ''}
+                <div class="relative px-4 py-2.5 text-sm leading-relaxed shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${isSelf ? 'bg-emerald-600/90 backdrop-blur-md text-white rounded-[1.5rem] rounded-tr-sm border border-emerald-500/50' : 'bg-zinc-900/80 backdrop-blur-md text-slate-100 rounded-[1.5rem] rounded-tl-sm border border-white/10'}">
+                    ${heartEl}
+                    ${contentHTML}
+                    <div class="flex items-end justify-end mt-1 gap-1 float-right clear-both ml-3">
+                        <span class="text-[9px] text-white/50 font-medium">${timeStr}</span>
+                        ${statusHTML}
+                    </div>
+                    <div class="reactions-bar absolute -bottom-3 ${isSelf ? 'right-3' : 'left-3'} flex gap-1 z-10"></div>
+                </div>
+            `;
             
             UI.chat.appendChild(div);
             
-            const ro = new ResizeObserver(() => {
-                UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
+            // Re-trigger scroll if images are loaded to prevent layout jumps
+            const imgs = div.querySelectorAll('img');
+            imgs.forEach(img => {
+                img.onload = () => UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
             });
-            ro.observe(div);
-            setTimeout(() => ro.disconnect(), 2000);
+            
+            UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
 
-            if (roomType === 'ghost' && !system) {
-                setTimeout(() => {
-                    const msgEl = $(div.id);
-                    if (msgEl) {
-                        msgEl.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                        msgEl.style.opacity = '0';
-                        msgEl.style.transform = 'scale(0.9) translateY(-10px)';
-                        msgEl.style.filter = 'blur(10px)';
-                        setTimeout(() => msgEl.remove(), 600);
-                    }
-                }, ghostDuration * 1000);
+            if (!isSelf && !payload.isSystem) {
+                sendPayload({ type: 'receipt', msgId: msgId, status: 'delivered' });
+                if (document.hasFocus()) setTimeout(() => sendPayload({ type: 'receipt', msgId: msgId, status: 'read' }), 500);
             }
+        }
+
+        window.addEventListener('focus', () => {
+            if(!peer) return;
+            document.querySelectorAll('.message-container').forEach(el => {
+                if(!el.classList.contains('self-end')) sendPayload({ type: 'receipt', msgId: el.id, status: 'read' });
+            });
+        });
+
+        window.viewSnap = function(msgId) {
+            const el = $(msgId); if(!el) return;
+            const box = el.querySelector('.snap-box'); if(!box) return;
+            const content = el.querySelector('.snap-content'); const timer = el.querySelector('.snap-timer');
+            
+            box.onclick = null; box.style.background = 'transparent'; box.style.border = 'none'; box.style.padding = '0'; box.style.boxShadow = 'none';
+            box.innerHTML = content.innerHTML; box.appendChild(timer);
+            timer.classList.remove('hidden'); timer.classList.add('snap-burning');
+
+            sendPayload({ type: 'receipt', msgId: msgId, status: 'read' });
+            setTimeout(() => { el.classList.add('snap-destroyed'); setTimeout(() => el.remove(), 400); }, 5000);
+        };
+
+        function updateReceipt(msgId, status) {
+            const statusEl = $(`status-${msgId}`);
+            if (statusEl) { statusEl.innerHTML = getTickHTML(status); if(status === 'read') statusEl.classList.add('read'); }
         }
 
         function appendReaction(msgId, reaction) {
-            const msgEl = $(msgId);
-            if (!msgEl) return;
+            const msgEl = $(msgId); if (!msgEl) return;
             const bar = msgEl.querySelector('.reactions-bar');
             if (bar) {
                 const r = document.createElement('span');
-                r.className = 'bg-black border border-white/10 text-xs px-2.5 py-1 rounded-full shadow-lg animate-[viewFadeIn_0.3s_forwards]';
-                r.textContent = reaction;
-                bar.appendChild(r);
+                r.className = 'bg-black/90 border border-white/20 text-xs px-2 py-0.5 rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.5)] animate-[slideIn_0.2s_forwards] backdrop-blur-md';
+                r.textContent = reaction; bar.appendChild(r);
             }
         }
 
-        // --- STREAMING_CHUNK: Media Payload Handling ---
-        let mediaRecorder;
-        let audioChunks = [];
-        async function toggleVoice() {
-            const btn = $('voiceBtn');
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-                btn.classList.remove('animate-pulse', 'border-red-500');
-            } else {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                    mediaRecorder.onstop = () => {
-                        const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                        audioChunks = [];
-                        const reader = new FileReader();
-                        reader.readAsDataURL(blob);
-                        reader.onloadend = () => {
-                            const audioHTML = `<audio controls src="${reader.result}" class="w-48 max-w-full mt-2 rounded-xl border border-white/10"></audio>`;
-                            const msgId = `msg-${Date.now()}`;
-                            sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId, replyTo: activeReply });
-                            addMessage(myName, myAvatar, audioHTML, false, true, msgId, activeReply);
-                            cancelReply();
-                        };
-                        stream.getTracks().forEach(track => track.stop());
-                    };
-                    mediaRecorder.start();
-                    btn.classList.add('animate-pulse', 'border-red-500');
-                    UI.radialMenu.classList.remove('active');
-                } catch(e) { showToast("Audio access denied", "error"); }
-            }
-        }
+        window.sendReaction = function(msgId, reaction) { appendReaction(msgId, reaction); sendPayload({ type: 'reaction', msgId, reaction }); };
 
-        function triggerFile() { $('fileInput').click(); }
-        $('fileInput')?.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (file.size > 1 * 1024 * 1024) return showToast("Payload too large (Max 1MB)", "error");
+        // Swipe & Tap Physics
+        let touchStartX = 0, touchStartY = 0, dragEl = null, isSwiping = false;
+
+        UI.chat.addEventListener('touchstart', (e) => {
+            const bubble = e.target.closest('[class*="rounded-[1.5rem]"]'); if(!bubble || bubble.closest('.text-center')) return; 
+            touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+            dragEl = bubble; dragEl.style.transition = 'none'; isSwiping = false;
+        }, {passive: true});
+
+        UI.chat.addEventListener('touchmove', (e) => {
+            if(!dragEl) return;
+            const dX = e.touches[0].clientX - touchStartX; const dY = e.touches[0].clientY - touchStartY;
+            if (Math.abs(dX) > 10) isSwiping = true;
+            if(Math.abs(dY) > Math.abs(dX)) { dragEl.style.transform = ''; dragEl = null; return; }
+            let moveX = Math.max(0, Math.min(60, dX)); dragEl.style.transform = `translateX(${moveX}px)`;
+        }, {passive: true});
+
+        UI.chat.addEventListener('touchend', (e) => {
+            if(!dragEl) return;
+            const container = dragEl.closest('.message-container');
+            const style = dragEl.style.transform; const match = style ? style.match(/translateX\(([-.0-9]+)px\)/) : null;
             
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                const isImg = file.type.startsWith('image/');
-                const content = isImg ? `<img src="${reader.result}" class="max-w-[240px] rounded-xl shadow-lg mt-2 border border-white/10">` 
-                                      : `<a href="${reader.result}" download="${file.name}" class="text-blue-400 hover:text-blue-300 underline font-medium bg-black/40 px-4 py-2.5 rounded-xl inline-block mt-1 transition-colors">📄 ${file.name}</a>`;
-                const msgId = `msg-${Date.now()}`;
-                sendPayload({ type: 'msg', user: myName, avatar: myAvatar, text: content, msgId, replyTo: activeReply });
-                addMessage(myName, myAvatar, content, false, true, msgId, activeReply);
-                cancelReply();
-                UI.radialMenu.classList.remove('active');
-            };
+            if(match && Math.abs(parseFloat(match[1])) > 40 && container) {
+                if (navigator.vibrate) navigator.vibrate(50);
+                triggerReply(container.dataset.user, container.dataset.text);
+            }
+            dragEl.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'; dragEl.style.transform = 'translateX(0)';
+            setTimeout(() => { if(dragEl) dragEl.style.transition = ''; dragEl = null; }, 300);
+        });
+
+        UI.chat.addEventListener('dblclick', (e) => {
+            const bubble = e.target.closest('[class*="rounded-[1.5rem]"]');
+            if(bubble && !bubble.closest('.text-center')) {
+                const container = bubble.closest('.message-container');
+                if(container) { if (window.triggerReply) window.triggerReply(container.dataset.user, container.dataset.text); }
+            }
+        });
+
+        let lastTap = 0;
+        UI.chat.addEventListener('click', (e) => {
+            const bubble = e.target.closest('[class*="rounded-[1.5rem]"]'); if(!bubble) return;
+            const now = Date.now();
+            if(now - lastTap < 300) { 
+                const container = bubble.closest('.message-container');
+                if(container && !container.classList.contains('self-end')) {
+                    const heart = bubble.querySelector('.big-heart');
+                    if(heart) {
+                        heart.classList.remove('heart-pop'); void heart.offsetWidth; 
+                        heart.classList.add('heart-pop'); if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
+                        sendReaction(container.id, '❤️');
+                    }
+                }
+            }
+            lastTap = now;
+        });
+
+        // WebRTC Mesh Protocol
+        const peerConfig = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] } };
+
+        function updateBadge() {
+            if($('roomDisplay')) $('roomDisplay').textContent = roomName;
+            $('peerCount').textContent = Object.keys(connections).length + 1;
+            renderPresenceList();
+        }
+
+        function broadcast(data, excludePeer = null) { Object.values(connections).forEach(conn => { if(conn.open && conn.peer !== excludePeer) conn.send(data); }); }
+        function sendPayload(data) { if(isHost) broadcast(data); else if(connections[targetHostId] && connections[targetHostId].open) connections[targetHostId].send(data); }
+
+        function handleData(data, conn) {
+            if (data.type === 'presence') {
+                if (data.id !== myPeerId) { activeUsers.set(data.id, { name: data.name, avatar: data.avatar }); updateBadge(); }
+                if(isHost) broadcast(data, conn.peer); 
+            }
+            else if (data.type === 'msg') {
+                if (!$(data.msgId)) addMessage(data.user, data.avatar, data, false);
+                if (isHost) broadcast(data, conn.peer);
+            }
+            else if (data.type === 'receipt') {
+                updateReceipt(data.msgId, data.status); if (isHost) broadcast(data, conn.peer);
+            }
+            else if (data.type === 'reaction') {
+                appendReaction(data.msgId, data.reaction); if (isHost) broadcast(data, conn.peer);
+            }
+            else if (data.type === 'typing') {
+                const ind = $('typingIndicator');
+                if (data.status) { ind.classList.remove('hidden'); ind.classList.add('flex'); }
+                else { ind.classList.add('hidden'); ind.classList.remove('flex'); }
+            }
+        }
+
+        function setupConnection(conn) {
+            conn.on('data', data => handleData(data, conn));
+            conn.on('close', () => {
+                delete connections[conn.peer]; activeUsers.delete(conn.peer); updateBadge();
+                if(!isHost && conn.peer === targetHostId) { setTimeout(initPeer, 1500); }
+            });
+        }
+
+        function becomeHost() {
+            if (peer) peer.destroy(); isHost = true;
+            if($('connectionStatus')) $('connectionStatus').textContent = "Establishing Host Node...";
+            
+            peer = new Peer(targetHostId, peerConfig);
+            peer.on('open', (id) => {
+                myPeerId = id; UI.login.classList.add('login-exit'); setTimeout(() => UI.login.classList.add('hidden'), 1200);
+                updateBadge();
+            });
+            peer.on('connection', conn => {
+                connections[conn.peer] = conn; setupConnection(conn);
+                conn.on('open', () => {
+                    updateBadge(); showToast('Mesh connection detected');
+                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+                });
+            });
+        }
+
+        function initPeer() {
+            if($('connectionStatus')) $('connectionStatus').textContent = "Locating Network...";
+            if (peer) peer.destroy();
+            peer = new Peer(peerConfig);
+            peer.on('open', (id) => {
+                myPeerId = id; const conn = peer.connect(targetHostId, { reliable: true }); let hostFound = false;
+                conn.on('open', () => {
+                    hostFound = true; isHost = false; connections[targetHostId] = conn; setupConnection(conn);
+                    UI.login.classList.add('login-exit'); setTimeout(() => UI.login.classList.add('hidden'), 1200);
+                    updateBadge();
+                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+                });
+                setTimeout(() => { if (!hostFound) becomeHost(); }, 3500);
+            });
+        }
+
+        $('joinBtn')?.addEventListener('click', () => {
+            myName = UI.nameIn.value.trim() || 'Guest'; roomName = UI.roomIn.value.trim() || 'Global';
+            syncProfileUI(myName, myGender, myAvatar);
+            const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
+            targetHostId = `omni-core-${safeRoom}-${roomType}-v7`; initPeer();
+        });
+
+        $('quitBtn')?.addEventListener('click', () => {
+            if (peer) { Object.values(connections).forEach(conn => conn.close()); peer.destroy(); peer = null; }
+            connections = {}; isHost = false; activeUsers.clear();
+            UI.chat.innerHTML = `<div class="text-center my-6"><span class="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/80 text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-md shadow-[0_0_15px_rgba(234,179,8,0.1)]">End-to-End Encrypted</span></div>`;
+            if (roomType !== 'public') UI.login.classList.remove('hidden', 'login-exit');
+            if($('connectionStatus')) $('connectionStatus').textContent = "";
+            switchView('worlds'); showToast("Disconnected from mesh layer");
+        });
+
+        $('inviteBtn')?.addEventListener('click', () => {
+            const url = new URL(window.location.origin + window.location.pathname);
+            url.searchParams.set('room', encodeURIComponent(roomName)); url.searchParams.set('type', roomType);
+            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url.toString()).then(() => showToast("Cryptographic link copied"));
+        });
+
+        UI.form.addEventListener('submit', e => {
+            e.preventDefault(); const text = UI.msgIn.value.trim(); if (!text || !peer) return;
+            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode };
+            addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
+            UI.msgIn.value = ''; UI.sendBtn.classList.add('hidden'); UI.sendBtn.classList.remove('flex'); UI.voiceBtn.classList.remove('hidden');
+            sendPayload({ type: 'typing', id: myPeerId, status: false });
         });
 
         let typingTimeout;
@@ -1066,289 +1123,66 @@
             typingTimeout = setTimeout(() => sendPayload({ type: 'typing', id: myPeerId, status: false }), 1500);
         });
 
-        // --- STREAMING_CHUNK: WebRTC Mesh Protocol ---
-        const peerConfig = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] } };
-
-        function updateBadge() {
-            if($('roomDisplay')) $('roomDisplay').textContent = roomName;
-            if($('roomTypeBadge')) $('roomTypeBadge').textContent = `${roomType.toUpperCase()} ARCHITECTURE`;
-            if($('peerCount')) $('peerCount').textContent = Object.keys(connections).length + 1;
-            renderPresenceList();
-        }
-
-        function broadcast(data, excludePeer = null) {
-            Object.values(connections).forEach(conn => { 
-                if(conn.open && conn.peer !== excludePeer) conn.send(data); 
-            });
-        }
-        function sendPayload(data) {
-            if(isHost) broadcast(data);
-            else if(connections[targetHostId] && connections[targetHostId].open) connections[targetHostId].send(data);
-        }
-
-        function handleData(data, conn) {
-            if (data.type === 'presence') {
-                if (data.id !== myPeerId) {
-                    activeUsers.set(data.id, { name: data.name, avatar: data.avatar, isTyping: false });
-                    updateBadge();
-                }
-                if(isHost) broadcast(data, conn.peer); 
-            }
-            if (data.type === 'typing') {
-                if(activeUsers.has(data.id)) activeUsers.get(data.id).isTyping = data.status;
-                
-                let anyoneTyping = false;
-                activeUsers.forEach(u => { if(u.isTyping) anyoneTyping = true; });
-                
-                const ind = $('typingIndicator');
-                if(ind) {
-                    if(anyoneTyping) { ind.classList.remove('hidden'); ind.classList.add('flex'); }
-                    else { ind.classList.add('hidden'); ind.classList.remove('flex'); }
-                }
-                
-                renderPresenceList();
-                if(isHost) broadcast(data, conn.peer);
-            }
-            if (data.type === 'msg') {
-                if (!$(data.msgId)) {
-                    addMessage(data.user, data.avatar, data.text, false, false, data.msgId, data.replyTo);
-                }
-                if (isHost) broadcast(data, conn.peer);
-            }
-            if (data.type === 'reaction') {
-                appendReaction(data.msgId, data.reaction);
-                if (isHost) broadcast(data, conn.peer);
-            }
-        }
-
-        function setupConnection(conn) {
-            conn.on('data', data => handleData(data, conn));
-            conn.on('close', () => {
-                delete connections[conn.peer];
-                const u = activeUsers.get(conn.peer);
-                if(u) addMessage('System', null, `Entity ${u.name} dropped.`, true);
-                activeUsers.delete(conn.peer);
-                updateBadge();
-                
-                if(!isHost && conn.peer === targetHostId) {
-                    addMessage('System', null, 'Host disconnected. Remapping mesh...', true);
-                    setTimeout(initPeer, 1000 + Math.random() * 2000);
-                }
-            });
-        }
-
-        function becomeHost() {
-            if (peer) peer.destroy();
-            isHost = true;
-            if($('connectionStatus')) $('connectionStatus').textContent = "Establishing Host Node...";
-            
-            peer = new Peer(targetHostId, peerConfig);
-            peer.on('open', (id) => {
-                myPeerId = id;
-                UI.login.classList.add('login-exit');
-                setTimeout(() => UI.login.classList.add('hidden'), 1000);
-                
-                updateBadge();
-                addMessage('System', null, `Initialized ${roomType.toUpperCase()} layer: ${roomName}`, true);
-            });
-            peer.on('connection', conn => {
-                connections[conn.peer] = conn;
-                setupConnection(conn);
-                conn.on('open', () => {
-                    updateBadge();
-                    showToast('Mesh connection detected', 'success');
-                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
-                });
-            });
-        }
-
-        function initPeer() {
-            if($('connectionStatus')) $('connectionStatus').textContent = "Locating P2P Network...";
-            if (peer) peer.destroy();
-            
-            peer = new Peer(peerConfig);
-            peer.on('open', (id) => {
-                myPeerId = id;
-                const conn = peer.connect(targetHostId, { reliable: true });
-                let hostFound = false;
-                
-                conn.on('open', () => {
-                    hostFound = true;
-                    isHost = false;
-                    connections[targetHostId] = conn;
-                    setupConnection(conn);
-                    
-                    UI.login.classList.add('login-exit');
-                    setTimeout(() => UI.login.classList.add('hidden'), 1000);
-                    
-                    updateBadge();
-                    addMessage('System', null, `Connected to ${roomType.toUpperCase()} layer: ${roomName}`, true);
-                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
-                });
-
-                setTimeout(() => { if (!hostFound) becomeHost(); }, 3000);
-            });
-        }
-
-        // --- STREAMING_CHUNK: Final Bindings & Initialization ---
-        $('joinBtn')?.addEventListener('click', () => {
-            myName = $('loginNameInput').value.trim() || myName || 'Guest';
-            roomName = UI.roomIn.value.trim() || 'Global';
-            syncProfileUI(myName, myGender, myAvatar);
-            
-            const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
-            targetHostId = `lumina-core-${safeRoom}-${roomType}-v5`;
-            
-            initPeer();
-        });
-
-        $('quitBtn')?.addEventListener('click', () => {
-            if (peer) {
-                Object.values(connections).forEach(conn => conn.close());
-                peer.destroy();
-                peer = null;
-            }
-            
-            connections = {};
-            isHost = false;
-            targetHostId = '';
-            activeUsers.clear();
-            
-            $('chatWindow').innerHTML = `
-                <div class="text-center my-8">
-                    <span class="bg-white/5 border border-white/10 text-slate-400 text-[9px] uppercase tracking-[0.2em] font-bold px-6 py-2.5 rounded-full backdrop-blur-md">End-to-End Mesh Established</span>
-                </div>
-            `;
-            if($('peerCount')) $('peerCount').textContent = '1';
-            
-            if (roomType !== 'public') {
-                $('loginScreen').classList.remove('hidden', 'login-exit');
-            }
-            if($('connectionStatus')) $('connectionStatus').textContent = "";
-            
-            switchView('worlds');
-            showToast("Disconnected from mesh layer", "info");
-        });
-
-        $('inviteBtn')?.addEventListener('click', () => {
-            const url = new URL(window.location.origin + window.location.pathname);
-            url.searchParams.set('room', encodeURIComponent(roomName));
-            url.searchParams.set('type', roomType);
-            
-            const copyText = url.toString();
-            
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(copyText).then(() => showToast("Cryptographic link copied", "success")).catch(fallBackCopy);
-            } else {
-                fallBackCopy();
-            }
-
-            function fallBackCopy() {
-                const ta = document.createElement('textarea');
-                ta.value = copyText;
-                ta.style.position = 'fixed'; ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.select();
+        let mediaRecorder; let audioChunks = [];
+        async function toggleVoice() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') { mediaRecorder.stop(); UI.voiceBtn.classList.remove('text-red-500', 'animate-pulse'); } 
+            else {
                 try {
-                    document.execCommand('copy');
-                    showToast("Cryptographic link copied", "success");
-                } catch (err) {
-                    showToast("Failed to copy link", "error");
-                }
-                document.body.removeChild(ta);
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(audioChunks, { type: 'audio/webm' }); audioChunks = []; const reader = new FileReader(); reader.readAsDataURL(blob);
+                        reader.onloadend = () => {
+                            const audioHTML = `<audio controls src="${reader.result}" class="w-48 max-w-full h-10 mt-1"></audio>`;
+                            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode };
+                            addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
+                        };
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    mediaRecorder.start(); UI.voiceBtn.classList.add('text-red-500', 'animate-pulse');
+                } catch(e) { showToast("Microphone access denied"); }
             }
+        }
+
+        function triggerFile() { $('fileInput').click(); }
+        $('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            if (file.size > 2 * 1024 * 1024) return showToast("Payload too large (Max 2MB)");
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => {
+                const isImg = file.type.startsWith('image/');
+                const content = isImg ? `<img src="${reader.result}" class="max-w-[200px] rounded-xl mt-1 border border-white/10 shadow-lg">` 
+                                      : `<a href="${reader.result}" download="${file.name}" class="text-emerald-400 hover:text-white underline font-medium bg-black/40 px-3 py-2 rounded-xl inline-block mt-1 transition-colors border border-white/10">📄 ${file.name}</a>`;
+                const payload = { type: 'msg', user: myName, avatar: myAvatar, text: content, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode };
+                addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
+            };
         });
 
-        UI.form?.addEventListener('submit', e => {
-            e.preventDefault();
-            const text = UI.msgIn.value.trim();
-            if (!text || !peer) return;
-            
-            const msgId = `msg-${Date.now()}`;
-            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId, replyTo: activeReply };
-            
-            addMessage(myName, myAvatar, payload.text, false, true, msgId, activeReply);
-            sendPayload(payload);
-            cancelReply();
-            
-            UI.msgIn.value = '';
-            const ind = $('typingIndicator');
-            if(ind) { ind.classList.add('hidden'); ind.classList.remove('flex'); }
-            sendPayload({ type: 'typing', id: myPeerId, status: false });
-        });
-
-        window.sendReaction = function(msgId, reaction) {
-            appendReaction(msgId, reaction);
-            sendPayload({ type: 'reaction', msgId, reaction });
-        };
-
-        window.copyMessage = function(msgId) {
-            const msgEl = $(msgId);
-            if (!msgEl) return;
-            
-            const contentDiv = msgEl.querySelector('.break-words');
-            if (contentDiv) {
-                if (contentDiv.querySelector('img, audio, a')) {
-                    showToast("Cannot copy media files", "error");
-                    return;
-                }
-                
-                const text = Array.from(contentDiv.childNodes)
-                    .filter(node => node.nodeType === Node.TEXT_NODE)
-                    .map(node => node.textContent)
-                    .join('').trim();
-                    
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(text)
-                        .then(() => showToast("Copied to clipboard", "success"))
-                        .catch(() => showToast("Failed to copy", "error"));
-                }
-            }
-        };
-
+        // Initialize App & PWA
         function parseURL() {
             const params = new URLSearchParams(window.location.search);
             if (params.has('room') && params.has('type')) {
-                const urlRoom = params.get('room');
-                const urlType = params.get('type');
+                roomType = params.get('type');
+                if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${roomType.toUpperCase()}`;
+                if(UI.roomIn) UI.roomIn.value = params.get('room');
                 
-                roomType = urlType;
-                if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${urlType.toUpperCase()}`;
-                if($('roomInput')) $('roomInput').value = urlRoom;
-                
-                if (urlType === 'public') {
-                    roomName = urlRoom;
-                    syncProfileUI(myName, myGender, myAvatar);
-                    const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
-                    targetHostId = `lumina-core-${safeRoom}-public-v5`;
-                    switchView('chat');
-                    if (UI.login) UI.login.classList.add('hidden');
-                    initPeer();
-                    setTimeout(() => showToast(`Auto-connecting to Public dimension`, 'info'), 500);
-                } else {
-                    switchView('chat');
-                    setTimeout(() => showToast(`Invited to ${urlType.toUpperCase()} topology`, 'info'), 500);
-                }
-                
-                window.history.replaceState({}, document.title, window.location.pathname);
-                return true;
+                if (roomType === 'public') {
+                    roomName = params.get('room'); syncProfileUI(myName, myGender, myAvatar);
+                    targetHostId = `omni-core-${roomName.toLowerCase().replace(/[^a-z0-9]/g, '')}-public-v7`;
+                    switchView('chat'); if (UI.login) UI.login.classList.add('hidden'); initPeer();
+                    setTimeout(() => showToast(`Auto-connecting to Public dimension`), 1000);
+                } else { switchView('chat'); setTimeout(() => showToast(`Invited to ${roomType.toUpperCase()} topology`), 1000); }
+                window.history.replaceState({}, document.title, window.location.pathname); return true;
             }
             return false;
         }
 
-        // Boot
-        if (!parseURL()) {
-            switchView('home');
-        }
-
-        // --- STREAMING_CHUNK: PWA Install Engine (App Standalone Mode) ---
         const setupPWA = () => {
-            // 1. Inject Dynamic Web App Manifest
             const manifest = {
-                "name": "Lumina Chat",
+                "name": "Lumina Omni",
                 "short_name": "Lumina",
                 "start_url": window.location.pathname,
-                "display": "standalone", // Forces native app full-screen mode
+                "display": "standalone",
                 "background_color": "#030303",
                 "theme_color": "#030303",
                 "icons": [{
@@ -1360,7 +1194,6 @@
             const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
             document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
             
-            // 2. Inject In-Memory Service Worker (Required for PWA Installability)
             const swCode = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response('Offline'))));`;
             const swBlob = new Blob([swCode], {type: 'text/javascript'});
             if ('serviceWorker' in navigator) navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
@@ -1370,208 +1203,43 @@
         let deferredPrompt;
         const installBtn = $('installAppBtn');
         const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
-        
-        // Comprehensive check for Standalone Mode across all modern browsers and devices
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in window.navigator && window.navigator.standalone);
 
-        // Force button visibility if NOT already installed/running in full-screen
         if (!isStandalone && installBtn) {
             installBtn.classList.remove('hidden');
             installBtn.classList.add('flex');
         }
 
-        // Catch Android/Chrome native install prompt quietly
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
+            e.preventDefault(); deferredPrompt = e;
         });
 
         installBtn?.addEventListener('click', async () => {
-            // 1. Force Native Fullscreen instantly for the App Experience
-            try {
-                if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
-                    await document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen && !document.webkitFullscreenElement) {
-                    await document.documentElement.webkitRequestFullscreen(); // Safari Fallback
-                }
-            } catch (err) {
-                console.log("Fullscreen request failed:", err);
-            }
-
-            // 2. Attempt native installation (if browser allows it for single-file PWAs)
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.classList.remove('flex');
-                    installBtn.classList.add('hidden');
-                }
+                if (outcome === 'accepted') { installBtn.classList.remove('flex'); installBtn.classList.add('hidden'); }
                 deferredPrompt = null;
             } else {
-                // Universal fallback toast when browser blocks native prompt
                 const installInstructions = isIOS 
-                    ? "Fullscreen Active! To save permanently: Tap 'Share' ➔ 'Add to Home Screen'" 
-                    : "Fullscreen Active! To save permanently: Use browser menu (⋮) ➔ 'Install App' or 'Add to Home Screen'";
-                showToast(installInstructions, "info");
+                    ? "To install: Tap 'Share' ➔ 'Add to Home Screen'" 
+                    : "To install: Use browser menu (⋮) ➔ 'Install App'";
+                showToast(installInstructions);
             }
         });
-
-        // --- STREAMING_CHUNK: Advanced Touch Physics (Swipe, Double Tap, Hold) ---
-        let touchStartX = 0, touchStartY = 0;
-        let dragEl = null;
-        let dragIsSelf = false;
-        
-        let lastTapTime = 0;
-        let lastTapEl = null;
-        let longPressTimer = null;
-        let isSwiping = false;
-
-        const handleDragStart = (e) => {
-            const bubble = e.target.closest('.break-words');
-            if(!bubble || bubble.closest('.text-center')) return; 
-            
-            touchStartX = e.touches ? e.touches[0].clientX : e.clientX;
-            touchStartY = e.touches ? e.touches[0].clientY : e.clientY;
-            dragEl = bubble;
-            dragIsSelf = bubble.closest('.self-end') !== null;
-            bubble.style.transition = 'none';
-            isSwiping = false;
-
-            const container = bubble.closest('.message-container');
-            longPressTimer = setTimeout(() => {
-                if (!isSwiping && dragEl) {
-                    if (navigator.vibrate) navigator.vibrate([30, 50, 30]); 
-                    
-                    const toolbar = container.querySelector('.msg-toolbar');
-                    if (toolbar) {
-                        toolbar.classList.remove('hidden');
-                        toolbar.classList.add('flex', 'force-active');
-                        setTimeout(() => {
-                            toolbar.style.opacity = '1';
-                            toolbar.style.transform = 'translateY(0) scale(1)';
-                            toolbar.style.pointerEvents = 'auto';
-                        }, 10);
-                    }
-                }
-            }, 400); 
-        };
-
-        const handleDragMove = (e) => {
-            if(!dragEl) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            const dX = clientX - touchStartX;
-            const dY = clientY - touchStartY;
-            
-            if (Math.abs(dX) > 10 || Math.abs(dY) > 10) {
-                isSwiping = true;
-                clearTimeout(longPressTimer); 
-            }
-            
-            if(Math.abs(dY) > Math.abs(dX) && Math.abs(dY) > 10) { 
-                dragEl.style.transform = ''; 
-                dragEl = null; 
-                return; 
-            }
-            
-            let moveX = dragIsSelf ? Math.min(0, Math.max(-60, dX)) : Math.max(0, Math.min(60, dX));
-            dragEl.style.transform = `translateX(${moveX}px)`;
-        };
-
-        const handleDragEnd = (e) => {
-            clearTimeout(longPressTimer); 
-
-            if(!dragEl) return;
-            
-            const container = dragEl.closest('.message-container');
-            if (!container) return;
-
-            let userStr = container.dataset.user;
-            let textStr = container.dataset.text;
-            
-            if (!userStr) {
-                const userEl = container.querySelector('.text-slate-400, .text-slate-500');
-                userStr = userEl ? userEl.textContent.trim() : 'Entity';
-                const textEl = container.querySelector('.break-words');
-                textStr = textEl ? Array.from(textEl.childNodes).filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() : 'Media';
-            }
-
-            const currentTime = Date.now();
-            const tapDelay = currentTime - lastTapTime;
-            
-            if (!isSwiping && tapDelay < 300 && lastTapEl === dragEl) {
-                if (window.triggerReply) {
-                    window.triggerReply(userStr, textStr);
-                    if(navigator.vibrate) navigator.vibrate(50); 
-                }
-                lastTapTime = 0; 
-            } else {
-                lastTapTime = currentTime;
-                lastTapEl = dragEl;
-            }
-
-            const style = dragEl.style.transform;
-            const match = style ? style.match(/translateX\(([-.0-9]+)px\)/) : null;
-            
-            if(match && Math.abs(parseFloat(match[1])) > 40) {
-                if (window.triggerReply) {
-                    window.triggerReply(userStr, textStr);
-                    if(navigator.vibrate) navigator.vibrate(50);
-                }
-            }
-            
-            dragEl.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-            dragEl.style.transform = 'translateX(0)';
-            
-            setTimeout(() => { if(dragEl) dragEl.style.transition = ''; dragEl = null; }, 300);
-        };
-
-        document.addEventListener('touchstart', (e) => {
-            if (!e.target.closest('.msg-toolbar') && !e.target.closest('.break-words')) {
-                document.querySelectorAll('.msg-toolbar.force-active').forEach(tb => {
-                    tb.style.opacity = '0';
-                    tb.style.transform = 'translateY(5px) scale(0.95)';
-                    tb.style.pointerEvents = 'none';
-                    setTimeout(() => {
-                        tb.classList.remove('force-active', 'flex');
-                        tb.classList.add('hidden');
-                        tb.style.opacity = '';
-                        tb.style.transform = '';
-                        tb.style.pointerEvents = '';
-                    }, 300);
-                });
-            }
-        }, {passive: true});
-
-        UI.chat?.addEventListener('dblclick', (e) => {
-            const bubble = e.target.closest('.break-words');
-            if(bubble && !bubble.closest('.text-center')) {
-                const container = bubble.closest('.message-container');
-                if(!container) return;
-                let userStr = container.dataset.user;
-                let textStr = container.dataset.text;
-                if (!userStr) {
-                    const userEl = container.querySelector('.text-slate-400, .text-slate-500');
-                    userStr = userEl ? userEl.textContent.trim() : 'Entity';
-                    const textEl = container.querySelector('.break-words');
-                    textStr = textEl ? Array.from(textEl.childNodes).filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() : 'Media';
-                }
-                if (window.triggerReply) window.triggerReply(userStr, textStr);
-            }
-        });
-
-        UI.chat?.addEventListener('touchstart', handleDragStart, {passive: true});
-        UI.chat?.addEventListener('touchmove', handleDragMove, {passive: true});
-        UI.chat?.addEventListener('touchend', handleDragEnd);
 
         window.addEventListener('load', () => {
-            const intro = $('introScene');
+            const intro = $('aaa-intro');
             if (intro) {
                 setTimeout(() => {
-                    intro.classList.add('intro-hidden');
+                    intro.classList.add('intro-hide');
+                    if(typeof window.pingNetwork === 'function') {
+                        for(let i=0; i<4; i++) setTimeout(window.pingNetwork, i*150);
+                    }
                     setTimeout(() => intro.remove(), 1000); 
-                }, 3000); 
+                }, 3200); 
             }
+            if (!parseURL()) switchView('home');
         });
     </script>
 </body>
