@@ -29,7 +29,7 @@
             --sc-yellow: #FFFC00;
         }
 
-        /* --- STREAMING_CHUNK: High-Performance Base --- */
+        /* --- High-Performance Base --- */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #030303;
@@ -76,7 +76,7 @@
         }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
-        /* --- STREAMING_CHUNK: Premium Navigation --- */
+        /* --- Premium Navigation --- */
         .nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
         .nav-item::before {
             content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
@@ -96,7 +96,7 @@
         .mobile-nav-item.active { color: #fff; }
         .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
 
-        /* --- STREAMING_CHUNK: Holographic Worlds Physics --- */
+        /* --- Holographic Worlds Physics --- */
         .worlds-grid { perspective: 1000px; }
         .worlds-grid > div { opacity: 0; animation: cardFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: center bottom; }
         .worlds-grid > div:nth-child(1) { animation-delay: 0.1s; }
@@ -134,13 +134,15 @@
         .world-card:hover .card-content-default { opacity: 0; transform: translateY(-20px); filter: blur(4px); pointer-events: none; }
         .world-card:hover .card-content-hover { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-        /* --- STREAMING_CHUNK: Omni-Chat Integrations (IG, WA, Snap) --- */
+        /* --- Omni-Chat Integrations (IG, WA, Snap) --- */
         .story-ring {
             position: relative; border-radius: 50%; padding: 2px; background: var(--ig-gradient); z-index: 1;
         }
-        .story-ring::before { content: ''; position: absolute; inset: 2px; border-radius: inherit; background: #000; z-index: -1; }
-
-        .msg-status { display: inline-flex; align-items: center; gap: 2px; margin-left: 6px; font-size: 11px; color: #64748b; }
+        .story-ring::before {
+            content: ''; position: absolute; inset: 2px; border-radius: inherit; background: #000; z-index: -1;
+        }
+        
+        .msg-status { display: inline-flex; align-items: center; gap: 2px; margin-left: 6px; font-size: 11px; color: rgba(255,255,255,0.4); }
         .msg-status.read { color: #38bdf8; }
         .tick-svg { width: 14px; height: 14px; stroke-width: 2.5; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -149,11 +151,16 @@
             font-size: 4rem; opacity: 0; pointer-events: none; z-index: 50; filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
         }
         .heart-pop { animation: heartPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes heartPop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -100%) scale(0); opacity: 0; } }
+        @keyframes heartPop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -100%) scale(0); opacity: 0; }
+        }
 
         .snap-box {
-            background: rgba(255, 252, 0, 0.1); border: 1px solid rgba(255, 252, 0, 0.3); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer;
-            backdrop-filter: blur(10px); transition: all 0.3s ease; position: relative; overflow: hidden;
+            background: rgba(255, 252, 0, 0.1); border: 1px solid rgba(255, 252, 0, 0.3); border-radius: 12px; padding: 16px;
+            text-align: center; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; position: relative; overflow: hidden;
         }
         .snap-box:hover { background: rgba(255, 252, 0, 0.2); box-shadow: 0 0 20px rgba(255, 252, 0, 0.2); }
         .snap-timer { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--sc-yellow); width: 100%; transform-origin: left; }
@@ -162,28 +169,61 @@
         .snap-destroyed { animation: popVanish 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
         @keyframes popVanish { 0% { transform: scale(1); filter: blur(0); opacity: 1; } 100% { transform: scale(0.5); filter: blur(10px); opacity: 0; } }
 
-        /* --- STREAMING_CHUNK: Animations & Canvas --- */
+        /* --- Messaging Animations --- */
         .msg-materialize { animation: slideIn 0.3s ease-out forwards; opacity: 0; transform-origin: bottom; }
-        @keyframes slideIn { 0% { opacity: 0; transform: translateY(10px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-        
-        .view-enter { animation: viewFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes viewFadeIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
-        
-        .anim-breathe { animation: breathe 4s ease-in-out infinite; }
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .anim-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(10px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        .text-gradient-flow { background-size: 200% auto; animation: flowGradient 5s linear infinite; background-clip: text; -webkit-background-clip: text; }
-        @keyframes flowGradient { 0% { background-position: 0% center; } 100% { background-position: -200% center; } }
+        /* --- Emoji & Sticker Engine --- */
+        #mediaPicker {
+            position: absolute; bottom: 100%; left: 16px; right: 16px; height: 380px; max-height: 50vh; max-width: 400px;
+            background: rgba(15, 15, 20, 0.98); backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+            display: flex; flex-direction: column; overflow: hidden;
+            transform-origin: bottom left; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 50; box-shadow: 0 -10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            margin-bottom: 12px;
+        }
+        .picker-hidden { opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; }
+        
+        .picker-tab { flex: 1; text-align: center; padding: 14px; font-size: 11px; font-weight: 800; color: #64748b; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid transparent;}
+        .picker-tab.active { color: #10b981; border-bottom-color: #10b981; background: rgba(16,185,129,0.1); }
+        
+        .emoji-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 4px; overflow-y: auto; padding: 16px; align-content: start; }
+        .emoji-item { font-size: 24px; text-align: center; cursor: pointer; transition: transform 0.2s; padding: 6px; border-radius: 12px; }
+        .emoji-item:hover { transform: scale(1.3); background: rgba(255,255,255,0.1); z-index: 10; position: relative;}
+        
+        .sticker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; overflow-y: auto; padding: 20px; align-content: start; }
+        .sticker-item { cursor: pointer; transition: transform 0.2s; display: flex; justify-content: center; align-items: center; }
+        .sticker-item:hover { transform: scale(1.05) rotate(2deg); filter: brightness(1.2); }
+        
+        .sticker-msg {
+            display: inline-flex; align-items: center; justify-content: center; padding: 14px 24px; border-radius: 18px; 
+            font-weight: 900; font-size: 1.15rem; letter-spacing: 0.5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); 
+            transform: rotate(-2deg); font-family: 'Inter', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            width: 100%; text-align: center;
+        }
 
+        /* Message Toolbar Overlay */
+        .msg-toolbar-wrapper {
+            position: absolute; z-index: 20; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0; transform: translateY(10px) scale(0.95); pointer-events: none;
+        }
+        .message-container:hover .msg-toolbar-wrapper, .msg-toolbar-wrapper.force-active {
+            opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
+        }
+
+        /* Optimized Canvas */
         #bg-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.6; }
         
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        /* --- STREAMING_CHUNK: AAA Intro Animation --- */
+        /* --- AAA Intro Animation --- */
         #aaa-intro { transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; }
         .intro-hide { opacity: 0; filter: blur(20px) brightness(1.5); pointer-events: none; }
         
@@ -219,6 +259,7 @@
         }
         @keyframes lineScaleX { to { transform: scaleX(1); } }
         @keyframes loadingLine { to { transform: translateX(0); } }
+        
     </style>
 </head>
 <body class="flex h-[100dvh] w-screen relative text-slate-100 overflow-hidden bg-[#030303] selection:bg-emerald-500/30 selection:text-white">
@@ -248,12 +289,20 @@
 
     <!-- Ethereal Canvas -->
     <canvas id="bg-canvas"></canvas>
+    
+    <!-- Image Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[999999] bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white bg-white/10 p-3 rounded-full hover:bg-white/20 transition-colors z-10">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <img id="lightboxImg" src="" class="max-w-[95vw] max-h-[85vh] rounded-lg object-contain transform scale-95 transition-transform duration-300 shadow-2xl">
+    </div>
 
     <!-- Sidebar Navigation -->
     <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] h-[calc(100dvh-2rem)] md:h-[calc(100dvh-3rem)] border border-white/5 bg-black/30 backdrop-blur-3xl">
         <div>
-            <div class="p-8 flex items-center gap-4">
-                <div class="w-10 h-10 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center font-light text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] anim-float group relative overflow-hidden">
+            <div class="p-8 flex items-center gap-4 cursor-pointer">
+                <div class="w-10 h-10 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center font-light text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] anim-float relative overflow-hidden group">
                     <div class="absolute inset-0 bg-emerald-500/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300"></div>
                     <svg class="relative z-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
@@ -264,19 +313,19 @@
             </div>
 
             <nav class="mt-4 px-4 flex flex-col gap-2">
-                <button onclick="switchView('home')" data-target="home" class="nav-item active w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                <button onclick="switchView('home')" data-target="home" class="nav-item cursor-pointer active w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
                     <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Home</span>
                 </button>
-                <button onclick="switchView('worlds')" data-target="worlds" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                <button onclick="switchView('worlds')" data-target="worlds" class="nav-item cursor-pointer w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
                     <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                     <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Worlds</span>
                 </button>
-                <button onclick="switchView('chat')" data-target="chat" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                <button onclick="switchView('chat')" data-target="chat" class="nav-item cursor-pointer w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
                     <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Uplink</span>
                 </button>
-                <button onclick="switchView('settings')" data-target="settings" class="nav-item w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                <button onclick="switchView('settings')" data-target="settings" class="nav-item cursor-pointer w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
                     <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Identity</span>
                 </button>
@@ -313,7 +362,7 @@
                     </div>
                 </div>
                 
-                <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-12 shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all hover:border-emerald-400/60 hover:scale-105">
+                <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-400 text-[10px] font-bold uppercase tracking-[0.3em] mb-12 shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all hover:border-emerald-400/60 hover:scale-105 cursor-pointer">
                     <span class="relative flex h-2.5 w-2.5">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,1)]"></span>
@@ -329,17 +378,17 @@
                 <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto font-light mb-12 opacity-80 mix-blend-screen">Lumina is a cryptographic, browser-based WebRTC mesh network. Integrated with read receipts, view-once snaps, and double-tap reactions.</p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4 w-full max-w-2xl">
-                    <button onclick="switchView('worlds')" class="btn-ripple w-full sm:w-auto px-12 py-5 rounded-2xl bg-white text-black font-semibold text-sm shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 transition-all duration-400 hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] flex items-center justify-center gap-3 group">
+                    <button onclick="switchView('worlds')" class="btn-ripple cursor-pointer w-full sm:w-auto px-12 py-5 rounded-2xl bg-white text-black font-semibold text-sm shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 transition-all duration-400 hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] flex items-center justify-center gap-3 group">
                         <span class="relative z-10">Initialize Matrix</span>
                         <span class="relative z-10 text-lg leading-none group-hover:translate-x-1 transition-transform">→</span>
                     </button>
-                    <button onclick="switchView('settings')" class="btn-ripple w-full sm:w-auto px-12 py-5 rounded-2xl glass-button text-white font-medium text-sm flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                    <button onclick="switchView('settings')" class="btn-ripple cursor-pointer w-full sm:w-auto px-12 py-5 rounded-2xl glass-button text-white font-medium text-sm flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
                         <span class="relative z-10">Configure Identity</span>
                     </button>
                 </div>
 
                 <!-- Dynamic Install App Button -->
-                <button id="installAppBtn" class="hidden mt-8 w-full max-w-md sm:w-auto px-8 py-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold text-xs uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:bg-emerald-500/20 hover:scale-105 transition-all duration-400 items-center justify-center gap-2 group">
+                <button id="installAppBtn" class="hidden mt-8 w-full max-w-md sm:w-auto px-8 py-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold text-xs uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:bg-emerald-500/20 hover:scale-105 transition-all duration-400 items-center justify-center gap-2 group cursor-pointer">
                     <svg class="group-hover:-translate-y-1 transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Install Lumina App
                 </button>
@@ -372,15 +421,15 @@
                         <div class="flex flex-col gap-4">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Classification</label>
                             <div class="grid grid-cols-3 gap-3">
-                                <label class="group relative block cursor-pointer">
+                                <label class="cursor-pointer group relative block">
                                     <input type="radio" name="profGender" value="male" class="peer hidden" checked>
                                     <div class="bg-black/60 border border-white/10 rounded-xl py-4 text-center text-slate-400 text-xs font-semibold peer-checked:border-emerald-500/50 peer-checked:text-emerald-400 peer-checked:bg-emerald-500/10 transition-all shadow-inner hover:bg-white/5">Male</div>
                                 </label>
-                                <label class="group relative block cursor-pointer">
+                                <label class="cursor-pointer group relative block">
                                     <input type="radio" name="profGender" value="female" class="peer hidden">
                                     <div class="bg-black/60 border border-white/10 rounded-xl py-4 text-center text-slate-400 text-xs font-semibold peer-checked:border-emerald-500/50 peer-checked:text-emerald-400 peer-checked:bg-emerald-500/10 transition-all shadow-inner hover:bg-white/5">Female</div>
                                 </label>
-                                <label class="group relative block cursor-pointer">
+                                <label class="cursor-pointer group relative block">
                                     <input type="radio" name="profGender" value="other" class="peer hidden">
                                     <div class="bg-black/60 border border-white/10 rounded-xl py-4 text-center text-slate-400 text-xs font-semibold peer-checked:border-emerald-500/50 peer-checked:text-emerald-400 peer-checked:bg-emerald-500/10 transition-all shadow-inner hover:bg-white/5">Other</div>
                                 </label>
@@ -390,18 +439,18 @@
                         <div class="flex flex-col gap-4">
                             <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Visual Representation</label>
                             <div class="grid grid-cols-4 sm:grid-cols-8 gap-3">
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐺" class="peer hidden" checked><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐺</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🦊" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦊</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🦁" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦁</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐱" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐱</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐯" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐯</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐰" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐰</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🐻" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐻</div></label>
-                                <label class="block cursor-pointer"><input type="radio" name="profAvatar" value="🦄" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦄</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🐺" class="peer hidden" checked><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐺</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🦊" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦊</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🦁" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦁</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🐱" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐱</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🐯" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐯</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🐰" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐰</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🐻" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🐻</div></label>
+                                <label class="cursor-pointer block"><input type="radio" name="profAvatar" value="🦄" class="peer hidden"><div class="bg-black/60 border border-white/10 rounded-2xl py-4 text-3xl peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex justify-center hover:bg-white/10 hover:scale-105">🦄</div></label>
                             </div>
                         </div>
                         
-                        <button id="saveProfileBtn" class="btn-ripple w-full py-5 rounded-2xl bg-white text-black font-bold transition-all hover:scale-[1.02] mt-8 text-sm flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                        <button id="saveProfileBtn" class="btn-ripple cursor-pointer w-full py-5 rounded-2xl bg-white text-black font-bold transition-all hover:scale-[1.02] mt-8 text-sm flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                             Lock Identity
                         </button>
@@ -523,7 +572,7 @@
                         <input type="text" id="loginNameInput" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-emerald-500/50 transition-colors shadow-inner" placeholder="Your Name" maxlength="15">
                         <input type="text" id="roomInput" value="Global" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-emerald-500/50 transition-colors shadow-inner" placeholder="Room ID" maxlength="20">
                     </div>
-                    <button id="joinBtn" class="btn-ripple w-full py-3.5 rounded-xl bg-white text-black font-bold transition-transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)] relative z-10">
+                    <button id="joinBtn" class="btn-ripple cursor-pointer w-full py-3.5 rounded-xl bg-white text-black font-bold transition-transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)] relative z-10">
                         Join Network
                     </button>
                     <p id="connectionStatus" class="mt-4 text-[10px] text-emerald-400 text-center font-bold uppercase tracking-widest h-4 relative z-10"></p>
@@ -544,10 +593,10 @@
                 </div>
                 
                 <div class="flex items-center gap-2 relative">
-                    <button id="inviteBtn" class="glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Invite Link">
+                    <button id="inviteBtn" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Invite Link">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                     </button>
-                    <button id="quitBtn" class="glass-button w-10 h-10 rounded-full flex items-center justify-center text-red-400 hover:bg-red-500/20 border-red-500/30" title="Leave">
+                    <button id="quitBtn" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-red-400 hover:bg-red-500/20 border-red-500/30" title="Leave">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </button>
                 </div>
@@ -568,25 +617,56 @@
             </div>
 
             <!-- Advanced Input Area -->
-            <footer class="shrink-0 p-3 md:p-4 w-full z-30 bg-black/60 backdrop-blur-xl border-t border-white/5 pb-20 sm:pb-4">
+            <footer class="shrink-0 p-3 md:p-4 w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 relative">
                 
-                <!-- Reply Context -->
-                <div id="replyContextBox" class="hidden items-center justify-between bg-white/5 rounded-t-xl px-4 py-2 border-l-4 border-emerald-500 mb-2 max-w-3xl mx-auto w-full backdrop-blur-md">
-                    <div class="min-w-0 flex-1">
-                        <span id="replyUser" class="text-emerald-400 font-bold text-[11px] uppercase tracking-widest"></span>
-                        <span id="replyText" class="text-slate-300 text-xs truncate block mt-0.5"></span>
+                <!-- Dynamic Emoji & Sticker Picker Panel -->
+                <div id="mediaPicker" class="picker-hidden">
+                    <div class="flex border-b border-white/10 shrink-0 bg-black/40">
+                        <div class="picker-tab active cursor-pointer" id="tabEmoji">Emojis 😀</div>
+                        <div class="picker-tab cursor-pointer" id="tabSticker">Trendz 💥</div>
                     </div>
-                    <button type="button" onclick="cancelReply()" class="p-1 text-slate-400 hover:text-white">✕</button>
+                    <div id="emojiContainer" class="emoji-grid custom-scrollbar flex-1"></div>
+                    <div id="stickerContainer" class="flex-1 flex-col hidden overflow-hidden">
+                        <!-- Custom Sticker Creator -->
+                        <div class="p-3 border-b border-white/10 shrink-0 bg-gradient-to-b from-white/5 to-transparent flex flex-col gap-3">
+                            <div class="flex justify-center">
+                                <div id="customStickerPreview" class="sticker-msg bg-gradient-to-r from-emerald-400 to-cyan-400 text-black text-sm px-4 py-1.5 w-auto shadow-md" style="transform: none;">Custom Trendz 💥</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" id="customStickerInput" placeholder="Type custom sticker..." class="flex-1 bg-black/60 border border-white/10 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-emerald-500" maxlength="25">
+                                <button type="button" id="sendCustomSticker" class="cursor-pointer bg-emerald-500 text-black px-4 py-2 rounded-lg text-xs font-bold hover:scale-105 transition-transform shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.4)]">Blast</button>
+                            </div>
+                            <div class="flex gap-3 justify-center mt-1" id="stickerSwatches"></div>
+                        </div>
+                        <div id="defaultStickersList" class="sticker-grid custom-scrollbar flex-1 overflow-y-auto"></div>
+                    </div>
                 </div>
 
-                <form id="chatForm" class="flex items-end gap-2 w-full max-w-3xl mx-auto relative">
-                    <button type="button" onclick="triggerFile()" class="glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
+                <!-- Reply Context -->
+                <div id="replyContextBox" class="hidden items-center justify-between bg-white/5 rounded-t-xl px-4 py-2 border-l-4 border-emerald-500 mb-2 max-w-3xl mx-auto w-full">
+                    <div class="flex flex-col">
+                        <span id="replyUser" class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest"></span>
+                        <span id="replyText" class="text-xs text-slate-300 truncate max-w-[250px] mt-0.5"></span>
+                    </div>
+                    <button type="button" onclick="cancelReply()" class="cursor-pointer text-slate-400 hover:text-white p-2 shrink-0 transition-colors">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                
+                <form id="chatForm" class="flex items-center gap-2 max-w-3xl mx-auto w-full">
+                    <button type="button" onclick="triggerFile()" class="cursor-pointer glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                     </button>
                     <input type="file" id="fileInput" class="hidden" accept="image/*, .pdf, .txt">
 
-                    <div class="flex-1 relative bg-white/10 rounded-2xl border border-white/10 flex items-center transition-all focus-within:border-white/30 focus-within:shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                        <input type="text" id="msgInput" placeholder="Message..." autocomplete="off" class="w-full bg-transparent border-none px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none pr-10">
+                    <div class="flex-1 relative bg-white/10 rounded-2xl border border-white/10 flex items-center transition-all focus-within:border-white/30 pl-2">
+                        
+                        <!-- Emoji/Sticker Toggle Button -->
+                        <button type="button" id="emojiToggleBtn" class="cursor-pointer p-2 text-slate-400 hover:text-emerald-400 transition-colors" title="Emojis & Stickers">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                        </button>
+
+                        <input type="text" id="msgInput" placeholder="Message..." autocomplete="off" class="w-full bg-transparent border-none px-2 py-3 text-sm text-white placeholder-slate-400 focus:outline-none pr-10">
                         
                         <div id="typingIndicator" class="absolute right-12 top-1/2 -translate-y-1/2 hidden items-center gap-1.5 z-10 bg-black/50 px-2 py-1 rounded-full">
                             <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
@@ -595,16 +675,16 @@
                         </div>
 
                         <!-- Snapchat Toggle -->
-                        <button type="button" id="snapToggleBtn" class="p-2 mr-1 text-slate-500 hover:text-yellow-400 transition-colors" title="Snap Mode (View Once)">
+                        <button type="button" id="snapToggleBtn" class="cursor-pointer p-2 mr-1 text-slate-500 hover:text-yellow-400 transition-colors" title="Snap Mode (View Once)">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         </button>
                     </div>
                     
-                    <button type="button" onclick="toggleVoice()" id="voiceBtn" class="glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
+                    <button type="button" onclick="toggleVoice()" id="voiceBtn" class="cursor-pointer glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                     </button>
 
-                    <button type="submit" id="sendBtn" class="hidden w-[42px] h-[42px] rounded-full shrink-0 items-center justify-center bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform">
+                    <button type="submit" id="sendBtn" class="hidden cursor-pointer w-[42px] h-[42px] rounded-full shrink-0 items-center justify-center bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-0.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                     </button>
                 </form>
@@ -661,7 +741,54 @@
             toast: $('toast')
         };
 
-        // --- STREAMING_CHUNK: Optimized Ethereal Canvas ---
+        // --- Notification Engine ---
+        const NotificationEngine = {
+            init: async function() {
+                if (!("Notification" in window)) {
+                    console.log("This browser does not support desktop notification");
+                    return false;
+                }
+                
+                if (Notification.permission === "granted") {
+                    return true;
+                }
+                
+                if (Notification.permission !== "denied") {
+                    const permission = await Notification.requestPermission();
+                    return permission === "granted";
+                }
+                return false;
+            },
+            
+            notify: function(title, options) {
+                if (!("Notification" in window) || Notification.permission !== "granted") return;
+                
+                // Don't notify if the document is highly focused and visible
+                if (document.visibilityState === 'visible' && document.hasFocus()) return;
+
+                try {
+                    const n = new Notification(title, {
+                        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E",
+                        badge: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2310b981'/%3E%3C/svg%3E",
+                        vibrate: [200, 100, 200],
+                        silent: false,
+                        ...options
+                    });
+                    
+                    n.onclick = function() {
+                        window.focus();
+                        this.close();
+                    };
+                    
+                    // Auto close after 5 seconds to prevent screen clutter
+                    setTimeout(() => n.close(), 5000);
+                } catch (e) {
+                    console.warn("Notification error:", e);
+                }
+            }
+        };
+
+        // --- Optimized Ethereal Canvas ---
         let networkEnergy = 0;
         window.pingNetwork = function() { networkEnergy = Math.min(networkEnergy + 0.8, 2.0); };
 
@@ -782,14 +909,29 @@
             syncProfileUI(myName, myGender, myAvatar);
         } catch(e) {}
 
-        $('saveProfileBtn')?.addEventListener('click', () => {
+        $('saveProfileBtn')?.addEventListener('click', async () => {
             myName = $('profNameInput').value.trim() || 'Guest';
             myGender = document.querySelector('input[name="profGender"]:checked')?.value || 'male';
             myAvatar = document.querySelector('input[name="profAvatar"]:checked')?.value || '🐺';
             try { localStorage.setItem('lumina_name', myName); localStorage.setItem('lumina_gender', myGender); localStorage.setItem('lumina_avatar', myAvatar); } catch(e) {}
-            syncProfileUI(myName, myGender, myAvatar); showToast("Identity Configuration Locked");
+            syncProfileUI(myName, myGender, myAvatar); 
+            
+            // Request Notification Permissions on Identity Lock
+            const hasNotifPerms = await NotificationEngine.init();
+            if(hasNotifPerms) {
+                showToast("Identity Locked & Notifications Enabled");
+            } else {
+                showToast("Identity Locked (Notifications Disabled)");
+            }
+
             if (peer) broadcast({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
         });
+
+        // --- SINGLE SOURCE OF TRUTH FOR NETWORK IDS ---
+        function getNetworkId(room, type) {
+            const safeRoom = room.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
+            return `lumina-mesh-v1-${type}-${safeRoom}`;
+        }
 
         function selectWorld(type) {
             roomType = type;
@@ -798,12 +940,23 @@
                 switchView('chat'); if (UI.login) UI.login.classList.add('hidden');
                 roomName = 'Global'; if (UI.roomIn) UI.roomIn.value = 'Global';
                 syncProfileUI(myName, myGender, myAvatar);
-                targetHostId = `omni-core-global-public-v6`;
+                targetHostId = getNetworkId('Global', 'public');
                 showToast("Initializing Public Core..."); initPeer();
             } else {
                 switchView('chat');
                 if (UI.login) { UI.login.classList.remove('hidden', 'login-exit'); if($('connectionStatus')) $('connectionStatus').textContent = ""; }
             }
+        }
+
+        // Image Lightbox logic
+        window.openLightbox = function(src) {
+            const lb = $('lightbox'); $('lightboxImg').src = src;
+            lb.classList.remove('hidden'); lb.classList.add('flex'); void lb.offsetWidth; // trigger reflow
+            lb.classList.remove('opacity-0'); $('lightboxImg').classList.remove('scale-95');
+        }
+        window.closeLightbox = function() {
+            const lb = $('lightbox'); lb.classList.add('opacity-0'); $('lightboxImg').classList.add('scale-95');
+            setTimeout(() => { lb.classList.add('hidden'); lb.classList.remove('flex'); }, 300);
         }
 
         // Chat Inputs
@@ -854,6 +1007,23 @@
             activeReply = null; $('replyContextBox').classList.add('hidden'); $('replyContextBox').classList.remove('flex');
         };
 
+        window.copyMessage = function(msgId) {
+            const msgEl = $(msgId); if (!msgEl) return;
+            const contentDiv = msgEl.querySelector('.break-words');
+            if (contentDiv) {
+                if (contentDiv.querySelector('img, audio, a')) return showToast("Cannot copy media files");
+                const text = Array.from(contentDiv.childNodes).filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent).join('').trim();
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard")).catch(() => showToast("Failed to copy"));
+                } else {
+                    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select();
+                    try { document.execCommand('copy'); showToast("Copied to clipboard"); } catch (err) { showToast("Failed to copy"); }
+                    document.body.removeChild(ta);
+                }
+            }
+        };
+
         function getTickHTML(status) {
             if (status === 'sent') return `<svg class="tick-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
             if (status === 'delivered') return `<svg class="tick-svg" viewBox="0 0 24 24"><path d="M18 6L7 17l-5-5"></path><path d="M22 10l-5.5 5.5"></path></svg>`;
@@ -890,6 +1060,12 @@
             div.innerHTML = `
                 ${!isSelf ? `<div class="text-[10px] text-slate-400 mb-1 ml-2 font-bold uppercase tracking-widest flex items-center gap-1.5"><span class="bg-black/40 border border-white/10 rounded w-5 h-5 flex items-center justify-center text-[10px]">${avatar}</span> ${user}</div>` : ''}
                 <div class="relative px-4 py-2.5 text-sm leading-relaxed shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${isSelf ? 'bg-emerald-600/90 backdrop-blur-md text-white rounded-[1.5rem] rounded-tr-sm border border-emerald-500/50' : 'bg-zinc-900/80 backdrop-blur-md text-slate-100 rounded-[1.5rem] rounded-tl-sm border border-white/10'}">
+                    <div class="msg-toolbar-wrapper absolute ${isSelf ? '-top-10 right-0' : '-top-10 left-0'} flex items-center gap-1.5 bg-[#09090b]/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-[1rem] shadow-2xl z-20">
+                        <button type="button" onclick="triggerReply(this.closest('.message-container').dataset.user, this.closest('.message-container').dataset.text)" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300">↩️</button>
+                        <button type="button" onclick="sendReaction('${msgId}', '❤️')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">❤️</button>
+                        <button type="button" onclick="sendReaction('${msgId}', '😂')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">😂</button>
+                        <button type="button" onclick="copyMessage('${msgId}')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300">📋</button>
+                    </div>
                     ${heartEl}
                     ${contentHTML}
                     <div class="flex items-end justify-end mt-1 gap-1 float-right clear-both ml-3">
@@ -954,23 +1130,40 @@
         window.sendReaction = function(msgId, reaction) { appendReaction(msgId, reaction); sendPayload({ type: 'reaction', msgId, reaction }); };
 
         // Swipe & Tap Physics
-        let touchStartX = 0, touchStartY = 0, dragEl = null, isSwiping = false;
+        let touchStartX = 0, touchStartY = 0, dragEl = null, isSwiping = false, longPressTimer = null;
 
         UI.chat.addEventListener('touchstart', (e) => {
             const bubble = e.target.closest('[class*="rounded-[1.5rem]"]'); if(!bubble || bubble.closest('.text-center')) return; 
             touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
             dragEl = bubble; dragEl.style.transition = 'none'; isSwiping = false;
+
+            // Long Press Mobile Menu
+            longPressTimer = setTimeout(() => {
+                if(!isSwiping && dragEl) {
+                    const container = dragEl.closest('.message-container');
+                    if(container) {
+                        const toolbar = container.querySelector('.msg-toolbar-wrapper');
+                        if(toolbar) {
+                            if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
+                            toolbar.classList.toggle('force-active');
+                        }
+                    }
+                }
+            }, 500);
+
         }, {passive: true});
 
         UI.chat.addEventListener('touchmove', (e) => {
+            clearTimeout(longPressTimer);
             if(!dragEl) return;
             const dX = e.touches[0].clientX - touchStartX; const dY = e.touches[0].clientY - touchStartY;
-            if (Math.abs(dX) > 10) isSwiping = true;
+            if (Math.abs(dX) > 10 || Math.abs(dY) > 10) isSwiping = true;
             if(Math.abs(dY) > Math.abs(dX)) { dragEl.style.transform = ''; dragEl = null; return; }
             let moveX = Math.max(0, Math.min(60, dX)); dragEl.style.transform = `translateX(${moveX}px)`;
         }, {passive: true});
 
         UI.chat.addEventListener('touchend', (e) => {
+            clearTimeout(longPressTimer);
             if(!dragEl) return;
             const container = dragEl.closest('.message-container');
             const style = dragEl.style.transform; const match = style ? style.match(/translateX\(([-.0-9]+)px\)/) : null;
@@ -981,6 +1174,13 @@
             }
             dragEl.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'; dragEl.style.transform = 'translateX(0)';
             setTimeout(() => { if(dragEl) dragEl.style.transition = ''; dragEl = null; }, 300);
+        });
+        
+        // Hide toolbar if click anywhere else
+        document.addEventListener('touchstart', (e) => {
+            if(!e.target.closest('.msg-toolbar-wrapper') && !e.target.closest('[class*="rounded-[1.5rem]"]')) {
+                document.querySelectorAll('.msg-toolbar-wrapper.force-active').forEach(tb => tb.classList.remove('force-active'));
+            }
         });
 
         UI.chat.addEventListener('dblclick', (e) => {
@@ -1027,14 +1227,35 @@
                 if(isHost) broadcast(data, conn.peer); 
             }
             else if (data.type === 'msg') {
-                if (!$(data.msgId)) addMessage(data.user, data.avatar, data, false);
+                if (!$(data.msgId)) {
+                    addMessage(data.user, data.avatar, data, false);
+                    
+                    // Trigger Native Notification if not the sender and tab is backgrounded
+                    if (data.id !== myPeerId) {
+                        let notifBody = data.isSnap ? '📸 Sent a Snap' : data.text.replace(/<[^>]*>?/gm, '');
+                        if (notifBody.includes('img src')) notifBody = '🖼️ Sent an Image';
+                        if (notifBody.includes('audio controls')) notifBody = '🎤 Sent a Voice Note';
+                        
+                        NotificationEngine.notify(`${data.avatar} ${data.user} in ${roomName}`, {
+                            body: notifBody
+                        });
+                    }
+                }
                 if (isHost) broadcast(data, conn.peer);
             }
             else if (data.type === 'receipt') {
                 updateReceipt(data.msgId, data.status); if (isHost) broadcast(data, conn.peer);
             }
             else if (data.type === 'reaction') {
-                appendReaction(data.msgId, data.reaction); if (isHost) broadcast(data, conn.peer);
+                appendReaction(data.msgId, data.reaction); 
+                if (isHost) broadcast(data, conn.peer);
+                
+                // Trigger notification for reaction
+                if (data.id !== myPeerId && document.visibilityState !== 'visible') {
+                     NotificationEngine.notify(`${activeUsers.get(conn.peer)?.avatar || '👤'} ${activeUsers.get(conn.peer)?.name || 'Someone'} reacted ${data.reaction}`, {
+                        body: 'Reacted to your message'
+                    });
+                }
             }
             else if (data.type === 'typing') {
                 const ind = $('typingIndicator');
@@ -1080,16 +1301,24 @@
                     UI.login.classList.add('login-exit'); setTimeout(() => UI.login.classList.add('hidden'), 1200);
                     updateBadge();
                     conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+                    
+                    // Request notifications upon successfully joining a room
+                    NotificationEngine.init();
                 });
                 setTimeout(() => { if (!hostFound) becomeHost(); }, 3500);
             });
         }
 
-        $('joinBtn')?.addEventListener('click', () => {
+        $('joinBtn')?.addEventListener('click', async () => {
             myName = UI.nameIn.value.trim() || 'Guest'; roomName = UI.roomIn.value.trim() || 'Global';
             syncProfileUI(myName, myGender, myAvatar);
-            const safeRoom = roomName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
-            targetHostId = `omni-core-${safeRoom}-${roomType}-v7`; initPeer();
+            
+            // Generate the secure, unified Network ID
+            targetHostId = getNetworkId(roomName, roomType); 
+            
+            // Request permissions before initiating connection
+            await NotificationEngine.init();
+            initPeer();
         });
 
         $('quitBtn')?.addEventListener('click', () => {
@@ -1104,12 +1333,22 @@
         $('inviteBtn')?.addEventListener('click', () => {
             const url = new URL(window.location.origin + window.location.pathname);
             url.searchParams.set('room', encodeURIComponent(roomName)); url.searchParams.set('type', roomType);
-            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url.toString()).then(() => showToast("Cryptographic link copied"));
+            
+            const txt = url.toString();
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(txt).then(() => showToast("Cryptographic link copied"));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); showToast("Cryptographic link copied"); } catch (err) {}
+                document.body.removeChild(ta);
+            }
         });
 
         UI.form.addEventListener('submit', e => {
             e.preventDefault(); const text = UI.msgIn.value.trim(); if (!text || !peer) return;
-            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode };
+            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: text.replace(/</g, "&lt;"), msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
             addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
             UI.msgIn.value = ''; UI.sendBtn.classList.add('hidden'); UI.sendBtn.classList.remove('flex'); UI.voiceBtn.classList.remove('hidden');
             sendPayload({ type: 'typing', id: myPeerId, status: false });
@@ -1134,7 +1373,7 @@
                         const blob = new Blob(audioChunks, { type: 'audio/webm' }); audioChunks = []; const reader = new FileReader(); reader.readAsDataURL(blob);
                         reader.onloadend = () => {
                             const audioHTML = `<audio controls src="${reader.result}" class="w-48 max-w-full h-10 mt-1"></audio>`;
-                            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode };
+                            const payload = { type: 'msg', user: myName, avatar: myAvatar, text: audioHTML, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
                             addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
                         };
                         stream.getTracks().forEach(track => track.stop());
@@ -1147,100 +1386,273 @@
         function triggerFile() { $('fileInput').click(); }
         $('fileInput').addEventListener('change', (e) => {
             const file = e.target.files[0]; if (!file) return;
-            if (file.size > 2 * 1024 * 1024) return showToast("Payload too large (Max 2MB)");
+            if (file.size > 2 * 1024 * 1024) return showToast("File too large (Max 2MB)");
             const reader = new FileReader(); reader.readAsDataURL(file);
             reader.onload = () => {
                 const isImg = file.type.startsWith('image/');
-                const content = isImg ? `<img src="${reader.result}" class="max-w-[200px] rounded-xl mt-1 border border-white/10 shadow-lg">` 
-                                      : `<a href="${reader.result}" download="${file.name}" class="text-emerald-400 hover:text-white underline font-medium bg-black/40 px-3 py-2 rounded-xl inline-block mt-1 transition-colors border border-white/10">📄 ${file.name}</a>`;
-                const payload = { type: 'msg', user: myName, avatar: myAvatar, text: content, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode };
+                const content = isImg ? `<img src="${reader.result}" onclick="openLightbox(this.src)" class="max-w-[200px] rounded-xl mt-1 shadow-md border border-white/10 cursor-pointer hover:opacity-90 transition-opacity">` 
+                                      : `<a href="${reader.result}" download="${file.name}" class="text-emerald-400 underline font-medium">📄 ${file.name}</a>`;
+                const payload = { type: 'msg', user: myName, avatar: myAvatar, text: content, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
                 addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
             };
         });
 
-        // Initialize App & PWA
+        // --- Dynamic Omni-Emoji Engine (3,953+ Emojis) ---
+        const EMOJIS = (() => {
+            const emojiSet = new Set();
+            // Core hardcoded favorites
+            const core = ["😀","😃","😄","😁","😆","😅","😂","🤣","🥲","☺️","😊","😇","🙂","🙃","😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳","😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🤗","🤔","🤭","🤫","🤥","😶","😐","😑","😬","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😵","🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","💩","👻","💀","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀","😿","😾","❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔","❣️","💕","💞","💓","💗","💖","💘","💝","🔥","✨","🌟","💫","💥","💢","💦","💨","🎉","🎊","💯","👍","👎","👏","🙌","👐","🤲","🤝","🙏","✌️","🤘","🤙","🤌","🤏","👈","👉","👆","👇","☝️","✋","🤚","🖐️","🖖","👋", "👨‍💻", "👩‍💻", "👨‍🚀", "👩‍🚀", "🏳️‍🌈", "🏳️‍⚧️", "🏴‍☠️"];
+            core.forEach(e => emojiSet.add(e));
+
+            // Dynamically generate standard Unicode Emojis
+            const ranges = [
+                [0x1F600, 0x1F64F], // Emoticons
+                [0x1F300, 0x1F5FF], // Misc Symbols and Pictographs
+                [0x1F680, 0x1F6FF], // Transport and Map
+                [0x1F900, 0x1F9FF], // Supplemental Symbols and Pictographs
+                [0x1FA70, 0x1FAFF], // Symbols and Pictographs Extended-A
+                [0x2600, 0x26FF],   // Misc symbols
+                [0x2700, 0x27BF],   // Dingbats
+            ];
+
+            try {
+                const emojiRegex = /\p{Emoji_Presentation}/u;
+                for (const [start, end] of ranges) {
+                    for (let i = start; i <= end; i++) {
+                        const char = String.fromCodePoint(i);
+                        if (emojiRegex.test(char)) emojiSet.add(char);
+                    }
+                }
+            } catch(e) {}
+
+            return Array.from(emojiSet);
+        })();
+        
+        // CSS-rendered Tanglish/Tamil Stickers
+        const STICKERS = [
+            `<div class="sticker-msg bg-gradient-to-tr from-orange-500 to-red-500 text-white">Vera Level 🔥</div>`,
+            `<div class="sticker-msg bg-gradient-to-r from-emerald-400 to-cyan-400 text-black">Semma 👌</div>`,
+            `<div class="sticker-msg bg-gradient-to-br from-gray-900 to-black border-yellow-500 text-yellow-500">Gethu 😎</div>`,
+            `<div class="sticker-msg bg-gradient-to-br from-pink-500 to-rose-500 text-white">Ahaaan 😏</div>`,
+            `<div class="sticker-msg bg-gradient-to-bl from-blue-600 to-purple-600 text-white">Mudiyala 🤦‍♂️</div>`,
+            `<div class="sticker-msg bg-gradient-to-t from-yellow-400 to-yellow-200 text-black">Wait Pannu ✋</div>`,
+            `<div class="sticker-msg bg-gradient-to-tr from-green-500 to-green-700 text-white">Vaanga Pazhagalam 🤝</div>`,
+            `<div class="sticker-msg bg-gradient-to-br from-red-600 to-black text-white">Murugesa 🏃💨</div>`,
+            `<div class="sticker-msg bg-gradient-to-r from-indigo-500 to-purple-500 text-white">Enna Koduma Sir Idhu 😭</div>`,
+            `<div class="sticker-msg bg-gradient-to-br from-teal-400 to-blue-500 text-white">Khatam Khatam 🎬</div>`,
+            `<div class="sticker-msg bg-gradient-to-r from-pink-600 to-orange-400 text-white">Oru Nimisham ⏱️</div>`,
+            `<div class="sticker-msg bg-gradient-to-b from-slate-700 to-slate-900 border-white/20 text-white">Apdiyuuu 🙄</div>`
+        ];
+
+        // Populate Emoji Grid dynamically
+        const emojiGrid = $('emojiContainer');
+        if(emojiGrid) {
+            const fragment = document.createDocumentFragment();
+            EMOJIS.forEach(e => {
+                const span = document.createElement('span');
+                span.className = 'emoji-item'; span.textContent = e;
+                span.onclick = () => {
+                    UI.msgIn.value += e; 
+                    UI.msgIn.dispatchEvent(new Event('input')); // Trigger send button toggle
+                    UI.msgIn.focus();
+                };
+                fragment.appendChild(span);
+            });
+            emojiGrid.appendChild(fragment);
+        }
+
+        // Populate Sticker Grid
+        const stickerGrid = $('defaultStickersList');
+        if(stickerGrid) {
+            STICKERS.forEach(html => {
+                const div = document.createElement('div');
+                div.className = 'sticker-item'; div.innerHTML = html;
+                div.onclick = () => {
+                    if(!peer) return showToast("Connect to a network first");
+                    const payload = { type: 'msg', user: myName, avatar: myAvatar, text: html, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
+                    addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
+                    $('mediaPicker').classList.add('picker-hidden');
+                };
+                stickerGrid.appendChild(div);
+            });
+        }
+
+        // Custom Sticker Engine
+        const customGradients = [
+            'bg-gradient-to-r from-emerald-400 to-cyan-400 text-black',
+            'bg-gradient-to-tr from-orange-500 to-red-500 text-white',
+            'bg-gradient-to-br from-pink-500 to-rose-500 text-white',
+            'bg-gradient-to-bl from-blue-600 to-purple-600 text-white',
+            'bg-gradient-to-t from-yellow-400 to-yellow-200 text-black',
+            'bg-gradient-to-br from-gray-900 to-black border border-yellow-500 text-yellow-500'
+        ];
+        let selectedGradient = customGradients[0];
+        
+        const swatchesContainer = $('stickerSwatches');
+        if(swatchesContainer) {
+            customGradients.forEach(grad => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                const bgClasses = grad.split(' text-')[0].replace(' border-yellow-500', '').replace(' border', '');
+                btn.className = `w-5 h-5 rounded-full border-2 border-transparent hover:scale-125 transition-transform shadow-md ${bgClasses}`;
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    selectedGradient = grad;
+                    $('customStickerPreview').className = `sticker-msg text-sm px-4 py-1.5 w-auto shadow-md ${grad}`;
+                    $('customStickerPreview').style.transform = 'none';
+                };
+                swatchesContainer.appendChild(btn);
+            });
+
+            $('customStickerInput').addEventListener('input', (e) => {
+                $('customStickerPreview').textContent = e.target.value.trim() || 'Custom Trendz 💥';
+            });
+
+            $('sendCustomSticker').addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = $('customStickerInput').value.trim() || 'Custom Trendz 💥';
+                const html = `<div class="sticker-msg ${selectedGradient}">${text.replace(/</g, "&lt;")}</div>`;
+                if(!peer) return showToast("Connect to a network first");
+                const payload = { type: 'msg', user: myName, avatar: myAvatar, text: html, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
+                addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
+                $('mediaPicker').classList.add('picker-hidden');
+                $('customStickerInput').value = '';
+                $('customStickerPreview').textContent = 'Custom Trendz 💥';
+                UI.msgIn.dispatchEvent(new Event('input')); // Reset send button
+            });
+        }
+
+        // Toggle Picker Visibility
+        const mediaPicker = $('mediaPicker');
+        $('emojiToggleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            mediaPicker.classList.toggle('picker-hidden');
+        });
+
+        // Tab Switching Logic
+        $('tabEmoji').addEventListener('click', () => {
+            $('tabEmoji').classList.add('active'); $('tabSticker').classList.remove('active');
+            $('emojiContainer').classList.remove('hidden'); 
+            $('stickerContainer').classList.add('hidden');
+            $('stickerContainer').classList.remove('flex');
+        });
+        $('tabSticker').addEventListener('click', () => {
+            $('tabSticker').classList.add('active'); $('tabEmoji').classList.remove('active');
+            $('stickerContainer').classList.remove('hidden'); 
+            $('stickerContainer').classList.add('flex');
+            $('emojiContainer').classList.add('hidden');
+        });
+
+        // Close Picker when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mediaPicker && !mediaPicker.contains(e.target) && !$('emojiToggleBtn').contains(e.target)) {
+                mediaPicker.classList.add('picker-hidden');
+            }
+        });
+
+        // PWA Install Logic
+        let deferredPrompt;
+        const installBtn = $('installAppBtn');
+
+        if(installBtn) {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installBtn.classList.remove('hidden');
+                installBtn.classList.add('flex');
+            });
+
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installBtn.classList.add('hidden');
+                    installBtn.classList.remove('flex');
+                    if (outcome === 'accepted') showToast("Installing Lumina...");
+                }
+            });
+
+            window.addEventListener('appinstalled', () => {
+                installBtn.classList.add('hidden');
+                installBtn.classList.remove('flex');
+                deferredPrompt = null;
+                showToast("Protocol Installation Complete");
+            });
+        }
+
+        // Generate dynamic manifest
+        try {
+            const manifestObj = {
+                name: "Lumina Omni-Protocol",
+                short_name: "Lumina",
+                start_url: window.location.pathname,
+                display: "standalone",
+                background_color: "#030303",
+                theme_color: "#10b981",
+                description: "Cryptographic, browser-based WebRTC mesh network.",
+                icons: [{
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E",
+                    sizes: "192x192",
+                    type: "image/svg+xml",
+                    purpose: "any maskable"
+                }]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const manifestLink = document.createElement('link');
+            manifestLink.rel = 'manifest';
+            manifestLink.href = manifestUrl;
+            document.head.appendChild(manifestLink);
+        } catch(e) {}
+
+        // Initialize URL Parsing
         function parseURL() {
             const params = new URLSearchParams(window.location.search);
             if (params.has('room') && params.has('type')) {
                 roomType = params.get('type');
                 if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${roomType.toUpperCase()}`;
-                if(UI.roomIn) UI.roomIn.value = params.get('room');
+                
+                roomName = params.get('room');
+                if($('roomInput')) $('roomInput').value = roomName;
+                
+                syncProfileUI(myName, myGender, myAvatar);
+                
+                // Use the secure, unified Network ID
+                targetHostId = getNetworkId(roomName, roomType);
+                
+                switchView('chat');
                 
                 if (roomType === 'public') {
-                    roomName = params.get('room'); syncProfileUI(myName, myGender, myAvatar);
-                    targetHostId = `omni-core-${roomName.toLowerCase().replace(/[^a-z0-9]/g, '')}-public-v7`;
-                    switchView('chat'); if (UI.login) UI.login.classList.add('hidden'); initPeer();
+                    if (UI.login) UI.login.classList.add('hidden');
+                    initPeer();
                     setTimeout(() => showToast(`Auto-connecting to Public dimension`), 1000);
-                } else { switchView('chat'); setTimeout(() => showToast(`Invited to ${roomType.toUpperCase()} topology`), 1000); }
-                window.history.replaceState({}, document.title, window.location.pathname); return true;
+                } else {
+                    setTimeout(() => showToast(`Invited to ${roomType.toUpperCase()} topology`), 1000);
+                }
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return true;
             }
             return false;
         }
 
-        const setupPWA = () => {
-            const manifest = {
-                "name": "Lumina Omni",
-                "short_name": "Lumina",
-                "start_url": window.location.pathname,
-                "display": "standalone",
-                "background_color": "#030303",
-                "theme_color": "#030303",
-                "icons": [{
-                    "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>",
-                    "sizes": "512x512",
-                    "type": "image/svg+xml"
-                }]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
-            document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
-            
-            const swCode = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response('Offline'))));`;
-            const swBlob = new Blob([swCode], {type: 'text/javascript'});
-            if ('serviceWorker' in navigator) navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
-        };
-        setupPWA();
-
-        let deferredPrompt;
-        const installBtn = $('installAppBtn');
-        const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in window.navigator && window.navigator.standalone);
-
-        if (!isStandalone && installBtn) {
-            installBtn.classList.remove('hidden');
-            installBtn.classList.add('flex');
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); deferredPrompt = e;
-        });
-
-        installBtn?.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') { installBtn.classList.remove('flex'); installBtn.classList.add('hidden'); }
-                deferredPrompt = null;
-            } else {
-                const installInstructions = isIOS 
-                    ? "To install: Tap 'Share' ➔ 'Add to Home Screen'" 
-                    : "To install: Use browser menu (⋮) ➔ 'Install App'";
-                showToast(installInstructions);
-            }
-        });
-
         window.addEventListener('load', () => {
             const intro = $('aaa-intro');
             if (intro) {
+                // Intro length is approx 3.2 seconds before dissolving
                 setTimeout(() => {
                     intro.classList.add('intro-hide');
+                    // Kickstart the background canvas physics for a high-energy transition burst
                     if(typeof window.pingNetwork === 'function') {
                         for(let i=0; i<4; i++) setTimeout(window.pingNetwork, i*150);
                     }
                     setTimeout(() => intro.remove(), 1000); 
                 }, 3200); 
             }
+
             if (!parseURL()) switchView('home');
         });
+
     </script>
 </body>
 </html>
