@@ -29,7 +29,7 @@
             --sc-yellow: #FFFC00;
         }
 
-        /* --- STREAMING_CHUNK: High-Performance Base --- */
+        /* */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #030303;
@@ -40,11 +40,8 @@
             -webkit-touch-callout: none;
         }
         input, textarea, [contenteditable] { -webkit-user-select: auto; user-select: auto; }
-
-        /* Stop text highlighting during rapid double taps in chat */
         .break-words { -webkit-user-select: none; user-select: none; }
 
-        /* Lightweight ambient glow */
         body::before {
             content: ""; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
             background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 60%);
@@ -76,7 +73,7 @@
         }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
-        /* --- STREAMING_CHUNK: Premium Navigation --- */
+        /* */
         .nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
         .nav-item::before {
             content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
@@ -96,7 +93,7 @@
         .mobile-nav-item.active { color: #fff; }
         .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
 
-        /* --- STREAMING_CHUNK: Holographic Worlds Physics --- */
+        /* */
         .worlds-grid { perspective: 1000px; }
         .worlds-grid > div { opacity: 0; animation: cardFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: center bottom; }
         .worlds-grid > div:nth-child(1) { animation-delay: 0.1s; }
@@ -134,7 +131,7 @@
         .world-card:hover .card-content-default { opacity: 0; transform: translateY(-20px); filter: blur(4px); pointer-events: none; }
         .world-card:hover .card-content-hover { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-        /* --- STREAMING_CHUNK: Omni-Chat Integrations (IG, WA, Snap) --- */
+        /* */
         .story-ring {
             position: relative; border-radius: 50%; padding: 2px; background: var(--ig-gradient); z-index: 1;
         }
@@ -169,7 +166,7 @@
         .snap-destroyed { animation: popVanish 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
         @keyframes popVanish { 0% { transform: scale(1); filter: blur(0); opacity: 1; } 100% { transform: scale(0.5); filter: blur(10px); opacity: 0; } }
 
-        /* --- STREAMING_CHUNK: Emoji & Sticker Engine --- */
+        /* */
         #mediaPicker {
             position: absolute; bottom: 100%; left: 16px; right: 16px; height: 380px; max-height: 50vh; max-width: 400px;
             background: rgba(15, 15, 20, 0.98); backdrop-filter: blur(40px);
@@ -200,7 +197,6 @@
             width: 100%; text-align: center;
         }
 
-        /* Message Toolbar Overlay */
         .msg-toolbar-wrapper {
             position: absolute; z-index: 20; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0; transform: translateY(10px) scale(0.95); pointer-events: none;
@@ -209,14 +205,14 @@
             opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
         }
 
-        /* Optimized Canvas */
+        /* */
         #bg-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.6; }
         
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        /* --- STREAMING_CHUNK: AAA Intro Animation --- */
+        /* */
         #aaa-intro { transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; }
         .intro-hide { opacity: 0; filter: blur(20px) brightness(1.5); pointer-events: none; }
         
@@ -253,34 +249,39 @@
         @keyframes lineScaleX { to { transform: scaleX(1); } }
         @keyframes loadingLine { to { transform: translateX(0); } }
         
-        /* --- STREAMING_CHUNK: WEBRTC CALLING SYSTEM STYLES --- */
+        /* */
         #callOverlay {
             transition: opacity 0.4s ease, backdrop-filter 0.4s ease;
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
         }
-        .pip-video {
+        
+        .pip-video-container {
             position: absolute; bottom: 100px; right: 24px; width: 120px; height: 160px;
             border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            object-fit: cover; background: #000; z-index: 10;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-origin: bottom right;
+            background: #000; z-index: 10; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: bottom right;
         }
-        .pip-video:hover { transform: scale(1.05); }
-        .remote-video {
-            width: 100%; height: 100%; object-fit: cover; background: #050505;
-        }
-        .ring-pulse {
-            animation: callRingPulse 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        
+        .pip-video-container:hover { transform: scale(1.05); }
+        .pip-video { width: 100%; height: 100%; object-fit: cover; }
+        .remote-video { width: 100%; height: 100%; object-fit: cover; background: #050505; }
+        
+        .ring-pulse { animation: callRingPulse 2s infinite cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes callRingPulse {
             0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
             70% { box-shadow: 0 0 0 30px rgba(16, 185, 129, 0); }
             100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
+        
         .avatar-placeholder {
             width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: radial-gradient(circle at center, #1a1a24 0%, #030303 100%);
+        }
+
+        /* Adapting chat input area for mobile keyboard */
+        @media (max-width: 640px) {
+            #chatForm { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
         }
         
     </style>
@@ -321,10 +322,10 @@
         <img id="lightboxImg" src="" class="max-w-[95vw] max-h-[85vh] rounded-lg object-contain transform scale-95 transition-transform duration-300 shadow-2xl">
     </div>
 
-    
+    <!-- -->
     <!-- Incoming Call Modal -->
     <div id="incomingCallModal" class="fixed inset-0 z-[999999] bg-black/80 backdrop-blur-xl hidden flex-col items-center justify-center opacity-0 transition-opacity duration-400">
-        <div class="glass-panel p-10 rounded-[3rem] w-full max-w-sm flex flex-col items-center text-center shadow-[0_0_80px_rgba(16,185,129,0.15)] border border-emerald-500/20 relative overflow-hidden">
+        <div class="glass-panel p-10 rounded-[3rem] w-[90%] max-w-sm flex flex-col items-center text-center shadow-[0_0_80px_rgba(16,185,129,0.15)] border border-emerald-500/20 relative overflow-hidden">
             <div class="absolute -top-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
             
             <p id="incomingCallType" class="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.3em] mb-8 relative z-10">Incoming Video Call</p>
@@ -333,54 +334,57 @@
                 <div class="w-28 h-28 rounded-full bg-zinc-900 border border-emerald-500/50 flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(16,185,129,0.3)]" id="incomingCallerAvatar">🐺</div>
             </div>
             
-            <h2 id="incomingCallerId" class="text-2xl font-bold text-white mb-2 relative z-10">@phoenix_7421</h2>
+            <h2 id="incomingCallerName" class="text-2xl font-bold text-white relative z-10">Someone</h2>
+            <h3 id="incomingCallerId" class="text-xs font-medium text-slate-400 mb-2 relative z-10 tracking-widest mt-1">@someone</h3>
             
-            <div class="flex gap-6 mt-10 w-full relative z-10">
-                <button id="btnDeclineCall" class="flex-1 py-4 rounded-2xl bg-red-500/10 text-red-500 font-bold border border-red-500/30 hover:bg-red-500 hover:text-white transition-all shadow-[0_0_20px_rgba(239,68,68,0.1)]">DECLINE</button>
-                <button id="btnAcceptCall" class="flex-1 py-4 rounded-2xl bg-emerald-500 text-black font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)]">ACCEPT</button>
+            <div class="flex gap-4 mt-10 w-full relative z-10">
+                <button id="btnDeclineCall" class="flex-1 py-4 rounded-2xl bg-red-500/10 text-red-500 font-bold border border-red-500/30 hover:bg-red-500 hover:text-white transition-all shadow-[0_0_20px_rgba(239,68,68,0.1)] text-xs md:text-sm">DECLINE</button>
+                <button id="btnAcceptCall" class="flex-1 py-4 rounded-2xl bg-emerald-500 text-black font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] text-xs md:text-sm">ACCEPT</button>
             </div>
         </div>
     </div>
 
     <!-- Active Call Overlay -->
     <div id="activeCallOverlay" class="fixed inset-0 z-[999998] bg-black hidden flex-col opacity-0 transition-opacity duration-500">
-        
         <!-- Video Container -->
         <div class="flex-1 relative w-full h-full overflow-hidden bg-[#050505] flex items-center justify-center" id="callVideoContainer">
             <video id="remoteVideo" class="remote-video hidden" autoplay playsinline></video>
             
             <!-- Voice Call / Video Off Placeholder -->
             <div id="callAvatarPlaceholder" class="avatar-placeholder absolute inset-0 z-0">
-                <div class="w-40 h-40 rounded-full bg-zinc-900/50 border border-white/5 flex items-center justify-center text-6xl shadow-2xl mb-6 relative">
+                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-zinc-900/50 border border-white/5 flex items-center justify-center text-5xl md:text-6xl shadow-2xl mb-6 relative">
                     <span id="activeCallAvatar" class="anim-float z-10">🐺</span>
                     <div class="absolute inset-0 rounded-full border border-emerald-500/20 ring-pulse"></div>
                 </div>
-                <h2 id="activeCallRemoteId" class="text-2xl font-bold text-white tracking-wide">@user_0000</h2>
-                <p id="activeCallStatus" class="text-[11px] text-emerald-400 font-bold uppercase tracking-[0.2em] mt-3">CONNECTING...</p>
-                <p id="activeCallTimer" class="text-3xl font-light text-white/90 mt-4 tracking-wider hidden">00:00</p>
+                <h2 id="activeCallRemoteId" class="text-xl md:text-2xl font-bold text-white tracking-wide">@user_0000</h2>
+                <p id="activeCallStatus" class="text-[10px] md:text-[11px] text-emerald-400 font-bold uppercase tracking-[0.2em] mt-3">CONNECTING...</p>
+                <p id="activeCallTimer" class="text-2xl md:text-3xl font-light text-white/90 mt-4 tracking-wider hidden">00:00</p>
             </div>
             
             <!-- Local Video (PiP) -->
-            <video id="localVideo" class="pip-video hidden" autoplay playsinline muted></video>
+            <div id="localVideoContainer" class="pip-video-container hidden">
+                <video id="localVideo" class="pip-video" autoplay playsinline muted></video>
+            </div>
         </div>
 
         <!-- Call Controls Bar -->
-        <div class="h-28 bg-gradient-to-t from-black via-black/80 to-transparent w-full absolute bottom-0 left-0 z-20 flex items-center justify-center gap-4 md:gap-8 pb-4 px-4">
-            <button id="callBtnMic" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all backdrop-blur-md">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <div class="h-24 md:h-28 bg-gradient-to-t from-black via-black/80 to-transparent w-full absolute bottom-0 left-0 z-20 flex items-center justify-center gap-4 md:gap-8 pb-4 px-4">
+            <button id="callBtnMic" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all backdrop-blur-md">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
             </button>
-            <button id="callBtnCam" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all backdrop-blur-md">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            <button id="callBtnCam" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all backdrop-blur-md">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
             </button>
-            <button id="callBtnScreen" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 hidden md:flex items-center justify-center text-white transition-all backdrop-blur-md">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <button id="callBtnScreen" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 hidden md:flex items-center justify-center text-white transition-all backdrop-blur-md">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
             </button>
-            <button id="callBtnEnd" class="w-16 h-16 rounded-full bg-red-600 hover:bg-red-500 border border-red-500/50 flex items-center justify-center text-white transition-all shadow-[0_0_20px_rgba(220,38,38,0.5)] ml-2">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(135deg);"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <button id="callBtnEnd" class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-red-600 hover:bg-red-500 border border-red-500/50 flex items-center justify-center text-white transition-all shadow-[0_0_20px_rgba(220,38,38,0.5)] ml-2">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(135deg);"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
             </button>
         </div>
     </div>
 
+    <!-- -->
     <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] h-[calc(100dvh-2rem)] md:h-[calc(100dvh-3rem)] border border-white/5 bg-black/30 backdrop-blur-3xl">
         <div>
             <div class="p-8 flex items-center gap-4 cursor-pointer">
@@ -435,7 +439,8 @@
 
     <main class="flex-1 relative flex flex-col h-full z-10 overflow-hidden pb-[76px] sm:pb-0">
         
-        <div id="homeView" class="hidden flex-1 p-4 md:p-8 items-center justify-center relative view-enter w-full overflow-y-auto custom-scrollbar">
+        <!-- -->
+        <div id="homeView" class="hidden flex-1 p-4 md:p-8 items-center justify-center relative w-full overflow-y-auto custom-scrollbar">
             <div class="text-center z-10 w-full max-w-5xl mx-auto flex flex-col items-center my-auto">
                 <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto mb-10 pointer-events-none flex items-center justify-center glass-panel-3d tilt-element">
                     <div class="absolute inset-0 rounded-full border-[1px] border-emerald-500/20 border-dashed animate-[spin_40s_linear_infinite] opacity-60"></div>
@@ -472,7 +477,6 @@
                     </button>
                 </div>
 
-                <!-- Dynamic Install App Button -->
                 <button id="installAppBtn" class="hidden mt-8 w-full max-w-md sm:w-auto px-8 py-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold text-xs uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:bg-emerald-500/20 hover:scale-105 transition-all duration-400 items-center justify-center gap-2 group cursor-pointer">
                     <svg class="group-hover:-translate-y-1 transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Install Lumina App
@@ -480,7 +484,8 @@
             </div>
         </div>
 
-        <div id="callsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 relative z-10 view-enter custom-scrollbar">
+        <!-- -->
+        <div id="callsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 relative z-10 custom-scrollbar">
             <div class="max-w-4xl mx-auto mt-6 lg:mt-10 pb-20">
                 <div class="mb-10 text-center md:text-left">
                     <h2 class="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4 drop-shadow-lg">Call Matrix</h2>
@@ -539,7 +544,8 @@
             </div>
         </div>
 
-        <div id="settingsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth relative z-10 view-enter custom-scrollbar">
+        <!-- -->
+        <div id="settingsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth relative z-10 custom-scrollbar">
             <div class="max-w-2xl mx-auto pb-20 mt-6 lg:mt-12 space-y-8">
                 
                 <!-- Digital Identity Panel -->
@@ -647,7 +653,8 @@
             </div>
         </div>
 
-        <div id="worldsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 relative z-10 view-enter custom-scrollbar">
+        <!-- -->
+        <div id="worldsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 relative z-10 custom-scrollbar">
             <div class="max-w-6xl mx-auto mt-6 lg:mt-10 pb-20">
                 <div class="mb-14 text-center md:text-left">
                     <h2 class="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4 drop-shadow-lg">Architectures</h2>
@@ -744,7 +751,8 @@
             </div>
         </div>
 
-        <div id="chatView" class="hidden flex-1 flex-col h-full relative z-10 view-enter w-full max-w-5xl mx-auto border-x border-white/5 bg-black/40 shadow-2xl">
+        <!-- -->
+        <div id="chatView" class="hidden flex-1 flex-col h-full relative z-10 w-full max-w-5xl mx-auto border-x border-white/5 bg-black/40 shadow-2xl">
             
             <div id="loginScreen" class="absolute inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500">
                 <div class="glass-panel glass-panel-3d tilt-element p-8 md:p-12 rounded-[2rem] w-full max-w-sm shadow-2xl relative border border-white/10 overflow-hidden">
@@ -778,20 +786,20 @@
                     </div>
                 </div>
                 
-                <div class="flex items-center gap-2 relative">
+                <div class="flex items-center gap-1 md:gap-2 relative">
                     <!-- Call Action Buttons for active room -->
-                    <button onclick="callFromRoom(false)" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Voice Call">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <button onclick="callFromRoom(false)" class="cursor-pointer glass-button w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Voice Call">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                     </button>
-                    <button onclick="callFromRoom(true)" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white mr-2" title="Video Call">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                    <button onclick="callFromRoom(true)" class="cursor-pointer glass-button w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white mr-1 md:mr-2" title="Video Call">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                     </button>
-                    <div class="w-px h-6 bg-white/10 mx-1"></div>
-                    <button id="inviteBtn" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Invite Link">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    <div class="w-px h-6 bg-white/10 mx-1 md:mx-1"></div>
+                    <button id="inviteBtn" class="cursor-pointer glass-button w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Invite Link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                     </button>
-                    <button id="quitBtn" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-red-400 hover:bg-red-500/20 border-red-500/30" title="Leave">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <button id="quitBtn" class="cursor-pointer glass-button w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-red-400 hover:bg-red-500/20 border-red-500/30" title="Leave">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </button>
                 </div>
             </header>
@@ -804,14 +812,14 @@
             </div>
 
             <!-- Messages Area -->
-            <div id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col relative custom-scrollbar bg-transparent">
+            <div id="chatWindow" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col relative custom-scrollbar bg-transparent pb-4">
                 <div class="text-center my-6">
                     <span class="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500/80 text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-md shadow-[0_0_15px_rgba(234,179,8,0.1)]">End-to-End Encrypted</span>
                 </div>
             </div>
 
             <!-- Advanced Input Area -->
-            <footer class="shrink-0 p-3 md:p-4 w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 relative">
+            <footer class="shrink-0 p-2 md:p-4 w-full z-30 bg-black/60 backdrop-blur-lg border-t border-white/5 relative mt-auto">
                 
                 <!-- Dynamic Emoji & Sticker Picker Panel -->
                 <div id="mediaPicker" class="picker-hidden">
@@ -847,39 +855,39 @@
                     </button>
                 </div>
                 
-                <form id="chatForm" class="flex items-center gap-2 max-w-3xl mx-auto w-full">
-                    <button type="button" onclick="triggerFile()" class="cursor-pointer glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                <form id="chatForm" class="flex items-center gap-1 md:gap-2 max-w-3xl mx-auto w-full">
+                    <button type="button" onclick="triggerFile()" class="cursor-pointer glass-button w-[36px] h-[36px] md:w-[42px] md:h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                     </button>
                     <input type="file" id="fileInput" class="hidden" accept="image/*, .pdf, .txt">
 
-                    <div class="flex-1 relative bg-white/10 rounded-2xl border border-white/10 flex items-center transition-all focus-within:border-white/30 pl-2">
+                    <div class="flex-1 relative bg-white/10 rounded-2xl border border-white/10 flex items-center transition-all focus-within:border-white/30 pl-1 md:pl-2">
                         
                         <!-- Emoji/Sticker Toggle Button -->
-                        <button type="button" id="emojiToggleBtn" class="cursor-pointer p-2 text-slate-400 hover:text-emerald-400 transition-colors" title="Emojis & Stickers">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                        <button type="button" id="emojiToggleBtn" class="cursor-pointer p-1.5 md:p-2 text-slate-400 hover:text-emerald-400 transition-colors" title="Emojis & Stickers">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
                         </button>
 
-                        <input type="text" id="msgInput" placeholder="Message..." autocomplete="off" class="w-full bg-transparent border-none px-2 py-3 text-sm text-white placeholder-slate-400 focus:outline-none pr-10">
+                        <input type="text" id="msgInput" placeholder="Message..." autocomplete="off" class="w-full bg-transparent border-none px-2 py-3 md:py-3 text-sm text-white placeholder-slate-400 focus:outline-none pr-8">
                         
-                        <div id="typingIndicator" class="absolute right-12 top-1/2 -translate-y-1/2 hidden items-center gap-1.5 z-10 bg-black/50 px-2 py-1 rounded-full">
+                        <div id="typingIndicator" class="absolute right-10 top-1/2 -translate-y-1/2 hidden items-center gap-1.5 z-10 bg-black/50 px-2 py-1 rounded-full">
                             <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_0ms]"></span>
                             <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_150ms]"></span>
                             <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-[bounce_1s_infinite_300ms]"></span>
                         </div>
 
                         <!-- Snapchat Toggle -->
-                        <button type="button" id="snapToggleBtn" class="cursor-pointer p-2 mr-1 text-slate-500 hover:text-yellow-400 transition-colors" title="Snap Mode (View Once)">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <button type="button" id="snapToggleBtn" class="cursor-pointer p-1.5 md:p-2 md:mr-1 text-slate-500 hover:text-yellow-400 transition-colors" title="Snap Mode (View Once)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         </button>
                     </div>
                     
-                    <button type="button" onclick="toggleVoice()" id="voiceBtn" class="cursor-pointer glass-button w-[42px] h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                    <button type="button" onclick="toggleVoice()" id="voiceBtn" class="cursor-pointer glass-button w-[36px] h-[36px] md:w-[42px] md:h-[42px] rounded-full shrink-0 flex items-center justify-center text-slate-400 hover:text-white bg-white/5">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                     </button>
 
-                    <button type="submit" id="sendBtn" class="hidden cursor-pointer w-[42px] h-[42px] rounded-full shrink-0 items-center justify-center bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-0.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <button type="submit" id="sendBtn" class="hidden cursor-pointer w-[36px] h-[36px] md:w-[42px] md:h-[42px] rounded-full shrink-0 items-center justify-center bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:scale-105 transition-transform">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-0.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                     </button>
                 </form>
             </footer>
@@ -894,6 +902,7 @@
         </div>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
     <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-[100] glass-panel border-t border-white/10 flex items-center justify-around px-2 pt-2 bg-black/80 backdrop-blur-2xl pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         <button onclick="switchView('home')" data-target="home" class="mobile-nav-item active flex flex-col items-center justify-center gap-1 p-2 w-16 rounded-xl transition-all cursor-pointer">
             <svg class="nav-icon w-[22px] h-[22px] transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -917,6 +926,7 @@
         </button>
     </nav>
 
+    <!-- -->
     <script>
         const $ = (id) => document.getElementById(id);
         
@@ -1077,6 +1087,11 @@
                 if (btn.getAttribute('data-target') === viewName) btn.classList.add('active');
                 else btn.classList.remove('active');
             });
+            
+            // Scroll to bottom when opening chat
+            if(viewName === 'chat' && UI.chat) {
+                setTimeout(() => UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' }), 50);
+            }
         }
 
         // Global UI
@@ -1105,7 +1120,7 @@
             if ($('sbLuminaId')) $('sbLuminaId').textContent = myLuminaId;
             if ($('displayLuminaId')) $('displayLuminaId').textContent = myLuminaId;
             
-            initCallPeer(); // Initialize P2P calling peer identity
+            initCallPeer(); // Initialize P2P calling peer identity whenever identity is set
         }
 
         try {
@@ -1200,6 +1215,7 @@
             if(!lid) return showToast("Cannot locate Lumina ID");
             $('dialerInput').value = lid;
             switchView('calls');
+            UI.presencePanel.classList.add('scale-y-0', 'opacity-0');
         };
 
         window.callFromRoom = function(isVideo) {
@@ -1262,7 +1278,7 @@
             if (payload.isSystemCall) {
                 // Formatting for call log message
                 contentHTML = `
-                    <div class="flex items-center gap-3 py-1">
+                    <div class="flex items-center gap-3 py-1 cursor-pointer hover:opacity-80 transition-opacity" onclick="quickDial('${payload.callData.id}')">
                         <div class="w-8 h-8 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-lg">${payload.callData.isVideo ? '📹' : '📞'}</div>
                         <div class="flex flex-col">
                             <span class="font-bold text-xs">${payload.callData.status === 'missed' ? 'Missed Call' : (payload.callData.isVideo ? 'Video Call' : 'Voice Call')}</span>
@@ -1434,7 +1450,6 @@
             lastTap = now;
         });
 
-        // WebRTC Mesh Protocol
         const peerConfig = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] } };
 
         function updateBadge() {
@@ -1505,9 +1520,16 @@
                     conn.send({ type: 'presence', id: myPeerId, luminaId: myLuminaId, name: myName, avatar: myAvatar });
                 });
             });
+            peer.on('error', err => {
+                 console.error('Host Peer Error:', err);
+                 if (err.type === 'unavailable-id') {
+                     showToast("Dimension already occupied by a Host. Connecting as Peer...");
+                     initPeer(true);
+                 }
+            });
         }
 
-        function initPeer() {
+        function initPeer(forceClient = false) {
             if($('connectionStatus')) $('connectionStatus').textContent = "Locating Network...";
             if (peer) peer.destroy();
             peer = new Peer(peerConfig);
@@ -1520,7 +1542,9 @@
                     conn.send({ type: 'presence', id: myPeerId, luminaId: myLuminaId, name: myName, avatar: myAvatar });
                     NotificationEngine.init();
                 });
-                setTimeout(() => { if (!hostFound) becomeHost(); }, 3500);
+                
+                // If it's unable to connect after a timeout, assume host role (unless forced)
+                setTimeout(() => { if (!hostFound && !forceClient) becomeHost(); }, 3500);
             });
         }
 
@@ -1598,7 +1622,6 @@
             };
         });
 
-        // --- STREAMING_CHUNK: Dynamic Omni-Emoji & Sticker Engine ---
         const EMOJIS = (() => {
             const emojiSet = new Set();
             const core = ["😀","😃","😄","😁","😆","😅","😂","🤣","🥲","☺️","😊","😇","🙂","🙃","😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳","😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🤗","🤔","🤭","🤫","🤥","😶","😐","😑","😬","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😵","🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","💩","👻","💀","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀","😿","😾","❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔","❣️","💕","💞","💓","💗","💖","💘","💝","🔥","✨","🌟","💫","💥","💢","💦","💨","🎉","🎊","💯","👍","👎","👏","🙌","👐","🤲","🤝","🙏","✌️","🤘","🤙","🤌","🤏","👈","👉","👆","👇","☝️","✋","🤚","🖐️","🖖","👋", "👨‍💻", "👩‍💻", "👨‍🚀", "👩‍🚀", "🏳️‍🌈", "🏳️‍⚧️", "🏴‍☠️"];
@@ -1687,22 +1710,6 @@
         $('tabSticker').addEventListener('click', () => { $('tabSticker').classList.add('active'); $('tabEmoji').classList.remove('active'); $('stickerContainer').classList.remove('hidden'); $('stickerContainer').classList.add('flex'); $('emojiContainer').classList.add('hidden'); });
         document.addEventListener('click', (e) => { if (mediaPicker && !mediaPicker.contains(e.target) && !$('emojiToggleBtn').contains(e.target)) { mediaPicker.classList.add('picker-hidden'); } });
 
-        // --- PWA Install Logic ---
-        let deferredPrompt; const installBtn = $('installAppBtn');
-        if(installBtn) {
-            window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.classList.remove('hidden'); installBtn.classList.add('flex'); });
-            installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); if (outcome === 'accepted') showToast("Installing Lumina..."); } });
-            window.addEventListener('appinstalled', () => { installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); deferredPrompt = null; showToast("Protocol Installation Complete"); });
-        }
-
-        try {
-            const manifestObj = { name: "Lumina Omni-Protocol", short_name: "Lumina", start_url: window.location.pathname, display: "standalone", background_color: "#030303", theme_color: "#10b981", description: "Cryptographic, browser-based WebRTC mesh network.", icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" }] };
-            const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
-            const manifestUrl = URL.createObjectURL(manifestBlob); const manifestLink = document.createElement('link'); manifestLink.rel = 'manifest'; manifestLink.href = manifestUrl; document.head.appendChild(manifestLink);
-        } catch(e) {}
-
-
-        // --- STREAMING_CHUNK: Lumina Voice & Video Calling Engine ---
 
         let callPeer = null;         // Dedicated PeerJS instance for P2P calling
         let currentCall = null;      // Active media connection
@@ -1812,11 +1819,20 @@
             const cleanTargetId = rawTargetId.replace(/[^a-z0-9]/gi, '-');
 
             try {
-                // 1. Request Media
+                // 1. Request Media Stream
                 localStream = await navigator.mediaDevices.getUserMedia({ video: isVideo, audio: true });
                 
                 // 2. Prep UI
                 currentCallData = { id: rawTargetId, avatar: '👤', name: 'Unknown', isVideo, isOutgoing: true, startTime: 0 };
+                
+                // Try to resolve avatar/name if in active chat room
+                const activeUserArr = Array.from(activeUsers.values());
+                const targetUser = activeUserArr.find(u => u.luminaId === rawTargetId);
+                if(targetUser) {
+                    currentCallData.avatar = targetUser.avatar;
+                    currentCallData.name = targetUser.name;
+                }
+                
                 showCallOverlay('calling');
                 
                 // 3. Dial Peer
@@ -1860,6 +1876,7 @@
                 // Show Incoming UI
                 $('incomingCallerAvatar').textContent = currentCallData.avatar;
                 $('incomingCallerId').textContent = currentCallData.id;
+                $('incomingCallerName').textContent = currentCallData.name;
                 $('incomingCallType').textContent = `INCOMING ${isVideo ? 'VIDEO' : 'VOICE'} CALL`;
                 
                 const modal = $('incomingCallModal');
@@ -1894,6 +1911,7 @@
             } catch(err) {
                 showToast("Failed to access media devices.");
                 currentCall.close();
+                endCallUI();
             }
         }
 
@@ -1950,7 +1968,7 @@
             setTimeout(() => overlay.classList.remove('opacity-0'), 10);
             
             // Set UI based on target data
-            $('activeCallRemoteId').textContent = currentCallData.id;
+            $('activeCallRemoteId').textContent = currentCallData.name;
             $('activeCallAvatar').textContent = currentCallData.avatar;
             $('activeCallStatus').textContent = state.toUpperCase();
             $('activeCallStatus').classList.replace('text-blue-400', 'text-emerald-400');
@@ -1958,14 +1976,16 @@
             $('activeCallTimer').textContent = "00:00";
             
             // Set local video PiP
+            const localVidContainer = $('localVideoContainer');
             const localVid = $('localVideo');
+            
             if(currentCallData.isVideo && localStream) {
                 localVid.srcObject = localStream;
-                localVid.classList.remove('hidden');
+                localVidContainer.classList.remove('hidden');
                 $('callBtnScreen').classList.remove('hidden', 'md:hidden');
                 $('callBtnScreen').classList.add('md:flex');
             } else {
-                localVid.classList.add('hidden');
+                localVidContainer.classList.add('hidden');
                 $('callBtnScreen').classList.add('hidden');
                 $('callBtnScreen').classList.remove('md:flex');
             }
@@ -2113,6 +2133,21 @@
             }
             return false;
         }
+
+        // PWA Install Logic
+        let deferredPrompt; const installBtn = $('installAppBtn');
+        if(installBtn) {
+            window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.classList.remove('hidden'); installBtn.classList.add('flex'); });
+            installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); if (outcome === 'accepted') showToast("Installing Lumina..."); } });
+            window.addEventListener('appinstalled', () => { installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); deferredPrompt = null; showToast("Protocol Installation Complete"); });
+        }
+
+        try {
+            const manifestObj = { name: "Lumina Omni-Protocol", short_name: "Lumina", start_url: window.location.pathname, display: "standalone", background_color: "#030303", theme_color: "#10b981", description: "Cryptographic, browser-based WebRTC mesh network.", icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" }] };
+            const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+            const manifestUrl = URL.createObjectURL(manifestBlob); const manifestLink = document.createElement('link'); manifestLink.rel = 'manifest'; manifestLink.href = manifestUrl; document.head.appendChild(manifestLink);
+        } catch(e) {}
+
 
         window.addEventListener('load', () => {
             const intro = $('aaa-intro');
