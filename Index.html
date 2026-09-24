@@ -29,7 +29,7 @@
             --sc-yellow: #FFFC00;
         }
 
-        /* --- High-Performance Base --- */
+        /* --- STREAMING_CHUNK: High-Performance Base --- */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #030303;
@@ -76,7 +76,7 @@
         }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
-        /* --- Premium Navigation --- */
+        /* --- STREAMING_CHUNK: Premium Navigation --- */
         .nav-item { position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
         .nav-item::before {
             content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
@@ -96,7 +96,7 @@
         .mobile-nav-item.active { color: #fff; }
         .mobile-nav-item.active .nav-icon { color: #10b981; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7)); transform: translateY(-3px); }
 
-        /* --- Holographic Worlds Physics --- */
+        /* --- STREAMING_CHUNK: Holographic Worlds Physics --- */
         .worlds-grid { perspective: 1000px; }
         .worlds-grid > div { opacity: 0; animation: cardFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: center bottom; }
         .worlds-grid > div:nth-child(1) { animation-delay: 0.1s; }
@@ -134,7 +134,7 @@
         .world-card:hover .card-content-default { opacity: 0; transform: translateY(-20px); filter: blur(4px); pointer-events: none; }
         .world-card:hover .card-content-hover { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-        /* --- Omni-Chat Integrations (IG, WA, Snap) --- */
+        /* --- STREAMING_CHUNK: Omni-Chat Integrations (IG, WA, Snap) --- */
         .story-ring {
             position: relative; border-radius: 50%; padding: 2px; background: var(--ig-gradient); z-index: 1;
         }
@@ -169,14 +169,7 @@
         .snap-destroyed { animation: popVanish 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
         @keyframes popVanish { 0% { transform: scale(1); filter: blur(0); opacity: 1; } 100% { transform: scale(0.5); filter: blur(10px); opacity: 0; } }
 
-        /* --- Messaging Animations --- */
-        .msg-materialize { animation: slideIn 0.3s ease-out forwards; opacity: 0; transform-origin: bottom; }
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateY(10px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* --- Emoji & Sticker Engine --- */
+        /* --- STREAMING_CHUNK: Emoji & Sticker Engine --- */
         #mediaPicker {
             position: absolute; bottom: 100%; left: 16px; right: 16px; height: 380px; max-height: 50vh; max-width: 400px;
             background: rgba(15, 15, 20, 0.98); backdrop-filter: blur(40px);
@@ -223,7 +216,7 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        /* --- AAA Intro Animation --- */
+        /* --- STREAMING_CHUNK: AAA Intro Animation --- */
         #aaa-intro { transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; }
         .intro-hide { opacity: 0; filter: blur(20px) brightness(1.5); pointer-events: none; }
         
@@ -259,6 +252,36 @@
         }
         @keyframes lineScaleX { to { transform: scaleX(1); } }
         @keyframes loadingLine { to { transform: translateX(0); } }
+        
+        /* --- STREAMING_CHUNK: WEBRTC CALLING SYSTEM STYLES --- */
+        #callOverlay {
+            transition: opacity 0.4s ease, backdrop-filter 0.4s ease;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+        }
+        .pip-video {
+            position: absolute; bottom: 100px; right: 24px; width: 120px; height: 160px;
+            border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            object-fit: cover; background: #000; z-index: 10;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: bottom right;
+        }
+        .pip-video:hover { transform: scale(1.05); }
+        .remote-video {
+            width: 100%; height: 100%; object-fit: cover; background: #050505;
+        }
+        .ring-pulse {
+            animation: callRingPulse 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes callRingPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 30px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .avatar-placeholder {
+            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #1a1a24 0%, #030303 100%);
+        }
         
     </style>
 </head>
@@ -298,7 +321,66 @@
         <img id="lightboxImg" src="" class="max-w-[95vw] max-h-[85vh] rounded-lg object-contain transform scale-95 transition-transform duration-300 shadow-2xl">
     </div>
 
-    <!-- Sidebar Navigation -->
+    
+    <!-- Incoming Call Modal -->
+    <div id="incomingCallModal" class="fixed inset-0 z-[999999] bg-black/80 backdrop-blur-xl hidden flex-col items-center justify-center opacity-0 transition-opacity duration-400">
+        <div class="glass-panel p-10 rounded-[3rem] w-full max-w-sm flex flex-col items-center text-center shadow-[0_0_80px_rgba(16,185,129,0.15)] border border-emerald-500/20 relative overflow-hidden">
+            <div class="absolute -top-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <p id="incomingCallType" class="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.3em] mb-8 relative z-10">Incoming Video Call</p>
+            
+            <div class="relative mb-6 ring-pulse rounded-full z-10">
+                <div class="w-28 h-28 rounded-full bg-zinc-900 border border-emerald-500/50 flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(16,185,129,0.3)]" id="incomingCallerAvatar">🐺</div>
+            </div>
+            
+            <h2 id="incomingCallerId" class="text-2xl font-bold text-white mb-2 relative z-10">@phoenix_7421</h2>
+            
+            <div class="flex gap-6 mt-10 w-full relative z-10">
+                <button id="btnDeclineCall" class="flex-1 py-4 rounded-2xl bg-red-500/10 text-red-500 font-bold border border-red-500/30 hover:bg-red-500 hover:text-white transition-all shadow-[0_0_20px_rgba(239,68,68,0.1)]">DECLINE</button>
+                <button id="btnAcceptCall" class="flex-1 py-4 rounded-2xl bg-emerald-500 text-black font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)]">ACCEPT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Call Overlay -->
+    <div id="activeCallOverlay" class="fixed inset-0 z-[999998] bg-black hidden flex-col opacity-0 transition-opacity duration-500">
+        
+        <!-- Video Container -->
+        <div class="flex-1 relative w-full h-full overflow-hidden bg-[#050505] flex items-center justify-center" id="callVideoContainer">
+            <video id="remoteVideo" class="remote-video hidden" autoplay playsinline></video>
+            
+            <!-- Voice Call / Video Off Placeholder -->
+            <div id="callAvatarPlaceholder" class="avatar-placeholder absolute inset-0 z-0">
+                <div class="w-40 h-40 rounded-full bg-zinc-900/50 border border-white/5 flex items-center justify-center text-6xl shadow-2xl mb-6 relative">
+                    <span id="activeCallAvatar" class="anim-float z-10">🐺</span>
+                    <div class="absolute inset-0 rounded-full border border-emerald-500/20 ring-pulse"></div>
+                </div>
+                <h2 id="activeCallRemoteId" class="text-2xl font-bold text-white tracking-wide">@user_0000</h2>
+                <p id="activeCallStatus" class="text-[11px] text-emerald-400 font-bold uppercase tracking-[0.2em] mt-3">CONNECTING...</p>
+                <p id="activeCallTimer" class="text-3xl font-light text-white/90 mt-4 tracking-wider hidden">00:00</p>
+            </div>
+            
+            <!-- Local Video (PiP) -->
+            <video id="localVideo" class="pip-video hidden" autoplay playsinline muted></video>
+        </div>
+
+        <!-- Call Controls Bar -->
+        <div class="h-28 bg-gradient-to-t from-black via-black/80 to-transparent w-full absolute bottom-0 left-0 z-20 flex items-center justify-center gap-4 md:gap-8 pb-4 px-4">
+            <button id="callBtnMic" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all backdrop-blur-md">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+            </button>
+            <button id="callBtnCam" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all backdrop-blur-md">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            </button>
+            <button id="callBtnScreen" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 hidden md:flex items-center justify-center text-white transition-all backdrop-blur-md">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </button>
+            <button id="callBtnEnd" class="w-16 h-16 rounded-full bg-red-600 hover:bg-red-500 border border-red-500/50 flex items-center justify-center text-white transition-all shadow-[0_0_20px_rgba(220,38,38,0.5)] ml-2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(135deg);"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </button>
+        </div>
+    </div>
+
     <aside class="w-20 md:w-64 glass-panel flex flex-col justify-between z-20 shrink-0 hidden sm:flex transition-all duration-700 relative shadow-[20px_0_40px_rgba(0,0,0,0.8)] m-4 md:m-6 rounded-[2rem] h-[calc(100dvh-2rem)] md:h-[calc(100dvh-3rem)] border border-white/5 bg-black/30 backdrop-blur-3xl">
         <div>
             <div class="p-8 flex items-center gap-4 cursor-pointer">
@@ -316,6 +398,10 @@
                 <button onclick="switchView('home')" data-target="home" class="nav-item cursor-pointer active w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
                     <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Home</span>
+                </button>
+                <button onclick="switchView('calls')" data-target="calls" class="nav-item cursor-pointer w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
+                    <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span class="hidden md:inline font-medium text-sm tracking-wide relative z-10">Calls</span>
                 </button>
                 <button onclick="switchView('worlds')" data-target="worlds" class="nav-item cursor-pointer w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group overflow-hidden">
                     <svg class="nav-icon w-[22px] h-[22px] group-hover:scale-110 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
@@ -341,7 +427,7 @@
                 </div>
                 <div class="hidden md:block min-w-0 transition-transform duration-500 group-hover:translate-x-1">
                     <p class="text-sm font-medium truncate text-slate-200" id="sbName">Guest</p>
-                    <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest mt-0.5 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]">Connected</p>
+                    <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest mt-0.5 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]" id="sbLuminaId">@guest_0000</p>
                 </div>
             </div>
         </div>
@@ -349,7 +435,6 @@
 
     <main class="flex-1 relative flex flex-col h-full z-10 overflow-hidden pb-[76px] sm:pb-0">
         
-        <!-- HOME VIEW -->
         <div id="homeView" class="hidden flex-1 p-4 md:p-8 items-center justify-center relative view-enter w-full overflow-y-auto custom-scrollbar">
             <div class="text-center z-10 w-full max-w-5xl mx-auto flex flex-col items-center my-auto">
                 <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto mb-10 pointer-events-none flex items-center justify-center glass-panel-3d tilt-element">
@@ -375,7 +460,7 @@
                     <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-white to-emerald-200 text-gradient-flow">Connection.</span>
                 </h1>
                 
-                <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto font-light mb-12 opacity-80 mix-blend-screen">Lumina is a cryptographic, browser-based WebRTC mesh network. Integrated with read receipts, view-once snaps, and double-tap reactions.</p>
+                <p class="text-slate-400 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto font-light mb-12 opacity-80 mix-blend-screen">Lumina is a cryptographic, browser-based WebRTC mesh network. Integrated with Voice & Video calls, read receipts, view-once snaps, and double-tap reactions.</p>
                 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4 w-full max-w-2xl">
                     <button onclick="switchView('worlds')" class="btn-ripple cursor-pointer w-full sm:w-auto px-12 py-5 rounded-2xl bg-white text-black font-semibold text-sm shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 transition-all duration-400 hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] flex items-center justify-center gap-3 group">
@@ -395,9 +480,69 @@
             </div>
         </div>
 
-        <!-- SETTINGS VIEW -->
+        <div id="callsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 relative z-10 view-enter custom-scrollbar">
+            <div class="max-w-4xl mx-auto mt-6 lg:mt-10 pb-20">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4 drop-shadow-lg">Call Matrix</h2>
+                    <p class="text-[11px] text-emerald-400 uppercase tracking-[0.2em] font-bold">Initiate P2P Secure Connection</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Dialing Console -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="glass-panel glass-panel-3d tilt-element p-8 rounded-[2rem] border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative overflow-hidden bg-black/50">
+                            <div class="absolute -top-20 -right-20 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                            
+                            <h3 class="text-lg font-medium text-white mb-6 tracking-wide flex items-center gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                                Connect Identity
+                            </h3>
+
+                            <div class="relative group mb-8">
+                                <label class="absolute -top-2.5 left-5 px-2 bg-[#09090b] text-[10px] font-bold text-emerald-500 uppercase tracking-widest rounded transition-colors shadow-sm">Target Lumina ID</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-6 text-slate-400 font-medium text-lg">@</span>
+                                    <input type="text" id="dialerInput" class="w-full bg-black/60 border border-white/10 rounded-2xl pl-12 pr-6 py-5 text-white text-lg font-medium outline-none focus:border-emerald-500/50 focus:bg-white/5 transition-all shadow-inner focus:shadow-[0_0_30px_rgba(16,185,129,0.15)] lowercase" placeholder="username_0000" spellcheck="false">
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button onclick="initiateCall(false)" class="flex-1 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-sm flex items-center justify-center gap-3 transition-all hover:scale-105 cursor-pointer">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    VOICE CALL
+                                </button>
+                                <button onclick="initiateCall(true)" class="flex-1 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm flex items-center justify-center gap-3 transition-all hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                                    VIDEO CALL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call History -->
+                    <div class="lg:col-span-5">
+                        <div class="glass-panel p-6 rounded-[2rem] border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)] h-full min-h-[400px] flex flex-col bg-black/40">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-sm font-bold text-slate-300 uppercase tracking-widest">Recent Connections</h3>
+                                <button onclick="CallHistoryManager.clear()" class="text-[10px] text-slate-500 hover:text-red-400 uppercase tracking-widest font-bold transition-colors">Clear</button>
+                            </div>
+                            
+                            <div id="callHistoryList" class="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-2">
+                                <!-- Populated dynamically -->
+                                <div class="text-center mt-10 opacity-50">
+                                    <p class="text-xs text-slate-400">No recent calls</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="settingsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth relative z-10 view-enter custom-scrollbar">
-            <div class="max-w-2xl mx-auto pb-20 mt-6 lg:mt-12">
+            <div class="max-w-2xl mx-auto pb-20 mt-6 lg:mt-12 space-y-8">
+                
+                <!-- Digital Identity Panel -->
                 <div class="glass-panel glass-panel-3d tilt-element p-8 sm:p-14 rounded-[3rem] border border-white/5 space-y-10 shadow-[0_40px_100px_-20px_rgba(0,0,0,1)] relative overflow-hidden bg-black/50">
                     <div class="absolute -top-40 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -409,6 +554,16 @@
                     <div class="flex flex-col items-center justify-center gap-4 relative z-10">
                         <div class="w-32 h-32 rounded-[2.5rem] bg-zinc-900 flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] text-6xl transition-transform duration-500 hover:scale-110 hover:border-emerald-500/30" id="profAvatarDisplay">
                             <span class="anim-float block drop-shadow-2xl">🐺</span>
+                        </div>
+                        <div class="bg-black/60 border border-white/10 rounded-full px-4 py-2 flex items-center gap-3">
+                            <span class="text-xs text-slate-400 font-medium tracking-wide" id="displayLuminaId">@guest_0000</span>
+                            <button onclick="copyLuminaId()" class="text-emerald-400 hover:text-white transition-colors cursor-pointer" title="Copy Lumina ID">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-1.5 mt-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></span>
+                            <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-widest">Online</span>
                         </div>
                     </div>
 
@@ -456,10 +611,42 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Call Settings Panel -->
+                <div class="glass-panel p-8 sm:p-10 rounded-[2.5rem] border border-white/5 space-y-6 shadow-[0_20px_40px_rgba(0,0,0,0.5)] bg-black/40">
+                    <h3 class="text-xl font-semibold text-white tracking-tight flex items-center gap-3">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        Call Settings
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between bg-black/40 border border-white/5 p-4 rounded-xl">
+                            <span class="text-sm font-medium text-slate-300">Allow Voice Calls</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="setAllowVoice" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between bg-black/40 border border-white/5 p-4 rounded-xl">
+                            <span class="text-sm font-medium text-slate-300">Allow Video Calls</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="setAllowVideo" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between bg-black/40 border border-white/5 p-4 rounded-xl">
+                            <span class="text-sm font-medium text-slate-300">Auto-Accept Calls</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="setAutoAccept" class="sr-only peer">
+                                <div class="w-11 h-6 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- WORLDS VIEW -->
         <div id="worldsView" class="hidden flex-1 overflow-y-auto p-4 md:p-8 relative z-10 view-enter custom-scrollbar">
             <div class="max-w-6xl mx-auto mt-6 lg:mt-10 pb-20">
                 <div class="mb-14 text-center md:text-left">
@@ -557,7 +744,6 @@
             </div>
         </div>
 
-        <!-- CHAT VIEW -->
         <div id="chatView" class="hidden flex-1 flex-col h-full relative z-10 view-enter w-full max-w-5xl mx-auto border-x border-white/5 bg-black/40 shadow-2xl">
             
             <div id="loginScreen" class="absolute inset-0 z-40 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-500">
@@ -593,6 +779,14 @@
                 </div>
                 
                 <div class="flex items-center gap-2 relative">
+                    <!-- Call Action Buttons for active room -->
+                    <button onclick="callFromRoom(false)" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Voice Call">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    </button>
+                    <button onclick="callFromRoom(true)" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white mr-2" title="Video Call">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                    </button>
+                    <div class="w-px h-6 bg-white/10 mx-1"></div>
                     <button id="inviteBtn" class="cursor-pointer glass-button w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Invite Link">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                     </button>
@@ -691,32 +885,12 @@
             </footer>
         </div>
 
-        <!-- Toast Notifications -->
-        <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[99999] transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4 bg-black/95 px-5 py-2.5 rounded-full flex items-center gap-2 shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-white/20">
-            <span id="toastMsg" class="text-xs font-semibold text-white tracking-wide"></span>
-        </div>
     </main>
-
-    <!-- Mobile Navigation -->
-    <nav class="sm:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 flex justify-around p-2 z-50 bg-black/60 backdrop-blur-2xl">
-        <button onclick="switchView('home')" data-target="home" class="mobile-nav-item active flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span class="text-[9px] font-bold uppercase tracking-widest hidden">Home</span>
-        </button>
-        <button onclick="switchView('worlds')" data-target="worlds" class="mobile-nav-item flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-        </button>
-        <button onclick="switchView('chat')" data-target="chat" class="mobile-nav-item flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        </button>
-        <button onclick="switchView('settings')" data-target="settings" class="mobile-nav-item flex flex-col items-center gap-1.5 p-3 transition-colors hover:text-white cursor-pointer rounded-xl">
-            <svg class="nav-icon w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </button>
-    </nav>
 
     <script>
         const $ = (id) => document.getElementById(id);
         
+        // Chat Network variables
         let peer = null;
         let connections = {};
         let isHost = false;
@@ -725,6 +899,8 @@
         let myName = 'Guest';
         let myGender = 'male';
         let myAvatar = '🐺';
+        let myLuminaId = '';
+        
         let roomName = 'Global';
         let roomType = 'public';
         let ghostDuration = 30;
@@ -741,50 +917,45 @@
             toast: $('toast')
         };
 
+        // --- Lumina ID Generation ---
+        function generateLuminaId(name) {
+            const clean = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const num = Math.floor(1000 + Math.random() * 9000);
+            return `@${clean || 'user'}_${num}`;
+        }
+        
+        window.copyLuminaId = function() {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(myLuminaId).then(() => showToast("Lumina ID copied"));
+            } else {
+                const ta = document.createElement('textarea'); ta.value = myLuminaId; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); showToast("Lumina ID copied"); } catch (err) {} document.body.removeChild(ta);
+            }
+        };
+
         // --- Notification Engine ---
         const NotificationEngine = {
             init: async function() {
-                if (!("Notification" in window)) {
-                    console.log("This browser does not support desktop notification");
-                    return false;
-                }
-                
-                if (Notification.permission === "granted") {
-                    return true;
-                }
-                
+                if (!("Notification" in window)) return false;
+                if (Notification.permission === "granted") return true;
                 if (Notification.permission !== "denied") {
                     const permission = await Notification.requestPermission();
                     return permission === "granted";
                 }
                 return false;
             },
-            
             notify: function(title, options) {
                 if (!("Notification" in window) || Notification.permission !== "granted") return;
-                
-                // Don't notify if the document is highly focused and visible
                 if (document.visibilityState === 'visible' && document.hasFocus()) return;
-
                 try {
                     const n = new Notification(title, {
-                        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E",
-                        badge: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2310b981'/%3E%3C/svg%3E",
-                        vibrate: [200, 100, 200],
-                        silent: false,
-                        ...options
+                        icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/><path d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='65' cy='72' r='6' fill='%2310b981'/><circle cx='38' cy='28' r='6' fill='%2310b981'/></svg>",
+                        badge: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2310b981'/></svg>",
+                        vibrate: [200, 100, 200], silent: false, ...options
                     });
-                    
-                    n.onclick = function() {
-                        window.focus();
-                        this.close();
-                    };
-                    
-                    // Auto close after 5 seconds to prevent screen clutter
+                    n.onclick = function() { window.focus(); this.close(); };
                     setTimeout(() => n.close(), 5000);
-                } catch (e) {
-                    console.warn("Notification error:", e);
-                }
+                } catch (e) { console.warn("Notification error:", e); }
             }
         };
 
@@ -802,7 +973,6 @@
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
                 particles = [];
-                // Dynamic sizing for performance
                 const count = Math.min(window.innerWidth / 30, 40); 
                 for (let i = 0; i < count; i++) {
                     particles.push({
@@ -834,7 +1004,6 @@
                     ctx.arc(p.x, p.y, p.r * (1 + networkEnergy), 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Optimized squared distance calculation
                     for (let j = i + 1; j < particles.length; j++) {
                         const p2 = particles[j];
                         const distSq = (p.x - p2.x)**2 + (p.y - p2.y)**2;
@@ -856,9 +1025,7 @@
             el.addEventListener('mousemove', (e) => {
                 const rect = el.getBoundingClientRect();
                 const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-                // Spotlighting coords
                 el.style.setProperty('--mouse-x', `${x}px`); el.style.setProperty('--mouse-y', `${y}px`);
-                
                 const centerX = rect.width / 2; const centerY = rect.height / 2;
                 const rotateX = ((y - centerY) / centerY) * -5; const rotateY = ((x - centerX) / centerX) * 5;
                 el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
@@ -868,7 +1035,7 @@
 
         // Routing Engine
         function switchView(viewName) {
-            ['homeView', 'worldsView', 'chatView', 'settingsView'].forEach(v => {
+            ['homeView', 'worldsView', 'chatView', 'settingsView', 'callsView'].forEach(v => {
                 const el = $(v); if(el) { el.classList.add('hidden'); el.classList.remove('flex', 'view-enter'); }
             });
             const target = $(viewName + 'View');
@@ -900,12 +1067,22 @@
             if ($('sbAvatar')) $('sbAvatar').innerHTML = avatar;
             if ($('sbName')) $('sbName').textContent = name || 'Guest';
             if ($('loginAvatarPreview')) $('loginAvatarPreview').textContent = avatar;
+            
+            if(!myLuminaId) {
+                myLuminaId = generateLuminaId(name);
+                try { localStorage.setItem('lumina_id', myLuminaId); } catch(e) {}
+            }
+            if ($('sbLuminaId')) $('sbLuminaId').textContent = myLuminaId;
+            if ($('displayLuminaId')) $('displayLuminaId').textContent = myLuminaId;
+            
+            initCallPeer(); // Initialize P2P calling peer identity
         }
 
         try {
             if (localStorage.getItem('lumina_name')) myName = localStorage.getItem('lumina_name');
             if (localStorage.getItem('lumina_gender')) myGender = localStorage.getItem('lumina_gender');
             if (localStorage.getItem('lumina_avatar')) myAvatar = localStorage.getItem('lumina_avatar');
+            if (localStorage.getItem('lumina_id')) myLuminaId = localStorage.getItem('lumina_id');
             syncProfileUI(myName, myGender, myAvatar);
         } catch(e) {}
 
@@ -916,18 +1093,14 @@
             try { localStorage.setItem('lumina_name', myName); localStorage.setItem('lumina_gender', myGender); localStorage.setItem('lumina_avatar', myAvatar); } catch(e) {}
             syncProfileUI(myName, myGender, myAvatar); 
             
-            // Request Notification Permissions on Identity Lock
             const hasNotifPerms = await NotificationEngine.init();
-            if(hasNotifPerms) {
-                showToast("Identity Locked & Notifications Enabled");
-            } else {
-                showToast("Identity Locked (Notifications Disabled)");
-            }
+            if(hasNotifPerms) showToast("Identity Locked & Notifications Enabled");
+            else showToast("Identity Locked (Notifications Disabled)");
 
-            if (peer) broadcast({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+            if (peer) broadcast({ type: 'presence', id: myPeerId, luminaId: myLuminaId, name: myName, avatar: myAvatar });
         });
 
-        // --- SINGLE SOURCE OF TRUTH FOR NETWORK IDS ---
+        // Unify Network ID generation to prevent parallel universes!
         function getNetworkId(room, type) {
             const safeRoom = room.toLowerCase().replace(/[^a-z0-9]/g, '') || 'global';
             return `lumina-mesh-v1-${type}-${safeRoom}`;
@@ -959,7 +1132,7 @@
             setTimeout(() => { lb.classList.add('hidden'); lb.classList.remove('flex'); }, 300);
         }
 
-        // Chat Inputs
+        // --- Omni-Chat UI & Actions ---
         UI.msgIn.addEventListener('input', () => {
             if (UI.msgIn.value.trim().length > 0) {
                 UI.sendBtn.classList.remove('hidden'); UI.sendBtn.classList.add('flex'); UI.voiceBtn.classList.add('hidden');
@@ -979,7 +1152,6 @@
             }
         });
 
-        // Instagram Presence
         $('presenceBtn').addEventListener('click', () => {
             const panel = UI.presencePanel;
             if (panel.classList.contains('scale-y-0')) { panel.classList.remove('scale-y-0', 'opacity-0'); renderPresenceList(); } 
@@ -990,11 +1162,26 @@
             const list = $('presenceList'); if(!list) return;
             list.innerHTML = `<div class="flex flex-col items-center gap-1 min-w-[60px]"><div class="story-ring w-14 h-14 flex items-center justify-center bg-black text-2xl">${myAvatar}</div><span class="text-[10px] text-white font-medium truncate w-full text-center">You</span></div>`;
             activeUsers.forEach((user) => {
-                list.innerHTML += `<div class="flex flex-col items-center gap-1 min-w-[60px]"><div class="story-ring w-14 h-14 flex items-center justify-center bg-black text-2xl">${user.avatar}</div><span class="text-[10px] text-slate-300 font-medium truncate w-full text-center">${user.name}</span></div>`;
+                list.innerHTML += `<div class="flex flex-col items-center gap-1 min-w-[60px]"><div class="story-ring w-14 h-14 flex items-center justify-center bg-black text-2xl cursor-pointer hover:scale-105 transition-transform" onclick="quickDial('${user.luminaId}')" title="Call ${user.name}">${user.avatar}</div><span class="text-[10px] text-slate-300 font-medium truncate w-full text-center">${user.name}</span></div>`;
             });
         }
+        
+        window.quickDial = function(lid) {
+            if(!lid) return showToast("Cannot locate Lumina ID");
+            $('dialerInput').value = lid;
+            switchView('calls');
+        };
 
-        // Messaging Logic
+        window.callFromRoom = function(isVideo) {
+            if(activeUsers.size === 0) return showToast("No other users in this dimension to call.");
+            // Grab the first active user in the room to call
+            const firstUser = activeUsers.values().next().value;
+            if(firstUser && firstUser.luminaId) {
+                $('dialerInput').value = firstUser.luminaId;
+                initiateCall(isVideo);
+            }
+        };
+
         let activeReply = null;
         window.triggerReply = function(user, text) {
             activeReply = { user, text };
@@ -1042,7 +1229,18 @@
             const heartEl = `<div class="big-heart">❤️</div>`;
             let contentHTML = '';
             
-            if (payload.isSnap && !isSelf) {
+            if (payload.isSystemCall) {
+                // Formatting for call log message
+                contentHTML = `
+                    <div class="flex items-center gap-3 py-1">
+                        <div class="w-8 h-8 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-lg">${payload.callData.isVideo ? '📹' : '📞'}</div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-xs">${payload.callData.status === 'missed' ? 'Missed Call' : (payload.callData.isVideo ? 'Video Call' : 'Voice Call')}</span>
+                            <span class="text-[10px] text-white/50">${payload.callData.duration || 'Ended'}</span>
+                        </div>
+                    </div>`;
+            }
+            else if (payload.isSnap && !isSelf) {
                 contentHTML = `<div class="snap-box" onclick="viewSnap('${msgId}')"><div class="text-3xl mb-1">🎁</div><div class="text-[10px] uppercase font-bold tracking-widest text-yellow-400">Tap to View</div><div class="hidden snap-content mt-2">${payload.text}</div><div class="snap-timer hidden"></div></div>`;
             } else if (payload.isSnap && isSelf) {
                 contentHTML = `<div class="opacity-70 italic text-sm"><span class="text-yellow-400 text-xs font-bold uppercase tracking-widest">📸 Snap Sent</span></div>`;
@@ -1059,7 +1257,7 @@
 
             div.innerHTML = `
                 ${!isSelf ? `<div class="text-[10px] text-slate-400 mb-1 ml-2 font-bold uppercase tracking-widest flex items-center gap-1.5"><span class="bg-black/40 border border-white/10 rounded w-5 h-5 flex items-center justify-center text-[10px]">${avatar}</span> ${user}</div>` : ''}
-                <div class="relative px-4 py-2.5 text-sm leading-relaxed shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${isSelf ? 'bg-emerald-600/90 backdrop-blur-md text-white rounded-[1.5rem] rounded-tr-sm border border-emerald-500/50' : 'bg-zinc-900/80 backdrop-blur-md text-slate-100 rounded-[1.5rem] rounded-tl-sm border border-white/10'}">
+                <div class="relative px-4 py-2.5 text-sm leading-relaxed shadow-[0_10px_20px_rgba(0,0,0,0.3)] ${isSelf ? 'bg-emerald-600/90 backdrop-blur-md text-white rounded-[1.5rem] rounded-tr-sm border border-emerald-500/50' : 'bg-zinc-900/80 backdrop-blur-md text-slate-100 rounded-[1.5rem] rounded-tl-sm border border-white/10'} ${payload.isSystemCall && payload.callData.status === 'missed' ? 'border-red-500/50 bg-red-900/40' : ''}">
                     <div class="msg-toolbar-wrapper absolute ${isSelf ? '-top-10 right-0' : '-top-10 left-0'} flex items-center gap-1.5 bg-[#09090b]/95 backdrop-blur-xl border border-white/10 p-1.5 rounded-[1rem] shadow-2xl z-20">
                         <button type="button" onclick="triggerReply(this.closest('.message-container').dataset.user, this.closest('.message-container').dataset.text)" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110 text-slate-300">↩️</button>
                         <button type="button" onclick="sendReaction('${msgId}', '❤️')" class="hover:bg-white/10 p-1.5 rounded-lg text-sm transition-all hover:scale-110">❤️</button>
@@ -1078,7 +1276,6 @@
             
             UI.chat.appendChild(div);
             
-            // Re-trigger scroll if images are loaded to prevent layout jumps
             const imgs = div.querySelectorAll('img');
             imgs.forEach(img => {
                 img.onload = () => UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
@@ -1086,7 +1283,7 @@
             
             UI.chat.scrollTo({ top: UI.chat.scrollHeight, behavior: 'smooth' });
 
-            if (!isSelf && !payload.isSystem) {
+            if (!isSelf && !payload.isSystem && !payload.isSystemCall) {
                 sendPayload({ type: 'receipt', msgId: msgId, status: 'delivered' });
                 if (document.hasFocus()) setTimeout(() => sendPayload({ type: 'receipt', msgId: msgId, status: 'read' }), 500);
             }
@@ -1137,7 +1334,6 @@
             touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
             dragEl = bubble; dragEl.style.transition = 'none'; isSwiping = false;
 
-            // Long Press Mobile Menu
             longPressTimer = setTimeout(() => {
                 if(!isSwiping && dragEl) {
                     const container = dragEl.closest('.message-container');
@@ -1176,7 +1372,6 @@
             setTimeout(() => { if(dragEl) dragEl.style.transition = ''; dragEl = null; }, 300);
         });
         
-        // Hide toolbar if click anywhere else
         document.addEventListener('touchstart', (e) => {
             if(!e.target.closest('.msg-toolbar-wrapper') && !e.target.closest('[class*="rounded-[1.5rem]"]')) {
                 document.querySelectorAll('.msg-toolbar-wrapper.force-active').forEach(tb => tb.classList.remove('force-active'));
@@ -1223,22 +1418,18 @@
 
         function handleData(data, conn) {
             if (data.type === 'presence') {
-                if (data.id !== myPeerId) { activeUsers.set(data.id, { name: data.name, avatar: data.avatar }); updateBadge(); }
+                if (data.id !== myPeerId) { activeUsers.set(data.id, { name: data.name, avatar: data.avatar, luminaId: data.luminaId }); updateBadge(); }
                 if(isHost) broadcast(data, conn.peer); 
             }
             else if (data.type === 'msg') {
                 if (!$(data.msgId)) {
                     addMessage(data.user, data.avatar, data, false);
                     
-                    // Trigger Native Notification if not the sender and tab is backgrounded
-                    if (data.id !== myPeerId) {
+                    if (data.id !== myPeerId && !data.isSystemCall) {
                         let notifBody = data.isSnap ? '📸 Sent a Snap' : data.text.replace(/<[^>]*>?/gm, '');
                         if (notifBody.includes('img src')) notifBody = '🖼️ Sent an Image';
                         if (notifBody.includes('audio controls')) notifBody = '🎤 Sent a Voice Note';
-                        
-                        NotificationEngine.notify(`${data.avatar} ${data.user} in ${roomName}`, {
-                            body: notifBody
-                        });
+                        NotificationEngine.notify(`${data.avatar} ${data.user} in ${roomName}`, { body: notifBody });
                     }
                 }
                 if (isHost) broadcast(data, conn.peer);
@@ -1249,12 +1440,8 @@
             else if (data.type === 'reaction') {
                 appendReaction(data.msgId, data.reaction); 
                 if (isHost) broadcast(data, conn.peer);
-                
-                // Trigger notification for reaction
                 if (data.id !== myPeerId && document.visibilityState !== 'visible') {
-                     NotificationEngine.notify(`${activeUsers.get(conn.peer)?.avatar || '👤'} ${activeUsers.get(conn.peer)?.name || 'Someone'} reacted ${data.reaction}`, {
-                        body: 'Reacted to your message'
-                    });
+                     NotificationEngine.notify(`${activeUsers.get(conn.peer)?.avatar || '👤'} ${activeUsers.get(conn.peer)?.name || 'Someone'} reacted ${data.reaction}`, { body: 'Reacted to your message' });
                 }
             }
             else if (data.type === 'typing') {
@@ -1285,7 +1472,7 @@
                 connections[conn.peer] = conn; setupConnection(conn);
                 conn.on('open', () => {
                     updateBadge(); showToast('Mesh connection detected');
-                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
+                    conn.send({ type: 'presence', id: myPeerId, luminaId: myLuminaId, name: myName, avatar: myAvatar });
                 });
             });
         }
@@ -1300,9 +1487,7 @@
                     hostFound = true; isHost = false; connections[targetHostId] = conn; setupConnection(conn);
                     UI.login.classList.add('login-exit'); setTimeout(() => UI.login.classList.add('hidden'), 1200);
                     updateBadge();
-                    conn.send({ type: 'presence', id: myPeerId, name: myName, avatar: myAvatar });
-                    
-                    // Request notifications upon successfully joining a room
+                    conn.send({ type: 'presence', id: myPeerId, luminaId: myLuminaId, name: myName, avatar: myAvatar });
                     NotificationEngine.init();
                 });
                 setTimeout(() => { if (!hostFound) becomeHost(); }, 3500);
@@ -1312,11 +1497,7 @@
         $('joinBtn')?.addEventListener('click', async () => {
             myName = UI.nameIn.value.trim() || 'Guest'; roomName = UI.roomIn.value.trim() || 'Global';
             syncProfileUI(myName, myGender, myAvatar);
-            
-            // Generate the secure, unified Network ID
             targetHostId = getNetworkId(roomName, roomType); 
-            
-            // Request permissions before initiating connection
             await NotificationEngine.init();
             initPeer();
         });
@@ -1333,17 +1514,7 @@
         $('inviteBtn')?.addEventListener('click', () => {
             const url = new URL(window.location.origin + window.location.pathname);
             url.searchParams.set('room', encodeURIComponent(roomName)); url.searchParams.set('type', roomType);
-            
-            const txt = url.toString();
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(txt).then(() => showToast("Cryptographic link copied"));
-            } else {
-                const ta = document.createElement('textarea');
-                ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
-                document.body.appendChild(ta); ta.select();
-                try { document.execCommand('copy'); showToast("Cryptographic link copied"); } catch (err) {}
-                document.body.removeChild(ta);
-            }
+            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url.toString()).then(() => showToast("Cryptographic link copied"));
         });
 
         UI.form.addEventListener('submit', e => {
@@ -1397,24 +1568,12 @@
             };
         });
 
-        // --- Dynamic Omni-Emoji Engine (3,953+ Emojis) ---
+        // --- STREAMING_CHUNK: Dynamic Omni-Emoji & Sticker Engine ---
         const EMOJIS = (() => {
             const emojiSet = new Set();
-            // Core hardcoded favorites
             const core = ["😀","😃","😄","😁","😆","😅","😂","🤣","🥲","☺️","😊","😇","🙂","🙃","😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳","😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🤗","🤔","🤭","🤫","🤥","😶","😐","😑","😬","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😵","🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","💩","👻","💀","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀","😿","😾","❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔","❣️","💕","💞","💓","💗","💖","💘","💝","🔥","✨","🌟","💫","💥","💢","💦","💨","🎉","🎊","💯","👍","👎","👏","🙌","👐","🤲","🤝","🙏","✌️","🤘","🤙","🤌","🤏","👈","👉","👆","👇","☝️","✋","🤚","🖐️","🖖","👋", "👨‍💻", "👩‍💻", "👨‍🚀", "👩‍🚀", "🏳️‍🌈", "🏳️‍⚧️", "🏴‍☠️"];
             core.forEach(e => emojiSet.add(e));
-
-            // Dynamically generate standard Unicode Emojis
-            const ranges = [
-                [0x1F600, 0x1F64F], // Emoticons
-                [0x1F300, 0x1F5FF], // Misc Symbols and Pictographs
-                [0x1F680, 0x1F6FF], // Transport and Map
-                [0x1F900, 0x1F9FF], // Supplemental Symbols and Pictographs
-                [0x1FA70, 0x1FAFF], // Symbols and Pictographs Extended-A
-                [0x2600, 0x26FF],   // Misc symbols
-                [0x2700, 0x27BF],   // Dingbats
-            ];
-
+            const ranges = [[0x1F600, 0x1F64F], [0x1F300, 0x1F5FF], [0x1F680, 0x1F6FF], [0x1F900, 0x1F9FF], [0x1FA70, 0x1FAFF], [0x2600, 0x26FF], [0x2700, 0x27BF]];
             try {
                 const emojiRegex = /\p{Emoji_Presentation}/u;
                 for (const [start, end] of ranges) {
@@ -1424,11 +1583,9 @@
                     }
                 }
             } catch(e) {}
-
             return Array.from(emojiSet);
         })();
         
-        // CSS-rendered Tanglish/Tamil Stickers
         const STICKERS = [
             `<div class="sticker-msg bg-gradient-to-tr from-orange-500 to-red-500 text-white">Vera Level 🔥</div>`,
             `<div class="sticker-msg bg-gradient-to-r from-emerald-400 to-cyan-400 text-black">Semma 👌</div>`,
@@ -1444,190 +1601,481 @@
             `<div class="sticker-msg bg-gradient-to-b from-slate-700 to-slate-900 border-white/20 text-white">Apdiyuuu 🙄</div>`
         ];
 
-        // Populate Emoji Grid dynamically
         const emojiGrid = $('emojiContainer');
         if(emojiGrid) {
             const fragment = document.createDocumentFragment();
             EMOJIS.forEach(e => {
-                const span = document.createElement('span');
-                span.className = 'emoji-item'; span.textContent = e;
-                span.onclick = () => {
-                    UI.msgIn.value += e; 
-                    UI.msgIn.dispatchEvent(new Event('input')); // Trigger send button toggle
-                    UI.msgIn.focus();
-                };
+                const span = document.createElement('span'); span.className = 'emoji-item'; span.textContent = e;
+                span.onclick = () => { UI.msgIn.value += e; UI.msgIn.dispatchEvent(new Event('input')); UI.msgIn.focus(); };
                 fragment.appendChild(span);
             });
             emojiGrid.appendChild(fragment);
         }
 
-        // Populate Sticker Grid
         const stickerGrid = $('defaultStickersList');
         if(stickerGrid) {
             STICKERS.forEach(html => {
-                const div = document.createElement('div');
-                div.className = 'sticker-item'; div.innerHTML = html;
+                const div = document.createElement('div'); div.className = 'sticker-item'; div.innerHTML = html;
                 div.onclick = () => {
                     if(!peer) return showToast("Connect to a network first");
                     const payload = { type: 'msg', user: myName, avatar: myAvatar, text: html, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
-                    addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
-                    $('mediaPicker').classList.add('picker-hidden');
+                    addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply(); $('mediaPicker').classList.add('picker-hidden');
                 };
                 stickerGrid.appendChild(div);
             });
         }
 
-        // Custom Sticker Engine
         const customGradients = [
-            'bg-gradient-to-r from-emerald-400 to-cyan-400 text-black',
-            'bg-gradient-to-tr from-orange-500 to-red-500 text-white',
-            'bg-gradient-to-br from-pink-500 to-rose-500 text-white',
-            'bg-gradient-to-bl from-blue-600 to-purple-600 text-white',
-            'bg-gradient-to-t from-yellow-400 to-yellow-200 text-black',
-            'bg-gradient-to-br from-gray-900 to-black border border-yellow-500 text-yellow-500'
+            'bg-gradient-to-r from-emerald-400 to-cyan-400 text-black', 'bg-gradient-to-tr from-orange-500 to-red-500 text-white',
+            'bg-gradient-to-br from-pink-500 to-rose-500 text-white', 'bg-gradient-to-bl from-blue-600 to-purple-600 text-white',
+            'bg-gradient-to-t from-yellow-400 to-yellow-200 text-black', 'bg-gradient-to-br from-gray-900 to-black border border-yellow-500 text-yellow-500'
         ];
         let selectedGradient = customGradients[0];
-        
         const swatchesContainer = $('stickerSwatches');
         if(swatchesContainer) {
             customGradients.forEach(grad => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
+                const btn = document.createElement('button'); btn.type = 'button';
                 const bgClasses = grad.split(' text-')[0].replace(' border-yellow-500', '').replace(' border', '');
                 btn.className = `w-5 h-5 rounded-full border-2 border-transparent hover:scale-125 transition-transform shadow-md ${bgClasses}`;
-                btn.onclick = (e) => {
-                    e.preventDefault();
-                    selectedGradient = grad;
-                    $('customStickerPreview').className = `sticker-msg text-sm px-4 py-1.5 w-auto shadow-md ${grad}`;
-                    $('customStickerPreview').style.transform = 'none';
-                };
+                btn.onclick = (e) => { e.preventDefault(); selectedGradient = grad; $('customStickerPreview').className = `sticker-msg text-sm px-4 py-1.5 w-auto shadow-md ${grad}`; $('customStickerPreview').style.transform = 'none'; };
                 swatchesContainer.appendChild(btn);
             });
-
-            $('customStickerInput').addEventListener('input', (e) => {
-                $('customStickerPreview').textContent = e.target.value.trim() || 'Custom Trendz 💥';
-            });
-
+            $('customStickerInput').addEventListener('input', (e) => { $('customStickerPreview').textContent = e.target.value.trim() || 'Custom Trendz 💥'; });
             $('sendCustomSticker').addEventListener('click', (e) => {
-                e.preventDefault();
-                const text = $('customStickerInput').value.trim() || 'Custom Trendz 💥';
+                e.preventDefault(); const text = $('customStickerInput').value.trim() || 'Custom Trendz 💥';
                 const html = `<div class="sticker-msg ${selectedGradient}">${text.replace(/</g, "&lt;")}</div>`;
                 if(!peer) return showToast("Connect to a network first");
                 const payload = { type: 'msg', user: myName, avatar: myAvatar, text: html, msgId: `msg-${Date.now()}`, replyTo: activeReply, isSnap: isSnapMode, id: myPeerId };
                 addMessage(myName, myAvatar, payload, true); sendPayload(payload); cancelReply();
-                $('mediaPicker').classList.add('picker-hidden');
-                $('customStickerInput').value = '';
-                $('customStickerPreview').textContent = 'Custom Trendz 💥';
-                UI.msgIn.dispatchEvent(new Event('input')); // Reset send button
+                $('mediaPicker').classList.add('picker-hidden'); $('customStickerInput').value = ''; $('customStickerPreview').textContent = 'Custom Trendz 💥'; UI.msgIn.dispatchEvent(new Event('input'));
             });
         }
 
-        // Toggle Picker Visibility
         const mediaPicker = $('mediaPicker');
-        $('emojiToggleBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            mediaPicker.classList.toggle('picker-hidden');
-        });
+        $('emojiToggleBtn').addEventListener('click', (e) => { e.stopPropagation(); mediaPicker.classList.toggle('picker-hidden'); });
+        $('tabEmoji').addEventListener('click', () => { $('tabEmoji').classList.add('active'); $('tabSticker').classList.remove('active'); $('emojiContainer').classList.remove('hidden'); $('stickerContainer').classList.add('hidden'); $('stickerContainer').classList.remove('flex'); });
+        $('tabSticker').addEventListener('click', () => { $('tabSticker').classList.add('active'); $('tabEmoji').classList.remove('active'); $('stickerContainer').classList.remove('hidden'); $('stickerContainer').classList.add('flex'); $('emojiContainer').classList.add('hidden'); });
+        document.addEventListener('click', (e) => { if (mediaPicker && !mediaPicker.contains(e.target) && !$('emojiToggleBtn').contains(e.target)) { mediaPicker.classList.add('picker-hidden'); } });
 
-        // Tab Switching Logic
-        $('tabEmoji').addEventListener('click', () => {
-            $('tabEmoji').classList.add('active'); $('tabSticker').classList.remove('active');
-            $('emojiContainer').classList.remove('hidden'); 
-            $('stickerContainer').classList.add('hidden');
-            $('stickerContainer').classList.remove('flex');
-        });
-        $('tabSticker').addEventListener('click', () => {
-            $('tabSticker').classList.add('active'); $('tabEmoji').classList.remove('active');
-            $('stickerContainer').classList.remove('hidden'); 
-            $('stickerContainer').classList.add('flex');
-            $('emojiContainer').classList.add('hidden');
-        });
+        // --- PWA Install Logic ---
+        let deferredPrompt; const installBtn = $('installAppBtn');
+        if(installBtn) {
+            window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.classList.remove('hidden'); installBtn.classList.add('flex'); });
+            installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); if (outcome === 'accepted') showToast("Installing Lumina..."); } });
+            window.addEventListener('appinstalled', () => { installBtn.classList.add('hidden'); installBtn.classList.remove('flex'); deferredPrompt = null; showToast("Protocol Installation Complete"); });
+        }
 
-        // Close Picker when clicking outside
-        document.addEventListener('click', (e) => {
-            if (mediaPicker && !mediaPicker.contains(e.target) && !$('emojiToggleBtn').contains(e.target)) {
-                mediaPicker.classList.add('picker-hidden');
+        try {
+            const manifestObj = { name: "Lumina Omni-Protocol", short_name: "Lumina", start_url: window.location.pathname, display: "standalone", background_color: "#030303", theme_color: "#10b981", description: "Cryptographic, browser-based WebRTC mesh network.", icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" }] };
+            const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+            const manifestUrl = URL.createObjectURL(manifestBlob); const manifestLink = document.createElement('link'); manifestLink.rel = 'manifest'; manifestLink.href = manifestUrl; document.head.appendChild(manifestLink);
+        } catch(e) {}
+
+
+        // --- STREAMING_CHUNK: Lumina Voice & Video Calling Engine ---
+
+        let callPeer = null;         // Dedicated PeerJS instance for P2P calling
+        let currentCall = null;      // Active media connection
+        let localStream = null;      // My camera/mic stream
+        let callTimerInterval = null; 
+        let currentCallData = {};    // Stores info about the active/incoming call
+
+        // Synthesize a browser-native ringtone using AudioContext
+        const RingtoneManager = {
+            ctx: null, interval: null,
+            play: function() {
+                if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if(this.ctx.state === 'suspended') this.ctx.resume();
+                this.interval = setInterval(() => {
+                    const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.5, this.ctx.currentTime + 0.05);
+                    gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.5);
+                    osc.start(this.ctx.currentTime); osc.stop(this.ctx.currentTime + 0.5);
+                }, 2000);
+            },
+            stop: function() { clearInterval(this.interval); }
+        };
+
+        const CallHistoryManager = {
+            history: [],
+            load: function() {
+                try { this.history = JSON.parse(localStorage.getItem('lumina_call_history')) || []; } catch(e) { this.history = []; }
+                this.render();
+            },
+            save: function() {
+                try { localStorage.setItem('lumina_call_history', JSON.stringify(this.history)); } catch(e) {}
+                this.render();
+            },
+            add: function(id, name, avatar, isVideo, isOutgoing, status, duration) {
+                const entry = { id, name, avatar, isVideo, isOutgoing, status, duration, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
+                this.history.unshift(entry); if(this.history.length > 50) this.history.pop();
+                this.save();
+                
+                // Add system message to chat if connected to room
+                if(peer && connections[targetHostId] && connections[targetHostId].open) {
+                    const msgPayload = { type: 'msg', user: myName, avatar: myAvatar, text: "", msgId: `call-${Date.now()}`, isSystemCall: true, callData: entry, id: myPeerId };
+                    addMessage(myName, myAvatar, msgPayload, true); sendPayload(msgPayload);
+                }
+            },
+            clear: function() { this.history = []; this.save(); },
+            render: function() {
+                const list = $('callHistoryList'); if(!list) return;
+                if(this.history.length === 0) { list.innerHTML = `<div class="text-center mt-10 opacity-50"><p class="text-xs text-slate-400">No recent calls</p></div>`; return; }
+                
+                list.innerHTML = '';
+                this.history.forEach(entry => {
+                    const icon = entry.isVideo ? '<path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>' : '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>';
+                    const statusColor = entry.status === 'missed' ? 'text-red-400' : (entry.isOutgoing ? 'text-emerald-400' : 'text-blue-400');
+                    const dirArrow = entry.isOutgoing ? '↗' : '↙';
+                    
+                    list.innerHTML += `
+                        <div class="bg-black/30 border border-white/5 rounded-xl p-3 flex items-center justify-between hover:bg-white/5 transition-colors group cursor-pointer" onclick="quickDial('${entry.id}')">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-lg">${entry.avatar}</div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-white tracking-wide">${entry.id}</span>
+                                    <span class="text-[10px] uppercase font-bold tracking-widest ${statusColor} mt-0.5">${dirArrow} ${entry.status} ${entry.duration ? `• ${entry.duration}` : ''}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <span class="text-[9px] text-slate-400 font-medium">${entry.time}</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-500 group-hover:text-emerald-400 transition-colors">${icon}</svg>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        };
+
+        function initCallPeer() {
+            if(!myLuminaId) return;
+            if(callPeer) callPeer.destroy();
+            
+            // Clean ID to be PeerJS compatible (only alphanumeric & dash)
+            const cleanId = myLuminaId.replace(/[^a-z0-9]/gi, '-');
+            
+            callPeer = new Peer(cleanId, peerConfig);
+            
+            callPeer.on('call', handleIncomingCall);
+            
+            callPeer.on('error', err => {
+                if(err.type === 'unavailable-id') console.warn('Lumina ID collision, fallback generated.');
+                else console.warn('Call Peer Error:', err);
+            });
+        }
+
+        // --- Core Call Flow ---
+        
+        async function initiateCall(isVideo) {
+            const rawTargetId = $('dialerInput').value.trim();
+            if(!rawTargetId) return showToast('Please enter a target Lumina ID.');
+            if(rawTargetId === myLuminaId) return showToast('Cannot call your own identity.');
+            
+            // Check settings block
+            if(!isVideo && !$('setAllowVoice').checked) return showToast('Voice calls disabled in settings.');
+            if(isVideo && !$('setAllowVideo').checked) return showToast('Video calls disabled in settings.');
+
+            const cleanTargetId = rawTargetId.replace(/[^a-z0-9]/gi, '-');
+
+            try {
+                // 1. Request Media
+                localStream = await navigator.mediaDevices.getUserMedia({ video: isVideo, audio: true });
+                
+                // 2. Prep UI
+                currentCallData = { id: rawTargetId, avatar: '👤', name: 'Unknown', isVideo, isOutgoing: true, startTime: 0 };
+                showCallOverlay('calling');
+                
+                // 3. Dial Peer
+                const call = callPeer.call(cleanTargetId, localStream, { 
+                    metadata: { callerLuminaId: myLuminaId, callerName: myName, callerAvatar: myAvatar, isVideo } 
+                });
+                
+                if(!call) { stopMediaTracks(); hideCallOverlay(); return showToast("Target peer is offline."); }
+                
+                setupActiveCallEvents(call);
+                
+            } catch (err) {
+                console.error(err);
+                if(err.name === 'NotAllowedError') showToast(isVideo ? 'CAMERA ACCESS REQUIRED' : 'MICROPHONE ACCESS REQUIRED');
+                else showToast("Media devices unavailable.");
+                stopMediaTracks(); hideCallOverlay();
+            }
+        }
+
+        function handleIncomingCall(call) {
+            const meta = call.metadata || {};
+            const isVideo = meta.isVideo || false;
+            
+            // Check settings blocker
+            if(!isVideo && !$('setAllowVoice').checked) return call.close();
+            if(isVideo && !$('setAllowVideo').checked) return call.close();
+
+            currentCallData = { 
+                id: meta.callerLuminaId || call.peer, 
+                avatar: meta.callerAvatar || '👤', 
+                name: meta.callerName || 'Unknown', 
+                isVideo, isOutgoing: false, startTime: 0 
+            };
+            
+            currentCall = call;
+
+            // Auto-accept mode
+            if($('setAutoAccept')?.checked) {
+                acceptCall();
+            } else {
+                // Show Incoming UI
+                $('incomingCallerAvatar').textContent = currentCallData.avatar;
+                $('incomingCallerId').textContent = currentCallData.id;
+                $('incomingCallType').textContent = `INCOMING ${isVideo ? 'VIDEO' : 'VOICE'} CALL`;
+                
+                const modal = $('incomingCallModal');
+                modal.classList.remove('hidden'); modal.classList.add('flex');
+                setTimeout(() => modal.classList.remove('opacity-0'), 10);
+                
+                RingtoneManager.play();
+                
+                // If in background, notify
+                NotificationEngine.notify(`Incoming Call from ${currentCallData.name}`, { body: `${isVideo ? 'Video' : 'Voice'} Call`});
+            }
+            
+            // Handle caller hanging up before we answer
+            call.on('close', () => {
+                if($('incomingCallModal').classList.contains('flex')) {
+                    declineCall(true); // Treat as missed
+                }
+            });
+        }
+
+        async function acceptCall() {
+            RingtoneManager.stop();
+            const modal = $('incomingCallModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 400);
+
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: currentCallData.isVideo, audio: true });
+                currentCall.answer(localStream);
+                showCallOverlay('connecting');
+                setupActiveCallEvents(currentCall);
+            } catch(err) {
+                showToast("Failed to access media devices.");
+                currentCall.close();
+            }
+        }
+
+        function declineCall(isMissed = false) {
+            RingtoneManager.stop();
+            const modal = $('incomingCallModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 400);
+            
+            if(currentCall) currentCall.close();
+            
+            CallHistoryManager.add(
+                currentCallData.id, currentCallData.name, currentCallData.avatar, 
+                currentCallData.isVideo, false, isMissed ? 'missed' : 'declined', null
+            );
+            
+            cleanupCallState();
+        }
+
+        function setupActiveCallEvents(call) {
+            currentCall = call;
+            
+            call.on('stream', remoteStream => {
+                $('activeCallStatus').textContent = "CONNECTED";
+                $('activeCallStatus').classList.replace('text-emerald-400', 'text-blue-400');
+                
+                const remoteVid = $('remoteVideo');
+                remoteVid.srcObject = remoteStream;
+                
+                if(currentCallData.isVideo) {
+                    remoteVid.classList.remove('hidden');
+                    $('callAvatarPlaceholder').classList.add('hidden');
+                } else {
+                    remoteVid.classList.add('hidden');
+                    $('callAvatarPlaceholder').classList.remove('hidden');
+                }
+                
+                startCallTimer();
+            });
+            
+            call.on('close', () => {
+                endCallUI();
+            });
+            
+            call.on('error', err => {
+                showToast("Connection failed.");
+                endCallUI();
+            });
+        }
+
+        function showCallOverlay(state) {
+            const overlay = $('activeCallOverlay');
+            overlay.classList.remove('hidden'); overlay.classList.add('flex');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            
+            // Set UI based on target data
+            $('activeCallRemoteId').textContent = currentCallData.id;
+            $('activeCallAvatar').textContent = currentCallData.avatar;
+            $('activeCallStatus').textContent = state.toUpperCase();
+            $('activeCallStatus').classList.replace('text-blue-400', 'text-emerald-400');
+            $('activeCallTimer').classList.add('hidden');
+            $('activeCallTimer').textContent = "00:00";
+            
+            // Set local video PiP
+            const localVid = $('localVideo');
+            if(currentCallData.isVideo && localStream) {
+                localVid.srcObject = localStream;
+                localVid.classList.remove('hidden');
+                $('callBtnScreen').classList.remove('hidden', 'md:hidden');
+                $('callBtnScreen').classList.add('md:flex');
+            } else {
+                localVid.classList.add('hidden');
+                $('callBtnScreen').classList.add('hidden');
+                $('callBtnScreen').classList.remove('md:flex');
+            }
+            
+            // Reset control buttons
+            $('callBtnMic').classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+            $('callBtnCam').classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+        }
+
+        function startCallTimer() {
+            currentCallData.startTime = Date.now();
+            const timerEl = $('activeCallTimer');
+            timerEl.classList.remove('hidden');
+            
+            clearInterval(callTimerInterval);
+            callTimerInterval = setInterval(() => {
+                const diff = Math.floor((Date.now() - currentCallData.startTime) / 1000);
+                const m = String(Math.floor(diff / 60)).padStart(2, '0');
+                const s = String(diff % 60).padStart(2, '0');
+                timerEl.textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function stopMediaTracks() {
+            if(localStream) {
+                localStream.getTracks().forEach(t => t.stop());
+                localStream = null;
+            }
+        }
+
+        function hideCallOverlay() {
+            const overlay = $('activeCallOverlay');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => { 
+                overlay.classList.add('hidden'); overlay.classList.remove('flex'); 
+                $('remoteVideo').srcObject = null;
+                $('localVideo').srcObject = null;
+            }, 500);
+        }
+
+        function cleanupCallState() {
+            clearInterval(callTimerInterval);
+            stopMediaTracks();
+            currentCall = null;
+        }
+
+        function endCallUI() {
+            $('activeCallStatus').textContent = "ENDED";
+            $('activeCallStatus').classList.replace('text-blue-400', 'text-red-400');
+            
+            let durationStr = null;
+            if(currentCallData.startTime > 0) {
+                const diff = Math.floor((Date.now() - currentCallData.startTime) / 1000);
+                durationStr = `${String(Math.floor(diff / 60)).padStart(2, '0')}:${String(diff % 60).padStart(2, '0')}`;
+            }
+            
+            CallHistoryManager.add(
+                currentCallData.id, currentCallData.name, currentCallData.avatar, 
+                currentCallData.isVideo, currentCallData.isOutgoing, 
+                durationStr ? 'completed' : 'failed', durationStr
+            );
+            
+            setTimeout(() => {
+                hideCallOverlay();
+                cleanupCallState();
+            }, 1500);
+        }
+
+        // UI Event Listeners for Call Controls
+        $('btnAcceptCall').addEventListener('click', acceptCall);
+        $('btnDeclineCall').addEventListener('click', () => declineCall(false));
+        
+        $('callBtnEnd').addEventListener('click', () => {
+            if(currentCall) currentCall.close();
+            endCallUI();
+        });
+        
+        $('callBtnMic').addEventListener('click', function() {
+            if(!localStream) return;
+            const audioTrack = localStream.getAudioTracks()[0];
+            if(audioTrack) {
+                audioTrack.enabled = !audioTrack.enabled;
+                if(!audioTrack.enabled) this.classList.add('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+                else this.classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+            }
+        });
+        
+        $('callBtnCam').addEventListener('click', function() {
+            if(!localStream || !currentCallData.isVideo) return;
+            const videoTrack = localStream.getVideoTracks()[0];
+            if(videoTrack) {
+                videoTrack.enabled = !videoTrack.enabled;
+                if(!videoTrack.enabled) this.classList.add('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+                else this.classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/50');
             }
         });
 
-        // PWA Install Logic
-        let deferredPrompt;
-        const installBtn = $('installAppBtn');
-
-        if(installBtn) {
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                installBtn.classList.remove('hidden');
-                installBtn.classList.add('flex');
-            });
-
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null;
-                    installBtn.classList.add('hidden');
-                    installBtn.classList.remove('flex');
-                    if (outcome === 'accepted') showToast("Installing Lumina...");
+        $('callBtnScreen').addEventListener('click', async function() {
+            if(!currentCall || !currentCallData.isVideo) return;
+            try {
+                const displayStream = await navigator.mediaDevices.getDisplayMedia({video: true});
+                const videoTrack = displayStream.getVideoTracks()[0];
+                
+                const sender = currentCall.peerConnection.getSenders().find(s => s.track.kind === 'video');
+                if(sender) {
+                    sender.replaceTrack(videoTrack);
+                    $('localVideo').srcObject = displayStream;
+                    this.classList.add('bg-blue-500/20', 'text-blue-400', 'border-blue-500/50');
+                    
+                    videoTrack.onended = () => {
+                        // Revert to camera
+                        const camTrack = localStream.getVideoTracks()[0];
+                        if(sender && camTrack) sender.replaceTrack(camTrack);
+                        $('localVideo').srcObject = localStream;
+                        this.classList.remove('bg-blue-500/20', 'text-blue-400', 'border-blue-500/50');
+                    };
                 }
-            });
+            } catch(e) {
+                showToast("Screen share cancelled or unsupported.");
+            }
+        });
 
-            window.addEventListener('appinstalled', () => {
-                installBtn.classList.add('hidden');
-                installBtn.classList.remove('flex');
-                deferredPrompt = null;
-                showToast("Protocol Installation Complete");
-            });
-        }
-
-        // Generate dynamic manifest
-        try {
-            const manifestObj = {
-                name: "Lumina Omni-Protocol",
-                short_name: "Lumina",
-                start_url: window.location.pathname,
-                display: "standalone",
-                background_color: "#030303",
-                theme_color: "#10b981",
-                description: "Cryptographic, browser-based WebRTC mesh network.",
-                icons: [{
-                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23030303' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M38 28 V72 H65' fill='none' stroke='%23ffffff' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='65' cy='72' r='6' fill='%2310b981'/%3E%3Ccircle cx='38' cy='28' r='6' fill='%2310b981'/%3E%3C/svg%3E",
-                    sizes: "192x192",
-                    type: "image/svg+xml",
-                    purpose: "any maskable"
-                }]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            const manifestLink = document.createElement('link');
-            manifestLink.rel = 'manifest';
-            manifestLink.href = manifestUrl;
-            document.head.appendChild(manifestLink);
-        } catch(e) {}
-
-        // Initialize URL Parsing
+        // Initialize App State
         function parseURL() {
             const params = new URLSearchParams(window.location.search);
             if (params.has('room') && params.has('type')) {
                 roomType = params.get('type');
                 if($('loginModeDesc')) $('loginModeDesc').textContent = `Topology: ${roomType.toUpperCase()}`;
-                
-                roomName = params.get('room');
-                if($('roomInput')) $('roomInput').value = roomName;
-                
-                syncProfileUI(myName, myGender, myAvatar);
-                
-                // Use the secure, unified Network ID
-                targetHostId = getNetworkId(roomName, roomType);
-                
-                switchView('chat');
+                if($('roomInput')) $('roomInput').value = params.get('room');
                 
                 if (roomType === 'public') {
+                    roomName = params.get('room');
+                    syncProfileUI(myName, myGender, myAvatar);
+                    targetHostId = getNetworkId(roomName, 'public');
+                    switchView('chat');
                     if (UI.login) UI.login.classList.add('hidden');
                     initPeer();
                     setTimeout(() => showToast(`Auto-connecting to Public dimension`), 1000);
                 } else {
+                    switchView('chat');
                     setTimeout(() => showToast(`Invited to ${roomType.toUpperCase()} topology`), 1000);
                 }
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -1639,10 +2087,8 @@
         window.addEventListener('load', () => {
             const intro = $('aaa-intro');
             if (intro) {
-                // Intro length is approx 3.2 seconds before dissolving
                 setTimeout(() => {
                     intro.classList.add('intro-hide');
-                    // Kickstart the background canvas physics for a high-energy transition burst
                     if(typeof window.pingNetwork === 'function') {
                         for(let i=0; i<4; i++) setTimeout(window.pingNetwork, i*150);
                     }
@@ -1650,6 +2096,7 @@
                 }, 3200); 
             }
 
+            CallHistoryManager.load();
             if (!parseURL()) switchView('home');
         });
 
